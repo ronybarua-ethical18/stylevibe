@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import "~react-image-gallery/styles/css/image-gallery.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+  
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+h1,h2,h3,h4,h5,h6{
+  margin:10px 0px;
+  font-weight: 600;
+}
+
+.flexCenterBetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* react slice overrides */
+.slick-dots li {
+  margin:30px !important;
+}
+.slick-dots li button:before {
+  background-color: #407AFF;
+  height: 8px !important;
+  width: 70px !important;
+  border-radius: 10px;
+  /* text-indent: -9999px; */
+  overflow:hidden; 
+  position:absolute;
+  bottom:5px
+  }
+
+
+  /* antd design overrides  */
+  .ant-menu-item-selected {
+    background-color: #eef4ff !important;
+    color:black;
+    font-weight: 500 !important;
+  }
+
+  .ant-menu-item:hover {
+    background-color: #e6f7ff !important;
+    color:#407AFF !important; /* Change the color as per your requirement */
+  }
+
+  .ant-menu-light.ant-menu-root.ant-menu-inline,
+  .ant-menu-light.ant-menu-root.ant-menu-vertical 
+  {
+     border-inline-end: 1px solid rgba(255,255,255) !important;
+   
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+
