@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "style-vibe-2.0",
   "private": true,
   "scripts": {
     "build": "turbo run build",
