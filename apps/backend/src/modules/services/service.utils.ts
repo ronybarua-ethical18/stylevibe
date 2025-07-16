@@ -16,7 +16,6 @@ export const getTotals = async (
   queryPayload: JwtPayload,
   statusList: string[],
 ): Promise<TotalsResult> => {
-  console.log('queryPayload', queryPayload)
   const stats: StatusCount[] = await model.aggregate([
     { $match: queryPayload },
     {

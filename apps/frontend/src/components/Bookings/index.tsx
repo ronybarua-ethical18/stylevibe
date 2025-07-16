@@ -49,16 +49,6 @@ export default function Bookings() {
     ...query,
   })
 
-  console.log('bookings', bookings)
-  // const handleDelete = async (serviceId: any) => {
-  //   try {
-  //     await deleteService(serviceId).unwrap()
-  //     console.log('Service deleted successfully')
-  //   } catch (error) {
-  //     console.error('Failed to delete service:', error)
-  //   }
-  // }
-
   const handleEditClick = useCallback((record: any) => {
     setSelectedRecord(record)
     dispatch(showModal(true))
@@ -66,7 +56,6 @@ export default function Bookings() {
   const columns = [
     {
       title: 'Booking ID',
-    //   dataIndex: 'name',
          render: function (data: any) {
         return <>{data?.bookingId || "SVBA2345-43242342"}</>
       },
@@ -149,7 +138,6 @@ export default function Bookings() {
       ),
     },
   ]
-  console.log("bookings loading from root",bookingsLoading)
 
   return (
     <div>

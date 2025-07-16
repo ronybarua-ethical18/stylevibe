@@ -337,7 +337,7 @@ const getAllBookings = async (
 
   const totals = await getTotals(
     BookingModel as any,
-    { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
+    {$or:[{ seller: new mongoose.Types.ObjectId(loggedUser.userId) }, { customer: new mongoose.Types.ObjectId(loggedUser.userId) }]},
     ['BOOKED', 'CANCELLED', 'COMPLETED'],
   )
 

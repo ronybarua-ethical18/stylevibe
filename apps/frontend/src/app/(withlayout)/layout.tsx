@@ -33,10 +33,12 @@ export default function DashboardLayout({
     return null // Avoid rendering layout if redirecting
   }
 
+  const AntdLayout = Layout as any;
+
   return (
-    <Layout>
+    <AntdLayout>
       <Sidebar />
       <Contents>{children}</Contents>
-    </Layout>
+    </AntdLayout>
   )
 }

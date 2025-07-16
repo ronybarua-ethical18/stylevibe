@@ -30,11 +30,6 @@ export const sidebarItems = (role: string) => {
       icon: <TbBrandBooking style={{ fontSize: '16px' }} />,
     },
     {
-      label: <Link href={`/${role}/services`}>Services</Link>,
-      key: `${role}/services`,
-      icon: <GrServices style={{ fontSize: '16px' }} />,
-    },
-    {
       label: <Link href={`/${role}/transactions`}>Transactions</Link>,
       key: `${role}/transactions`,
       icon:<TbTransactionRupee style={{ fontSize: '16px' }}/>,
@@ -48,6 +43,11 @@ export const sidebarItems = (role: string) => {
 
   const sellerSidebarItems: MenuProps['items'] = [
     ...defaultSidebarItems,
+    {
+      label: <Link href={`/${role}/services`}>Services</Link>,
+      key: `${role}/services`,
+      icon: <GrServices style={{ fontSize: '16px' }} />,
+    },
     {
       label: <Link href={`/${role}/customers`}>Customers</Link>,
       key: `${role}/customers`,
