@@ -2,7 +2,6 @@
 'use client'
 
 import { Button, Col, Row, message } from 'antd'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Form from '@/components/Forms/Form'
 import FormInput from '@/components/Forms/FormInput'
@@ -14,7 +13,6 @@ import Link from 'next/link'
 import { useUserLoginMutation } from '@/redux/api/auth'
 import { isLoggedIn, storeUserInfo } from '@/services/auth.service'
 import GoogleIcon from '../../../public/google.png'
-import FacebookIcon from '../../../public/facebook.png'
 import { useEffect } from 'react'
 
 type FormValues = {
@@ -35,8 +33,7 @@ const LoginPage = () => {
       }
       storeUserInfo(res?.data?.accessToken)
     } catch (err: any) {
-      message.error(err.message || err.data)
-      console.log(err)
+      message.error(err?.data?.message)
     }
   }
 

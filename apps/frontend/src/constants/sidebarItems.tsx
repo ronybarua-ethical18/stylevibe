@@ -20,7 +20,7 @@ export const sidebarItems = (role: string) => {
 
   const defaultSidebarItems: MenuProps['items'] = [
     {
-      label: 'Dashboard',
+      label: <Link href={`/${role}/dashboard`}>Dashboard</Link>,
       key: 'profile',
       icon: <RxDashboard style={{ fontSize: '16px' }} />,
     },

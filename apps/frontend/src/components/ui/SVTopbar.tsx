@@ -28,7 +28,7 @@ export default function SVTopbar() {
       style={{
         background: 'white',
         width: '100%',
-        padding: '25px',
+        padding: '10px 25px',
         position: 'fixed',
         textAlign: 'right',
         display: 'flex',

@@ -147,8 +147,6 @@ const getAllServices = async (
     queryPayload.$and = queriesWithFilterableFields
   }
 
-  console.log('filterOptions', filterOptions)
-
   const services = await ServiceModel.find(queryPayload)
     .populate('shop', 'shopName')
     .sort(sortCondition)

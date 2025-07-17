@@ -1,22 +1,13 @@
-import SVBreadCrumb from '@/components/ui/SVBreadCrumb'
 import React from 'react'
+import moment from 'moment'
+import SVButton from '@/components/SVButton'
+import Dashboard from '@/components/Dashboard/Dashboard'
 
-export default function SellerDashboard() {
+
+export default function DashboardPage() {
+
+
   return (
-    <div>
-      <SVBreadCrumb
-        items={[
-          {
-            label: `seller`,
-            link: `/seller`,
-          },
-          {
-            label: `dashboard`,
-            link: `/seller/dashboard`,
-          },
-        ]}
-      />
-      This is seller dashboard
-    </div>
+   <Dashboard />
   )
 }
