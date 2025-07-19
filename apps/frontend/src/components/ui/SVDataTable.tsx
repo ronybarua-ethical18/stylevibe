@@ -37,17 +37,13 @@ const SVDataTable = ({
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows,
-      )
     },
 
   }
 
   return (
     <Table
+      className=""
       rowSelection={{
         ...rowSelection,
       }}

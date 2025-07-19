@@ -24,7 +24,8 @@ interface SharedTabsProps {
   activeTab: SegmentedValue
   onTabChange: (value: SegmentedValue) => void
   onSearch: (searchTerm: string) => void
-  onDateRangeChange?: (dateRange: [Date, Date]) => void
+  onDateRangeChange?: (dateRange: [Date, Date]) => void,
+  fromDashboard:boolean
 }
 
 const SharedTabs: React.FC<SharedTabsProps> = ({
@@ -36,7 +37,8 @@ const SharedTabs: React.FC<SharedTabsProps> = ({
   activeTab,
   onTabChange,
   onSearch,
-  onDateRangeChange
+  onDateRangeChange,
+  fromDashboard
 }) => {
   const renderContent = () => {
     return (
@@ -51,7 +53,7 @@ const SharedTabs: React.FC<SharedTabsProps> = ({
 
   return (
     <div>
-      <div className="py-3 px-2 rounded-md bg-white flex justify-between">
+      {!fromDashboard && <div className="py-3 px-2 rounded-md bg-white flex justify-between">
         <Segmented
           options={items.map(item => ({
             value: item.value,
@@ -85,8 +87,8 @@ const SharedTabs: React.FC<SharedTabsProps> = ({
             </div>
       
         </div>
-      </div>
-      <div style={{ marginTop: 16 }}>{renderContent()}</div>
+      </div>}
+      <div style={{ marginTop: fromDashboard ? 0:16 }}>{renderContent()}</div>
     </div>
   )
 }

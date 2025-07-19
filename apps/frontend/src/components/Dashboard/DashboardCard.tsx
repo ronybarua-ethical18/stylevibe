@@ -8,14 +8,14 @@ interface DashboardCardProps {
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ icon, value, title }) => (
-  <div className="bg-white rounded-xl shadow-sm p-4 flex flex-col items-center justify-center min-h-[180px]">
-    <div className="mb-6">
-      <div className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-50">
-        <span className="text-2xl text-blue-400">{icon}</span>
-      </div>
+  <div className="bg-white rounded-xl px-4 py-3 flex items-center">
+    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-50 mr-4">
+      <span className="text-xl text-blue-400">{icon}</span>
     </div>
-    <div className="font-bold text-xl mb-1">{value}</div>
-    <div className="text-gray-500 text-sm">{title}</div>
+    <div className="flex flex-col justify-center">
+      <div className="text-gray-500 text-sm mb-1">{title}</div>
+      <div className="font-medium text-2xl">{value}</div>
+    </div>
   </div>
 )
 

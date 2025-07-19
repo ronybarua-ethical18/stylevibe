@@ -40,7 +40,33 @@ h1,h2,h3,h4,h5,h6{
   bottom:5px
   }
 
+.antd-table{
+  background-color: transparent !important;
+  border-radius: 15px !important;
+}
 
+/* Add border radius to the table container */
+.ant-table-wrapper,
+.ant-table {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+.ant-table-thead{
+  background-color: white !important;
+}
+.ant-table-cell{
+  background: white !important;
+}
+
+/* Keep header background always white, even on hover */
+.ant-table-thead > tr > .ant-table-cell {
+  background: white !important;
+}
+
+/* Highlight full row on hover (body only) */
+.ant-table-row:hover > .ant-table-cell {
+  background: #e6f7ff !important;
+}
   /* antd design overrides  */
   .ant-menu-item-selected {
     background-color: #eef4ff !important;
@@ -67,9 +93,6 @@ h1,h2,h3,h4,h5,h6{
   .no-scrollbar {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-  }
-  #nprogress .bar, .nprogress-bar {
-    z-index: 9999 !important;
   }
 
 

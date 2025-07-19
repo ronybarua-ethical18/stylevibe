@@ -9,6 +9,7 @@ const SVTransactionTabs = ({
   setActiveTab,
   setSearchTerm,
   transactionsLoading,
+  fromDashboard
 }: {
   columns: any
   transactions:any
@@ -16,6 +17,7 @@ const SVTransactionTabs = ({
   setActiveTab: any
   setSearchTerm: any
   transactionsLoading: any
+  fromDashboard:boolean
 }) => {
   const items = [
     {
@@ -73,6 +75,7 @@ const SVTransactionTabs = ({
       activeTab={activeTab}
       onTabChange={handleTabChange}
       onSearch={handleSearch}
+      fromDashboard={fromDashboard}
     />
   )
 }

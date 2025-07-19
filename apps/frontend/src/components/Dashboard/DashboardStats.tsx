@@ -2,43 +2,65 @@
 
 import React from 'react'
 import { Row, Col, Card } from 'antd'
-import { MessageOutlined, LineChartOutlined, StarOutlined, SafetyOutlined } from '@ant-design/icons'
+import { MessageOutlined, FileTextOutlined, DollarOutlined, StarOutlined } from '@ant-design/icons'
 import DashboardCard from './DashboardCard'
-import DumbbellChart from './DumbellChart'
+import DailySalesChart from './DailySalesChart'
 // import { Column } from '@ant-design/charts' // Uncomment if using charts
+import AppointmentSchedule from "./AppointmentSchedule";
+import Transactions from '../Transactions'
+import PatientVisitByDepartmentCard from './PatientVisitByDepartment'
 
 const cards = [
-  { id: 1, icon: <MessageOutlined />, value: 5082, title: 'Consultation' },
-  { id: 2, icon: <LineChartOutlined />, value: 2082, title: 'In Progress' },
-  { id: 3, icon: <StarOutlined />, value: 1082, title: 'In Review' },
-  { id: 4, icon: <SafetyOutlined />, value: 1000, title: 'Report Done' },
+  { id: 1, icon: <MessageOutlined />, value: 289, title: 'Patient' },
+  { id: 2, icon: <FileTextOutlined />, value: 112, title: 'Report' },
+  { id: 3, icon: <DollarOutlined />, value: '$1700', title: 'Income' },
+  { id: 4, icon: <StarOutlined />, value: 5, title: 'Review' },
 ]
 
-// Chart config here if using a chart library
+const CARD_HEIGHT = 180
 
 export default function DashboardStats() {
   return (
-    <Row gutter={16} className="mt-8">
-      {cards.map(card => (
-        <Col key={card.id} xs={24} sm={12} md={4}>
-          <DashboardCard {...card} />
-        </Col>
-      ))}
-      <Col xs={24} sm={24} md={8}>
-        <Card
-          className="min-h-[180px] flex flex-col justify-between w-full"
-          style={{ height: '100%', padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-        >
-          <div className="font-semibold flex justify-between">
-            <span>Patient Visit</span>
-            <span className="text-xs text-gray-400">Daily ▼</span>
-          </div>
-          {/* Replace with <Column {...config} /> if using @ant-design/charts */}
-          <div className="flex-1 flex items-center justify-center text-gray-400 w-full">
-          <DumbbellChart />
-          </div>
-        </Card>
+    <div>
+<Row gutter={24} style={{marginBottom:'20px'}}>
+      {/* Main content column: Chart + Cards side by side */}
+      <Col xs={24} md={16}>
+        <Row gutter={16}>
+          <Col xs={24} md={19}>
+            <DailySalesChart />
+          </Col>
+          <Col xs={24} md={5}>
+            <div className="flex flex-col gap-4">
+              {cards.map(card => (
+                <DashboardCard
+                  key={card.id}
+                  icon={card.icon}
+                  value={card.value}
+                  title={card.title}
+                />
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </Col>
+      {/* Second column (empty or for future content) */}
+      <Col xs={24} md={8}>
+        <AppointmentSchedule />
       </Col>
     </Row>
+    <Row gutter={24}>
+      <Col xs={24} md={16}>
+        
+         <div className='bg-white p-6 rounded-2xl'>
+          <h2 className='text-xl font-semibold mb-6'>Recent Transactions</h2>
+         <Transactions fromDashboard />
+         </div>
+      </Col>
+      <Col xs={24} md={8}>
+     <PatientVisitByDepartmentCard />
+      </Col>
+      </Row>
+    </div>
+    
   )
 }

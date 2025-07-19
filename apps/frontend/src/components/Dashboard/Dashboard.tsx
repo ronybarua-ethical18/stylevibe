@@ -12,11 +12,11 @@ export default function Dashboard() {
     <div>
       {/* <SVBreadCrumb ... /> */}
       <div>
-        <div className="text-sm text-gray-500 mb-2">{today}</div>
+        {/* <div className="text-sm text-gray-500 mb-2">{today}</div>
         <h1 className="text-3xl font-bold text-black mb-1">
           Hello, {userName}
-        </h1>
-        <div className='flex space-x-2 items-center'>
+        </h1> */}
+        {/* <div className='flex space-x-2 items-center'>
           <div
             className="text-2xl font-bold bg-gradient-to-r from-[#3ECF8E] to-[#3A8DFF] bg-clip-text text-transparent"
           >
@@ -34,7 +34,7 @@ export default function Dashboard() {
               fontWeight: 600,
             }}
           />
-        </div>
+        </div> */}
         <DashboardStats />
 
       </div>
