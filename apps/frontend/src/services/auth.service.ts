@@ -14,7 +14,6 @@ export const getUserInfo = () => {
 
   if (authToken) {
     const decodeJWTToken = decodeToken(authToken)
-    console.log(decodeJWTToken)
     return decodeJWTToken
   }
   return ''

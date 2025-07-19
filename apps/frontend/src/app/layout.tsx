@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
-import 'antd/dist/reset.css';
+import "antd/dist/reset.css";
 import "./globals.css";
 import Providers from "@/lib/Providers";
 import SessionProvider from "./components/SessionProvider";
@@ -19,12 +19,10 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-          <ProgressbarProvider />
+        <ProgressbarProvider />
         <Providers>
           <SessionProvider session={session}>
-            <AntRegistryProvider>
-              {children}
-            </AntRegistryProvider>
+            <AntRegistryProvider>{children}</AntRegistryProvider>
           </SessionProvider>
         </Providers>
       </body>

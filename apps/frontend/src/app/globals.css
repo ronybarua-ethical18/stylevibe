@@ -44,7 +44,12 @@ h1,h2,h3,h4,h5,h6{
   background-color: transparent !important;
   border-radius: 15px !important;
 }
-
+.apexcharts-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
 /* Add border radius to the table container */
 .ant-table-wrapper,
 .ant-table {

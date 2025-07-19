@@ -76,7 +76,34 @@ const options = {
   },
   tooltip: {
     enabled: true,
-    y: { formatter: (val: number) => `$${val}` },
+    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+      // Example: Replace with your real date logic if you have dates
+      // For demo, we'll just use a static date string
+      // You can map categories to dates if needed
+      const date = "July, 29th 2021"; // Replace with your dynamic date if available
+      const value = series[seriesIndex][dataPointIndex]
+        .toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        .replace('.', ','); // For $119,87 style
+      return `
+        <div style="
+          background: #2d2357;
+          color: #fff;
+          padding: 12px 18px;
+          border-radius: 12px;
+          font-size: 15px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+          min-width: 120px;
+          text-align: left;
+        ">
+          <div style="font-size: 14px; opacity: 0.8; margin-bottom: 4px;">
+            ${date}
+          </div>
+          <div style="font-size: 22px; font-weight: bold; letter-spacing: 1px;">
+            $${value}
+          </div>
+        </div>
+      `;
+    },
   },
 };
 

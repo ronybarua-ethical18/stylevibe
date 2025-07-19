@@ -17,7 +17,7 @@ const appointments = [
   },
 ];
 
-export default function AppointmentSchedule() {
+export default function CustomerSchedule() {
   return (
     <div className="bg-white rounded-2xl p-6 h-full">
       {/* Header */}

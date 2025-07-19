@@ -360,3 +360,10 @@ export const months = [
   'November',
   'December',
 ]
+
+export const topServices = [
+  { label: "Beard and Hair Services", value: 45, color: "#5B6CFF" },
+  { label: "Makeup Services", value: 25, color: "#FFB547" },
+  { label: "Skincare Services", value: 30, color: "#A685FF" },
+  { label: "Special Occasion Services", value: 20, color: "#34C759" },
+];

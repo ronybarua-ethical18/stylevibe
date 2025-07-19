@@ -28,8 +28,6 @@ export default function LandingPage() {
   const router = useRouter()
   const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery({})
 
-  console.log("top services from layout", services?.data)
-
   return (
     <div>
       <div className="bg-customPrimary-800 h-screen">
@@ -48,10 +46,6 @@ export default function LandingPage() {
           >
             {/* Place your logo here */}
             <div className="flex justify-end items-center">
-              {/* <div className="mr-5 rounded-3xl py-2 px-4 border border-customPrimary-800 text-customPrimary-800 flex items-center">
-                <FaUser className="text-customPrimary-800 mr-2" />
-                Login
-              </div> */}
               <h1 className="mr-5">
                 <strong className="text-customPrimary-800 text-3xl font-semibold">
                   Style
@@ -62,7 +56,7 @@ export default function LandingPage() {
               </h1>
               {role ? (
                 <div className="flex items-center">
-                  <Link className="text-customPrimary-800" href={`/${role}`}>
+                  <Link className="text-customPrimary-800" href={`/${role}/dashboard`}>
                     Dashboard
                   </Link>{' '}
                   <BiLogOut className="ml-5 text-xl cursor-pointer text-customPrimary-800" onClick={() => {

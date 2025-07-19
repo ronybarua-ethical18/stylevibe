@@ -35,7 +35,7 @@ export default function SVTopbar() {
         justifyContent: 'flex-end',
         top: 0,
         left: 0,
-        zIndex: 9998,
+        zIndex: 2,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>

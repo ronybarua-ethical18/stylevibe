@@ -31,7 +31,7 @@ export default function Sidebar(): React.ReactNode {
         top: 0,
         bottom: 0,
         left: 0,
-        zIndex: 9999,
+        zIndex: 3,
       }}
     >
       <div

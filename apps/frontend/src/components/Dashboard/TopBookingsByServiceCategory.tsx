@@ -1,21 +1,15 @@
+import { topServices } from "@/utils/dummyServices";
 import { Button } from "antd";
 import React from "react";
 import Chart from "react-apexcharts";
-
-const data = [
-  { label: "Beard and Hair Services", value: 45, color: "#5B6CFF" },
-  { label: "Makeup Services", value: 25, color: "#FFB547" },
-  { label: "Skincare Services", value: 30, color: "#A685FF" },
-  { label: "Special Occasion Services", value: 20, color: "#34C759" },
-];
 
 const chartOptions = {
   chart: {
     type: "donut" as const,
     toolbar: { show: false },
   },
-  labels: data.map((d) => d.label),
-  colors: data.map((d) => d.color),
+  labels: topServices.map((d) => d.label),
+  colors: topServices.map((d) => d.color),
   legend: { show: false },
   dataLabels: { enabled: false },
   plotOptions: {
@@ -27,9 +21,9 @@ const chartOptions = {
   },
 };
 
-const chartSeries = data.map((d) => d.value);
+const chartSeries = topServices.map((d) => d.value);
 
-const PatientVisitByDepartmentCard = () => (
+const TopBookingsByServiceCategory = () => (
   <div className="bg-white rounded-2xl p-6 w-full h-full">
     <div className="flex justify-between items-center">
       <div>
@@ -43,7 +37,7 @@ const PatientVisitByDepartmentCard = () => (
     </div>
     <div className="flex items-center justify-between h-full">
       <div className="flex flex-col gap-6">
-        {data.map((d) => (
+        {topServices.map((d) => (
           <div key={d.label} className="flex items-center gap-3">
             <span
               className="inline-block w-3 h-3 rounded-full"
@@ -63,4 +57,4 @@ const PatientVisitByDepartmentCard = () => (
   </div>
 );
 
-export default PatientVisitByDepartmentCard;
+export default TopBookingsByServiceCategory;
