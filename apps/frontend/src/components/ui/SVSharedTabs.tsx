@@ -38,8 +38,6 @@ const SharedTabs: React.FC<SharedTabsProps> = ({
   onSearch,
   onDateRangeChange
 }) => {
-
-  console.log("items from shared tabs",  items)
   const renderContent = () => {
     return (
       <SVDataTableWithUtils

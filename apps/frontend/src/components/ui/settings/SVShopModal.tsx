@@ -151,7 +151,7 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
           setIsChecked(false)
         }}
         maskAnimation={true}
-        bodyStyle={{ height: '90vh', overflowY: 'auto' }}
+        style={{ height: '90vh', overflowY: 'auto' }}
         className="no-scrollbar "
       >
         <div className="overflow-y-scroll no-scrollbar w-full p-6 ">

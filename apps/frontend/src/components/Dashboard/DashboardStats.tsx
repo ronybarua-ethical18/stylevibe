@@ -27,7 +27,7 @@ export default function DashboardStats() {
       <Col xs={24} sm={24} md={8}>
         <Card
           className="min-h-[180px] flex flex-col justify-between w-full"
-          bodyStyle={{ height: '100%', padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+          style={{ height: '100%', padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
           <div className="font-semibold flex justify-between">
             <span>Patient Visit</span>

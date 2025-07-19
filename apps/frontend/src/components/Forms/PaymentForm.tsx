@@ -258,7 +258,7 @@ const PaymentForm = ({
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         width={650}
-        bodyStyle={{
+        style={{
           padding: '40px',
           display: 'flex',
           flexDirection: 'column',

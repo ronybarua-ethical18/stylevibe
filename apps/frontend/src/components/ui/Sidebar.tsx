@@ -15,7 +15,7 @@ export default function Sidebar(): React.ReactNode {
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
-      width={280}
+      width={250}
       onBreakpoint={broken => {
         console.log(broken)
       }}
@@ -31,7 +31,7 @@ export default function Sidebar(): React.ReactNode {
         top: 0,
         bottom: 0,
         left: 0,
-        zIndex: 999,
+        zIndex: 9999,
       }}
     >
       <div

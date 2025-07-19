@@ -19,7 +19,7 @@ const SVStripeSuccessfulConnectionModal = ({
         footer={null}
         width={800}
         centered
-        bodyStyle={{ padding: 0 }}
+        style={{ padding: 0 }}
       >
         <Result
           icon={<CheckCircleFilled style={{ color: '#52c41a' }} />}

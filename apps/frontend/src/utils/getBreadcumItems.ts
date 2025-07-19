@@ -2,8 +2,6 @@ import { getUserInfo } from '@/services/auth.service'
 
 export const getBreadcrumbItems = (page: string, id?: string) => {
   const userDetails: any = getUserInfo()
-
-  console.log('user detaiils from breadcumb', userDetails)
   const breadcrumbItems = []
 
   // Construct URL based on userDetails?.role, page, and id

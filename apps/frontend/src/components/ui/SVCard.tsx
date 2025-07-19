@@ -27,7 +27,7 @@ export default function SVCard({
 }: {
   service: ICard
   loading: boolean
-}): React.ReactNode {
+}): JSX.Element {
   const userInfo: any = getUserInfo()
   return (
     <div className="shadow-custom-shadow h-full flex flex-col relative mt-5 rounded-xl">

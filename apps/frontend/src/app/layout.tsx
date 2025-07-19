@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
+import 'antd/dist/reset.css';
+import "./globals.css";
 import Providers from "@/lib/Providers";
 import SessionProvider from "./components/SessionProvider";
-import "./globals.css";
 import AntRegistryProvider from "@/lib/AntRegistryProvider";
 import { PropsWithChildren } from "react";
 import { ProgressbarProvider } from "@/lib/ProgressBarProvider";
@@ -18,13 +19,12 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+          <ProgressbarProvider />
         <Providers>
           <SessionProvider session={session}>
-          <ProgressbarProvider>
             <AntRegistryProvider>
               {children}
             </AntRegistryProvider>
-            </ProgressbarProvider>
           </SessionProvider>
         </Providers>
       </body>

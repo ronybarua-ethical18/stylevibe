@@ -13,8 +13,6 @@ const useDebounce = ({ value, delay }: { value: string; delay: number }) => {
     }
   }, [value, delay])
 
-  console.log("debounced value", debouncedValue)
-
   return debouncedValue
 }
 
