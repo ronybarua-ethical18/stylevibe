@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { Layout, Menu } from 'antd'
+import { usePathname } from 'next/navigation'
 import { sidebarItems } from '@/constants/sidebarItems'
 import { MdOutlineAdminPanelSettings } from 'react-icons/md'
 import { getUserInfo } from '@/services/auth.service'
@@ -10,6 +11,7 @@ const { Sider } = Layout
 export default function Sidebar(): React.ReactNode {
   const userInfo:any = getUserInfo()
   const role = userInfo?.role
+  const pathname = usePathname()
 
   return (
     <Sider
@@ -55,7 +57,7 @@ export default function Sidebar(): React.ReactNode {
         style={{ background: 'white', color: '#151b20' }}
         theme="light"
         mode="inline"
-        defaultSelectedKeys={['2']}
+        selectedKeys={[pathname]}
         items={sidebarItems(role)}
       />
     </Sider>

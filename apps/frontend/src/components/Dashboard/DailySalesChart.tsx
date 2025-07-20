@@ -124,6 +124,8 @@ export default function DailySalesChart() {
         height: "100%", // Make this container take 100% height of its parent
         display: "flex",
         flexDirection: "column",
+        width: "100%",
+        overflow: "hidden",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>

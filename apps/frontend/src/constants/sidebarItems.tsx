@@ -21,41 +21,41 @@ export const sidebarItems = (role: string) => {
   const defaultSidebarItems: MenuProps['items'] = [
     {
       label: <Link href={`/${role}/dashboard`}>Dashboard</Link>,
-      key: 'profile',
+      key: `/${role}/dashboard`,
       icon: <RxDashboard style={{ fontSize: '16px' }} />,
     },
     {
       label: <Link href={`/${role}/bookings`}>Bookings</Link>,
-      key: `${role}/bookings`,
+      key: `/${role}/bookings`,
       icon: <TbBrandBooking style={{ fontSize: '16px' }} />,
     },
     {
       label: <Link href={`/${role}/transactions`}>Transactions</Link>,
-      key: `${role}/transactions`,
+      key: `/${role}/transactions`,
       icon:<TbTransactionRupee style={{ fontSize: '16px' }}/>,
     },
-    {
-      label: <Link href={`/${role}/disputes`}>Disputes</Link>,
-      key: `${role}/disputes`,
-      icon:<VscSearchStop style={{ fontSize: '16px' }}/>,
-    },
+    // {
+    //   label: <Link href={`/${role}/disputes`}>Disputes</Link>,
+    //   key: `${role}/disputes`,
+    //   icon:<VscSearchStop style={{ fontSize: '16px' }}/>,
+    // },
   ]
 
   const sellerSidebarItems: MenuProps['items'] = [
     ...defaultSidebarItems,
     {
       label: <Link href={`/${role}/services`}>Services</Link>,
-      key: `${role}/services`,
+      key: `/${role}/services`,
       icon: <GrServices style={{ fontSize: '16px' }} />,
     },
     {
       label: <Link href={`/${role}/customers`}>Customers</Link>,
-      key: `${role}/customers`,
+      key: `/${role}/customers`,
       icon: <FaUsers style={{ fontSize: '16px' }} />,
     },
     {
       label: <Link href={`/${role}/settings`}>Settings</Link>,
-      key: 'setting',
+      key: `/${role}/settings`,
       icon: <IoSettingsOutline style={{ fontSize: '16px' }} />,
     },
   ]
@@ -65,13 +65,13 @@ export const sidebarItems = (role: string) => {
     ...sellerSidebarItems,
   
     {
-      label: <Link href={`${role}/blogs`}>Blogs</Link>,
-      key: `${role}/blogs`,
+      label: <Link href={`/${role}/blogs`}>Blogs</Link>,
+      key: `/${role}/blogs`,
       icon: <LiaBlogSolid style={{ fontSize: '16px' }} />,
     },
     {
-      label: <Link href={`${role}/faqs`}>FAQ</Link>,
-      key: `${role}/faqs`,
+      label: <Link href={`/${role}/faqs`}>FAQ</Link>,
+      key: `/${role}/faqs`,
       icon: <MdOutlineQuestionAnswer style={{ fontSize: '16px' }} />,
     },
   ]
@@ -79,20 +79,20 @@ export const sidebarItems = (role: string) => {
   const superAdminSiderbarItems: MenuProps['items'] = [
     ...adminSidebarItems,
     {
-      label: <Link href={`${role}/manage-orders`}>Manage Bookings</Link>,
-      key: `${role}/manage-bookings`,
+      label: <Link href={`/${role}/manage-orders`}>Manage Bookings</Link>,
+      key: `/${role}/manage-orders`,
     },
     {
-      label: <Link href={`${role}/manage-sellers`}>Manage Sellers</Link>,
-      key: `${role}/manage-sellers`,
+      label: <Link href={`/${role}/manage-sellers`}>Manage Sellers</Link>,
+      key: `/${role}/manage-sellers`,
     },
     {
-      label: <Link href={`${role}/manage-customers`}>Manage Customers</Link>,
-      key: `${role}/manage-customers`,
+      label: <Link href={`/${role}/manage-customers`}>Manage Customers</Link>,
+      key: `/${role}/manage-customers`,
     },
     {
-      label: <Link href={`${role}/manage-admins`}>Manage Admins</Link>,
-      key: `${role}/manage-admins`,
+      label: <Link href={`/${role}/manage-admins`}>Manage Admins</Link>,
+      key: `/${role}/manage-admins`,
     },
   ]
 
