@@ -13,7 +13,7 @@ export default function Sidebar(): React.ReactNode {
   const role = userInfo?.role;
   const pathname = usePathname();
   const val = 5;
-  const test = 5
+  const test = 5;
 
   return (
     <Sider
