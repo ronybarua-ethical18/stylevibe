@@ -1,17 +1,24 @@
 module.exports = {
   root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier'
+  ],
   env: {
     browser: true,
     node: true,
-    es2021: true,
+    es2021: true
   },
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  extends: ['eslint:recommended', 'prettier'],
   rules: {
-    'no-unused-vars': 'error',
+    // ❗ Will catch unused variables and imports via TypeScript
+    '@typescript-eslint/no-unused-vars': ['error', {
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_'
+    }],
+    'no-unused-vars': 'off'
   },
-  ignorePatterns: ['dist/', 'build/', 'node_modules/'],
+  ignorePatterns: ['dist/', 'build/', 'node_modules/']
 };

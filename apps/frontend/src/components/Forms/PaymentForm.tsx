@@ -316,7 +316,7 @@ const PaymentWrapper = ({
           seller: service.seller,
         }).unwrap();
 
-                      setPaymentIntentId(response.data.id);
+        setPaymentIntentId(response.data.id);
         setClientSecret(response.data.client_secret);
         setIntentCreated(true);
       } catch (error: any) {
