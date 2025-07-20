@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { Tabs } from 'antd'
-import SVShopInfo from './SVShopInfo'
-import SVPersonalInfo from './SVPersonalInfo'
+import React from 'react';
+import { Tabs } from 'antd';
+import SVShopInfo from './SVShopInfo';
+import SVPersonalInfo from './SVPersonalInfo';
 
-const { TabPane } = Tabs
+const { TabPane } = Tabs;
 
 function SVSettingTabs({ userProfile }: any) {
   return (
@@ -17,7 +17,7 @@ function SVSettingTabs({ userProfile }: any) {
         <SVShopInfo userProfile={userProfile} />
       </TabPane>
     </Tabs>
-  )
+  );
 }
 
-export default SVSettingTabs
+export default SVSettingTabs;

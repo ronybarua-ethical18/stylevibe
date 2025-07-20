@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { message, Select, Input } from 'antd'
-import SVButton from '../SVButton'
-import { useUpdateServiceMutation } from '@/redux/api/services'
-import { MdMiscellaneousServices } from 'react-icons/md' // Import the new icon
-import Form from '../Forms/Form'
-import FormSelectField from '../Forms/FormSelectField'
-import FormTextArea from '../Forms/FormTextArea'
+import React from 'react';
+import { message, Select, Input } from 'antd';
+import SVButton from '../SVButton';
+import { useUpdateServiceMutation } from '@/redux/api/services';
+import { MdMiscellaneousServices } from 'react-icons/md'; // Import the new icon
+import Form from '../Forms/Form';
+import FormSelectField from '../Forms/FormSelectField';
+import FormTextArea from '../Forms/FormTextArea';
 
-const { TextArea } = Input
+const { TextArea } = Input;
 
 interface ServiceStatusUpdateProps {
-  serviceId: string
-  serviceName: string // Add this prop
-  onClose: () => void
+  serviceId: string;
+  serviceName: string; // Add this prop
+  onClose: () => void;
 }
 
 const ServiceStatusUpdate: React.FC<ServiceStatusUpdateProps> = ({
@@ -22,25 +22,25 @@ const ServiceStatusUpdate: React.FC<ServiceStatusUpdateProps> = ({
   serviceName,
   onClose,
 }) => {
-  const [updateService, { isLoading }] = useUpdateServiceMutation()
+  const [updateService, { isLoading }] = useUpdateServiceMutation();
 
   const onFinish = async (values: any) => {
     try {
       await updateService({
         id: serviceId,
         data: { status: values.status, notes: values.notes },
-      }).unwrap()
-      message.success('Service status updated successfully')
-      onClose()
+      }).unwrap();
+      message.success('Service status updated successfully');
+      onClose();
     } catch (error) {
-      message.error('Failed to update service status')
+      message.error('Failed to update service status');
     }
-  }
+  };
 
   const statusOptions = [
     { label: 'Approved', value: 'APPROVED' },
     { label: 'Rejected', value: 'REJECTED' },
-  ]
+  ];
 
   return (
     <div className="p-8 bg-white rounded-lg shadow-md">
@@ -78,7 +78,7 @@ const ServiceStatusUpdate: React.FC<ServiceStatusUpdateProps> = ({
         />
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceStatusUpdate
+export default ServiceStatusUpdate;

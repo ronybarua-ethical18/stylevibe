@@ -1,1 +1,1 @@
-export const shopFilterableFields = ['searchTerm', 'shopName', 'location']
+export const shopFilterableFields = ['searchTerm', 'shopName', 'location'];

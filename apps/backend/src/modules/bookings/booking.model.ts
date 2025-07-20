@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose'
-import { BookingStatusList, IBooking } from './booking.interface'
+import mongoose, { Schema } from 'mongoose';
+import { BookingStatusList, IBooking } from './booking.interface';
 
 const bookingSchema = new mongoose.Schema<IBooking>(
   {
@@ -27,20 +27,20 @@ const bookingSchema = new mongoose.Schema<IBooking>(
       default: BookingStatusList.BOOKED,
     },
   },
-  { timestamps: true },
-)
+  { timestamps: true }
+);
 
 // Pre-save hook to format all number fields
 bookingSchema.pre('save', function (next) {
-  const booking = this as IBooking
+  const booking = this as IBooking;
 
   // Format the number fields with two decimal places
-  booking.totalAmount = Math.round(booking.totalAmount * 100) / 100
+  booking.totalAmount = Math.round(booking.totalAmount * 100) / 100;
 
-  next()
-})
+  next();
+});
 
 // Create and export the mongoose model
-const BookingModel = mongoose.model<IBooking>('booking', bookingSchema)
+const BookingModel = mongoose.model<IBooking>('booking', bookingSchema);
 
-export default BookingModel
+export default BookingModel;

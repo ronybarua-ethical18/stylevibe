@@ -1,11 +1,11 @@
-import { topServices } from "@/utils/dummyServices";
-import { Button } from "antd";
-import React from "react";
-import Chart from "react-apexcharts";
+import { topServices } from '@/utils/dummyServices';
+import { Button } from 'antd';
+import React from 'react';
+import Chart from 'react-apexcharts';
 
 const chartOptions = {
   chart: {
-    type: "donut" as const,
+    type: 'donut' as const,
     toolbar: { show: false },
   },
   labels: topServices.map((d) => d.label),
@@ -15,7 +15,7 @@ const chartOptions = {
   plotOptions: {
     pie: {
       donut: {
-        size: "50%",
+        size: '50%',
       },
     },
   },
@@ -29,9 +29,7 @@ const TopBookingsByServiceCategory = () => (
       <div>
         <div className="font-semibold text-lg">Top Bookings by Service</div>
       </div>
-      <Button
-        className="bg-gray-100 rounded-md px-4 py-1 text-sm font-medium text-gray-700 focus:outline-none"
-      >
+      <Button className="bg-gray-100 rounded-md px-4 py-1 text-sm font-medium text-gray-700 focus:outline-none">
         Weekly <span className="ml-1">▼</span>
       </Button>
     </div>
@@ -44,14 +42,24 @@ const TopBookingsByServiceCategory = () => (
               style={{ background: d.color }}
             />
             <div className="flex flex-col">
-              <span className="font-medium text-gray-800 text-base">{d.label}</span>
-              <span className="font-bold text-lg text-gray-900 mt-1">{d.value} %</span>
+              <span className="font-medium text-gray-800 text-base">
+                {d.label}
+              </span>
+              <span className="font-bold text-lg text-gray-900 mt-1">
+                {d.value} %
+              </span>
             </div>
           </div>
         ))}
       </div>
       <div className="flex-shrink-0 flex items-center justify-center">
-        <Chart options={chartOptions} series={chartSeries} type="donut" width={250} height={250} />
+        <Chart
+          options={chartOptions}
+          series={chartSeries}
+          type="donut"
+          width={250}
+          height={250}
+        />
       </div>
     </div>
   </div>

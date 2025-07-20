@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handlebarOptions: any = {
@@ -9,6 +9,6 @@ const handlebarOptions: any = {
   },
   viewPath: path.resolve(__dirname, 'templates'),
   extName: '.handlebars',
-}
+};
 
-export default handlebarOptions
+export default handlebarOptions;

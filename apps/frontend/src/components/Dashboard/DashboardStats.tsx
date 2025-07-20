@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Row, Col, Card } from "antd";
+import React from 'react';
+import { Row, Col, Card } from 'antd';
 import {
   MessageOutlined,
   FileTextOutlined,
   DollarOutlined,
   StarOutlined,
-} from "@ant-design/icons";
-import DashboardCard from "./DashboardCard";
-import DailySalesChart from "./DailySalesChart";
-import Transactions from "../Transactions";
-import TopBookingsByServiceCategory from "./TopBookingsByServiceCategory";
-import CustomerSchedule from "./CustomerSchedule";
+} from '@ant-design/icons';
+import DashboardCard from './DashboardCard';
+import DailySalesChart from './DailySalesChart';
+import Transactions from '../Transactions';
+import TopBookingsByServiceCategory from './TopBookingsByServiceCategory';
+import CustomerSchedule from './CustomerSchedule';
 
 const cards = [
-  { id: 1, icon: <MessageOutlined />, value: 289, title: "Patient" },
-  { id: 2, icon: <FileTextOutlined />, value: 112, title: "Report" },
-  { id: 3, icon: <DollarOutlined />, value: "$1700", title: "Income" },
-  { id: 4, icon: <StarOutlined />, value: 5, title: "Review" },
+  { id: 1, icon: <MessageOutlined />, value: 289, title: 'Patient' },
+  { id: 2, icon: <FileTextOutlined />, value: 112, title: 'Report' },
+  { id: 3, icon: <DollarOutlined />, value: '$1700', title: 'Income' },
+  { id: 4, icon: <StarOutlined />, value: 5, title: 'Review' },
 ];
 
 export default function DashboardStats() {
   return (
     <div>
-      <Row gutter={24} style={{ marginBottom: "20px" }}>
+      <Row gutter={24} style={{ marginBottom: '20px' }}>
         {/* Main content column: Chart + Cards side by side */}
         <Col xs={24} md={16}>
           <Row gutter={16}>

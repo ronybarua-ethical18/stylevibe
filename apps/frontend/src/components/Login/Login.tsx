@@ -1,45 +1,44 @@
 /* eslint-disable react/no-unescaped-entities */
-'use client'
+'use client';
 
-import { Button, Col, Row, message } from 'antd'
-import { useRouter } from 'next/navigation'
-import Form from '@/components/Forms/Form'
-import FormInput from '@/components/Forms/FormInput'
-import { SubmitHandler } from 'react-hook-form'
-import SVCarousel from '@/components/ui/SVCarousel'
-import Image from 'next/image'
-import helloImage from '../../../public/hello.png'
-import Link from 'next/link'
-import { useUserLoginMutation } from '@/redux/api/auth'
-import { isLoggedIn, storeUserInfo } from '@/services/auth.service'
-import GoogleIcon from '../../../public/google.png'
-import { useEffect } from 'react'
+import { Button, Col, Row, message } from 'antd';
+import { useRouter } from 'next/navigation';
+import Form from '@/components/Forms/Form';
+import FormInput from '@/components/Forms/FormInput';
+import { SubmitHandler } from 'react-hook-form';
+import SVCarousel from '@/components/ui/SVCarousel';
+import Image from 'next/image';
+import helloImage from '../../../public/hello.png';
+import Link from 'next/link';
+import { useUserLoginMutation } from '@/redux/api/auth';
+import { isLoggedIn, storeUserInfo } from '@/services/auth.service';
+import GoogleIcon from '../../../public/google.png';
+import { useEffect } from 'react';
 
 type FormValues = {
-  id: string
-  password: string
-}
+  id: string;
+  password: string;
+};
 
 const LoginPage = () => {
-  const router = useRouter()
-  const [userLogin] = useUserLoginMutation()
-
+  const router = useRouter();
+  const [userLogin] = useUserLoginMutation();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
-      const res = await userLogin(data).unwrap()
+      const res = await userLogin(data).unwrap();
       if (res?.data?.accessToken) {
-        router.push('/')
+        router.push('/');
       }
-      storeUserInfo(res?.data?.accessToken)
+      storeUserInfo(res?.data?.accessToken);
     } catch (err: any) {
-      message.error(err?.data?.message)
+      message.error(err?.data?.message);
     }
-  }
+  };
 
   useEffect(() => {
-    isLoggedIn() && router.push('/')
-  }, [router])
+    isLoggedIn() && router.push('/');
+  }, [router]);
 
   return (
     <Row
@@ -117,14 +116,14 @@ const LoginPage = () => {
                 </Button>
                 <div className="shadow-sm border rounded-md p-3 cursor-pointer flex items-center justify-center w-full">
                   <Image
-                      src={GoogleIcon}
-                      width={20}
-                      height={20}
-                      alt="welcome message"
-                      className="mr-5 text-lg"
-                    />{' '}
-                    Login with Google
-                  </div>
+                    src={GoogleIcon}
+                    width={20}
+                    height={20}
+                    alt="welcome message"
+                    className="mr-5 text-lg"
+                  />{' '}
+                  Login with Google
+                </div>
                 <div style={{ textAlign: 'center', width: '100%' }}>
                   <h5 style={{ fontWeight: 400 }}>
                     Don't have an account? <Link href="/signup">Sign up</Link>
@@ -146,7 +145,7 @@ const LoginPage = () => {
         </div>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

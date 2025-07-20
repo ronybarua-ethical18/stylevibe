@@ -4,10 +4,9 @@ import { Redis } from 'ioredis';
 // Create a Redis instance
 export const redisClient = new Redis({
   host: '127.0.0.1', // REDIS_URI can be used here if needed
-  port: 6379,        // REDIS_PORT can be used here if needed
+  port: 6379, // REDIS_PORT can be used here if needed
   // password: 'your-redis-password', // Use this if Redis is password-protected
 });
-
 
 // Listen for Redis connection events
 redisClient.on('connect', () => {

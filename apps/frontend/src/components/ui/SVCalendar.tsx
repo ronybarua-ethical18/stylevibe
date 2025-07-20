@@ -1,14 +1,14 @@
 /* eslint-disable react/jsx-key */
-import React, { useState } from 'react'
-import { Calendar, Col, Row, Tooltip, Typography } from 'antd'
-import type { Dayjs } from 'dayjs'
-import { CaretDownOutlined, CalendarOutlined } from '@ant-design/icons'
-import moment from 'moment'
-import styled from 'styled-components'
-import { Select as AntSelect } from 'antd'
-import { months, timeSlots } from '@/utils/dummyServices'
-import { useGetSingleShopTimeSlotsQuery } from '@/redux/api/timeslots'
-import { generateTimeSlots } from '@/utils/generateTimeSlots'
+import React, { useState } from 'react';
+import { Calendar, Col, Row, Tooltip, Typography } from 'antd';
+import type { Dayjs } from 'dayjs';
+import { CaretDownOutlined, CalendarOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import styled from 'styled-components';
+import { Select as AntSelect } from 'antd';
+import { months, timeSlots } from '@/utils/dummyServices';
+import { useGetSingleShopTimeSlotsQuery } from '@/redux/api/timeslots';
+import { generateTimeSlots } from '@/utils/generateTimeSlots';
 
 const StyledCalendar = styled(Calendar)`
   .ant-picker-cell-selected .ant-picker-cell-inner {
@@ -19,13 +19,13 @@ const StyledCalendar = styled(Calendar)`
     .ant-picker-cell-inner::before {
     border: 1px solid #4d3ca3 !important;
   }
-`
+`;
 
 const Select = styled(AntSelect)`
   .ant-select-selector {
     color: #ffffff !important;
   }
-`
+`;
 
 const SVCalendar = ({
   service,
@@ -34,38 +34,38 @@ const SVCalendar = ({
   selectedTimeSlots,
   setSelectedTimeSlots,
 }: {
-  service: any
-  selectedDate: string
-  setSelectedDate: any
-  selectedTimeSlots: any
-  setSelectedTimeSlots: any
+  service: any;
+  selectedDate: string;
+  setSelectedDate: any;
+  selectedTimeSlots: any;
+  setSelectedTimeSlots: any;
 }) => {
   const { data } = useGetSingleShopTimeSlotsQuery({
     shopId: service?.shop?._id, // Path parameter
     date: selectedDate || moment().format('YYYY-MM-DD'), // Query parameter
-  })
+  });
 
   const onDateSelect = (value: Dayjs) => {
-    console.log('selected date', value.format('YYYY-MM-DD'))
-    setSelectedDate(value.format('YYYY-MM-DD'))
-  }
+    console.log('selected date', value.format('YYYY-MM-DD'));
+    setSelectedDate(value.format('YYYY-MM-DD'));
+  };
 
   const selectStyle = {
     width: '100%',
     fontWeight: 500,
     fontSize: '16px',
-  }
+  };
 
   const shopTimeSlots =
     data?.data?.timeSlots ||
     generateTimeSlots(
       service?.shop?.serviceTime?.openingHour,
       service?.shop?.serviceTime?.closingHour,
-      5,
-    )
+      5
+    );
 
-  console.log('selectedTimeSlots', selectedTimeSlots)
-  console.log('selected date', selectedDate)
+  console.log('selectedTimeSlots', selectedTimeSlots);
+  console.log('selected date', selectedDate);
 
   return (
     <div
@@ -80,8 +80,8 @@ const SVCalendar = ({
         fullscreen={false}
         onSelect={onDateSelect} // Use onSelect to handle date selection
         headerRender={({ value, onChange }: { value: any; onChange: any }) => {
-          const year = value.year()
-          const month = value.month()
+          const year = value.year();
+          const month = value.month();
 
           return (
             <div
@@ -122,7 +122,7 @@ const SVCalendar = ({
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
                     }}
                     value={year}
-                    onChange={newYear => onChange(value.year(newYear))}
+                    onChange={(newYear) => onChange(value.year(newYear))}
                     dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
                     bordered={false}
                     suffixIcon={
@@ -130,11 +130,11 @@ const SVCalendar = ({
                     }
                   >
                     {Array.from({ length: 20 }, (_, i) => year - 10 + i).map(
-                      y => (
+                      (y) => (
                         <Select.Option key={y} value={y}>
                           {y}
                         </Select.Option>
-                      ),
+                      )
                     )}
                   </Select>
                 </Col>
@@ -148,7 +148,7 @@ const SVCalendar = ({
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
                     }}
                     value={month}
-                    onChange={newMonth => onChange(value.month(newMonth))}
+                    onChange={(newMonth) => onChange(value.month(newMonth))}
                     bordered={false}
                     suffixIcon={
                       <CaretDownOutlined style={{ color: 'white' }} />
@@ -163,7 +163,7 @@ const SVCalendar = ({
                 </Col>
               </Row>
             </div>
-          )
+          );
         }}
       />
       <div className="text-left mt-3">
@@ -250,7 +250,7 @@ const SVCalendar = ({
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SVCalendar
+export default SVCalendar;

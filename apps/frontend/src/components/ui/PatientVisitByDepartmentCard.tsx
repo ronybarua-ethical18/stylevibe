@@ -1,15 +1,15 @@
-import React from "react";
-import Chart from "react-apexcharts";
+import React from 'react';
+import Chart from 'react-apexcharts';
 
 const data = [
-  { label: "Psychiatrist", value: 45, color: "#5B6CFF" },
-  { label: "Cardiologist", value: 25, color: "#FFB547" },
-  { label: "Dermatologist", value: 30, color: "#A685FF" },
+  { label: 'Psychiatrist', value: 45, color: '#5B6CFF' },
+  { label: 'Cardiologist', value: 25, color: '#FFB547' },
+  { label: 'Dermatologist', value: 30, color: '#A685FF' },
 ];
 
 const chartOptions = {
   chart: {
-    type: "donut",
+    type: 'donut',
     toolbar: { show: false },
   },
   labels: data.map((d) => d.label),
@@ -19,7 +19,7 @@ const chartOptions = {
   plotOptions: {
     pie: {
       donut: {
-        size: "70%",
+        size: '70%',
       },
     },
   },
@@ -33,9 +33,7 @@ const PatientVisitByDepartmentCard = () => (
       <div>
         <div className="font-semibold text-lg">Patient Visit by Department</div>
       </div>
-      <button
-        className="bg-gray-100 rounded-md px-4 py-1 text-sm font-medium text-gray-700 focus:outline-none"
-      >
+      <button className="bg-gray-100 rounded-md px-4 py-1 text-sm font-medium text-gray-700 focus:outline-none">
         Weekly <span className="ml-1">▼</span>
       </button>
     </div>
@@ -48,33 +46,44 @@ const PatientVisitByDepartmentCard = () => (
               style={{ background: d.color }}
             />
             <div className="flex flex-col">
-              <span className="font-medium text-gray-800 text-base">{d.label}</span>
-              <span className="font-bold text-lg text-gray-900 mt-1">{d.value} %</span>
+              <span className="font-medium text-gray-800 text-base">
+                {d.label}
+              </span>
+              <span className="font-bold text-lg text-gray-900 mt-1">
+                {d.value} %
+              </span>
             </div>
           </div>
         ))}
       </div>
-      <div className="w-52 ml-2"> {/* Increased width from w-36 to w-52 */}
-        <Chart options={{
-          ...chartOptions,
-          chart: {
-            ...chartOptions.chart,
-            type: "donut" as const,
-          },
-          plotOptions: {
-            ...chartOptions.plotOptions,
-            pie: {
-              ...chartOptions.plotOptions.pie,
-              donut: {
-                ...chartOptions.plotOptions.pie.donut,
-                size: "85%", // Increased donut size
+      <div className="w-52 ml-2">
+        {' '}
+        {/* Increased width from w-36 to w-52 */}
+        <Chart
+          options={{
+            ...chartOptions,
+            chart: {
+              ...chartOptions.chart,
+              type: 'donut' as const,
+            },
+            plotOptions: {
+              ...chartOptions.plotOptions,
+              pie: {
+                ...chartOptions.plotOptions.pie,
+                donut: {
+                  ...chartOptions.plotOptions.pie.donut,
+                  size: '85%', // Increased donut size
+                },
               },
             },
-          },
-        }} series={chartSeries} type="donut" width={200} />
+          }}
+          series={chartSeries}
+          type="donut"
+          width={200}
+        />
       </div>
     </div>
   </div>
 );
 
-export default PatientVisitByDepartmentCard; 
+export default PatientVisitByDepartmentCard;

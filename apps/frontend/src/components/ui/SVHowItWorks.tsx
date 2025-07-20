@@ -1,9 +1,9 @@
-import React from 'react'
-import SVSectionTitle from '../SVSectionTitle'
-import Search from '../../../public/search.png'
-import Book from '../../../public/book.png'
-import Enjoy from '../../../public/enjoy.png'
-import Image from 'next/image'
+import React from 'react';
+import SVSectionTitle from '../SVSectionTitle';
+import Search from '../../../public/search.png';
+import Book from '../../../public/book.png';
+import Enjoy from '../../../public/enjoy.png';
+import Image from 'next/image';
 
 export default function SVHowItWorks() {
   return (
@@ -23,13 +23,13 @@ export default function SVHowItWorks() {
             />
           </div>
           <div>
-            <h3 className="font-normal text-2xl text-gray-600 mt-5">1. Discover</h3>
+            <h3 className="font-normal text-2xl text-gray-600 mt-5">
+              1. Discover
+            </h3>
             <p className="text-gray-600 text-base">
-              Search for beauty services 
+              Search for beauty services
             </p>
-            <p className="text-gray-600 text-base">
-            you need
-            </p>
+            <p className="text-gray-600 text-base">you need</p>
           </div>
         </div>
         <div className="text-center flex flex-col items-center">
@@ -45,11 +45,9 @@ export default function SVHowItWorks() {
           </div>
           <div className="w-auto">
             <h3 className="font-normal text-2xl text-gray-600 mt-5">2. Book</h3>
+            <p className="text-gray-600 text-base">Choose your service and</p>
             <p className="text-gray-600 text-base">
-              Choose your service and 
-            </p>
-            <p className="text-gray-600 text-base">
-            book an appointment directly
+              book an appointment directly
             </p>
           </div>
         </div>
@@ -65,16 +63,14 @@ export default function SVHowItWorks() {
             />
           </div>
           <div className="w-auto">
-            <h3 className="font-normal text-2xl text-gray-600 mt-5">3. Enjoy</h3>
-            <p className="text-gray-600 text-base">
-              Sit back and enjoy your 
-            </p>
-            <p className="text-gray-600 text-base">
-            unique beauty experience
-            </p>
+            <h3 className="font-normal text-2xl text-gray-600 mt-5">
+              3. Enjoy
+            </h3>
+            <p className="text-gray-600 text-base">Sit back and enjoy your</p>
+            <p className="text-gray-600 text-base">unique beauty experience</p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

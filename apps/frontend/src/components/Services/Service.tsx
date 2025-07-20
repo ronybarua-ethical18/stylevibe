@@ -1,22 +1,22 @@
-'use client'
-import React from 'react'
-import SVBreadCrumb from '../ui/SVBreadCrumb'
-import { getBreadcrumbItems } from '@/utils/getBreadcumItems'
-import { Col, Row } from 'antd'
-import SVImageGallery from '../ui/SVImageGallery'
-import SVRating from '../ui/SVRating'
-import { CiShop } from 'react-icons/ci'
-import { GoLocation } from 'react-icons/go'
-import { PiTimerLight } from 'react-icons/pi'
-import { IoLockClosedOutline } from 'react-icons/io5'
-import SVButton from '../SVButton'
-import RatingBar from '../ui/SVRatingBar'
-import SVReviews from './components/SVReviews'
-import Loading from '@/app/loading'
+'use client';
+import React from 'react';
+import SVBreadCrumb from '../ui/SVBreadCrumb';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
+import { Col, Row } from 'antd';
+import SVImageGallery from '../ui/SVImageGallery';
+import SVRating from '../ui/SVRating';
+import { CiShop } from 'react-icons/ci';
+import { GoLocation } from 'react-icons/go';
+import { PiTimerLight } from 'react-icons/pi';
+import { IoLockClosedOutline } from 'react-icons/io5';
+import SVButton from '../SVButton';
+import RatingBar from '../ui/SVRatingBar';
+import SVReviews from './components/SVReviews';
+import Loading from '@/app/loading';
 
 export default function Service({ service, loading, role }: any) {
-  const ratings = [300, 100, 50, 35, 15]
-  console.log(service)
+  const ratings = [300, 100, 50, 35, 15];
+  console.log(service);
   return (
     <div>
       {!service ? (
@@ -101,7 +101,7 @@ export default function Service({ service, loading, role }: any) {
                           {service?.shop?.serviceTime?.offDays
                             ?.map(
                               (day: string) =>
-                                day.charAt(0) + day.slice(1).toLowerCase(),
+                                day.charAt(0) + day.slice(1).toLowerCase()
                             )
                             .join(', ')}
                         </h1>
@@ -137,5 +137,5 @@ export default function Service({ service, loading, role }: any) {
         </div>
       )}
     </div>
-  )
+  );
 }

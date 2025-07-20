@@ -1,13 +1,13 @@
 // worker.ts
-import { Job, Worker } from 'bullmq'
-import redis from '../../config/redis'
-import { emailDispatch } from '../utils/email.utils'
+import { Job, Worker } from 'bullmq';
+import redis from '../../config/redis';
+import { emailDispatch } from '../utils/email.utils';
 
 export function emailDispatchQueueWorker(): void {
   const worker = new Worker(
     'emailDispatchQueue',
     async (job: Job) => {
-      await new Promise(resolve => setTimeout(resolve, 5000))
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       const {
         subject,
         payload,
@@ -15,7 +15,7 @@ export function emailDispatchQueueWorker(): void {
         emailType,
         mailTrackerPayload,
         targetEmail,
-      } = job.data.emailPayload
+      } = job.data.emailPayload;
 
       await emailDispatch(
         targetEmail,
@@ -23,10 +23,10 @@ export function emailDispatchQueueWorker(): void {
         template,
         subject,
         emailType,
-        mailTrackerPayload,
-      )
+        mailTrackerPayload
+      );
 
-      console.log('email payload', job?.data?.emailPayload)
+      console.log('email payload', job?.data?.emailPayload);
       // await paymentDisbursed(job?.data?.booking)
       // await emailDispatch()
     },
@@ -37,18 +37,18 @@ export function emailDispatchQueueWorker(): void {
       },
       concurrency: 1,
       autorun: true,
-    },
-  )
+    }
+  );
 
   worker.on('completed', async (job: Job) => {
-    console.log('Completed job with order id: ' + job.id)
-  })
+    console.log('Completed job with order id: ' + job.id);
+  });
 
   worker.on('failed', async (job: Job | undefined) => {
     if (job) {
-      console.log('failed job with booking id:', job.data?.booking?.bookingId)
+      console.log('failed job with booking id:', job.data?.booking?.bookingId);
     } else {
-      console.debug('Job failed, but no job information available.')
+      console.debug('Job failed, but no job information available.');
     }
-  })
+  });
 }

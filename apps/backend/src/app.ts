@@ -1,14 +1,14 @@
-import express, { Application, NextFunction, Request, Response } from 'express'
-import logger from 'morgan'
-import cors from 'cors'
-import httpStatus from 'http-status'
-import helmet from 'helmet'
-import cookieParser from 'cookie-parser'
-import globalErrorHandler from './errors/globalErrorHandler'
-import ExpressMongoSanitize from 'express-mongo-sanitize'
-import routes from './routes'
-import { initSentry, SentryCaptureMessage } from './config/sentry'
-const app: Application = express()
+import express, { Application, NextFunction, Request, Response } from 'express';
+import logger from 'morgan';
+import cors from 'cors';
+import httpStatus from 'http-status';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import globalErrorHandler from './errors/globalErrorHandler';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
+import routes from './routes';
+import { initSentry, SentryCaptureMessage } from './config/sentry';
+const app: Application = express();
 
 app.use(
   cors({
@@ -16,7 +16,7 @@ app.use(
       if (origin || origin === undefined) {
         callback(null, origin);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error('Not allowed by CORS'));
       }
     },
     credentials: true,
@@ -24,10 +24,9 @@ app.use(
   })
 );
 
-
 declare module 'http' {
   interface IncomingMessage {
-    rawBody?: string | object | unknown
+    rawBody?: string | object | unknown;
   }
 }
 // Initialize Sentry
@@ -43,33 +42,33 @@ app.get('/api/v1/test-sentry', (req, res) => {
 app.use(
   express.json({
     verify: (req, res, buf) => {
-      req.rawBody = buf.toString()
+      req.rawBody = buf.toString();
     },
-  }),
-)
-app.use(express.urlencoded({ extended: true }))
+  })
+);
+app.use(express.urlencoded({ extended: true }));
 
 //cookie parser
-app.use(cookieParser())
+app.use(cookieParser());
 
 // logger
-app.use(logger('dev'))
+app.use(logger('dev'));
 
 // Enhancing Express.js security with Helmet middleware for essential HTTP header protection.
-app.use(helmet())
+app.use(helmet());
 
 // sanitize request data to remove unwanted characters from req.body, req.query, req.params ($, . etc ..)
-app.use(ExpressMongoSanitize())
+app.use(ExpressMongoSanitize());
 
 // application routes
-app.use('/api/v1', routes)
+app.use('/api/v1', routes);
 
 //Testing
 app.get('/', async (req: Request, res: Response) => {
   res.send(
-    'Working Successfully With github actions with both preview and production mode',
-  )
-})
+    'Working Successfully With github actions with both preview and production mode'
+  );
+});
 
 //handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -82,9 +81,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         message: 'API Not Found',
       },
     ],
-  })
-  next()
-})
-app.use(globalErrorHandler)
+  });
+  next();
+});
+app.use(globalErrorHandler);
 
-export default app
+export default app;

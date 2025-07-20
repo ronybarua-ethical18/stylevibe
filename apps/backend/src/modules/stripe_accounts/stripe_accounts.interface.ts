@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose'
+import { Document, Types } from 'mongoose';
 
 export enum UserType {
   SELLER = 'seller',
@@ -19,25 +19,25 @@ export enum StripeAccountStatus {
 }
 
 export interface IStripeAccountDetails {
-  country: string
-  currency: string
-  stripeAccountId: string
-  bankName: string
-  balance: number
+  country: string;
+  currency: string;
+  stripeAccountId: string;
+  bankName: string;
+  balance: number;
 }
 
 // Interface for the stripe account document
 export interface IStripeAccount extends Document {
-  user: Types.ObjectId
-  userType: UserType
-  stripeAccountId: string
-  accountType: AccountType
-  balance: number
-  status: StripeAccountStatus
+  user: Types.ObjectId;
+  userType: UserType;
+  stripeAccountId: string;
+  accountType: AccountType;
+  balance: number;
+  status: StripeAccountStatus;
   // New fields
-  country?: string
-  defaultCurrency?: string
-  detailsSubmitted?: boolean
-  chargesEnabled?: boolean
-  payoutsEnabled?: boolean
+  country?: string;
+  defaultCurrency?: string;
+  detailsSubmitted?: boolean;
+  chargesEnabled?: boolean;
+  payoutsEnabled?: boolean;
 }

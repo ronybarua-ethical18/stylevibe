@@ -1,6 +1,6 @@
-import HairImage from '../../public/hair2.png'
-import Makeup from '../../public/makeup2.png'
-import Skin from '../../public/skin2.png'
+import HairImage from '../../public/hair2.png';
+import Makeup from '../../public/makeup2.png';
+import Skin from '../../public/skin2.png';
 
 export const dummyServices = [
   {
@@ -129,7 +129,7 @@ export const dummyServices = [
       name: 'Style Vibe Makeup service',
     },
   },
-]
+];
 
 export const serviceCategories = [
   {
@@ -147,7 +147,7 @@ export const serviceCategories = [
     name: 'Skincare Services',
     img: Skin,
   },
-]
+];
 
 export const dummyClientReviews = [
   {
@@ -174,7 +174,7 @@ export const dummyClientReviews = [
     rating: 4,
     review: `I have been going to Style Vibe for my makeup needs since I moved here  from the city. They are professional, friendly`,
   },
-]
+];
 
 export const dummyBlogs = [
   {
@@ -207,7 +207,7 @@ export const dummyBlogs = [
     tags: ['hairstyles', 'beauty', 'fashion', 'salon'],
     createdAt: '2024-03-02',
   },
-]
+];
 
 export const reviews = [
   {
@@ -330,7 +330,7 @@ export const reviews = [
     comment: 'Very disappointed with the service.',
     date: '2023-07-10T19:50:50Z',
   },
-]
+];
 
 export const timeSlots = [
   { id: 1, time: '10:00 AM', maxResource: 5 },
@@ -344,7 +344,7 @@ export const timeSlots = [
   { id: 9, time: '6:00 PM', maxResource: 5 },
   { id: 10, time: '7:00 PM', maxResource: 5 },
   { id: 11, time: '8:00 PM', maxResource: 5 },
-]
+];
 
 export const months = [
   'January',
@@ -359,11 +359,11 @@ export const months = [
   'October',
   'November',
   'December',
-]
+];
 
 export const topServices = [
-  { label: "Beard and Hair Services", value: 45, color: "#5B6CFF" },
-  { label: "Makeup Services", value: 25, color: "#FFB547" },
-  { label: "Skincare Services", value: 30, color: "#A685FF" },
-  { label: "Special Occasion Services", value: 20, color: "#34C759" },
+  { label: 'Beard and Hair Services', value: 45, color: '#5B6CFF' },
+  { label: 'Makeup Services', value: 25, color: '#FFB547' },
+  { label: 'Skincare Services', value: 30, color: '#A685FF' },
+  { label: 'Special Occasion Services', value: 20, color: '#34C759' },
 ];

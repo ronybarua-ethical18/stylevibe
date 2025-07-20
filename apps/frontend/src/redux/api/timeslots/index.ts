@@ -1,7 +1,7 @@
-import { baseApi } from '../baseApi'
+import { baseApi } from '../baseApi';
 
 const timeSlotsApi = baseApi.injectEndpoints({
-  endpoints: build => ({
+  endpoints: (build) => ({
     getSingleShopTimeSlots: build.query({
       query: ({ shopId, date }: { shopId: string; date: string }) => ({
         url: `/shop-timeslots/${shopId}?date=${date}`,
@@ -9,6 +9,6 @@ const timeSlotsApi = baseApi.injectEndpoints({
       }),
     }),
   }),
-})
+});
 
-export const { useGetSingleShopTimeSlotsQuery } = timeSlotsApi
+export const { useGetSingleShopTimeSlotsQuery } = timeSlotsApi;

@@ -1,19 +1,17 @@
 /* eslint-disable jsx-a11y/alt-text */
-'use client'
-import React from 'react'
-import { FaUser } from 'react-icons/fa'
-import SVNavMenus from './SVNavMenus'
-import Service from '../Services/Service'
-import {
-  useGetServiceQuery,
-} from '@/redux/api/services'
-import { useParams } from 'next/navigation'
+'use client';
+import React from 'react';
+import { FaUser } from 'react-icons/fa';
+import SVNavMenus from './SVNavMenus';
+import Service from '../Services/Service';
+import { useGetServiceQuery } from '@/redux/api/services';
+import { useParams } from 'next/navigation';
 
 export default function SVProductDetails() {
-  const params = useParams()
+  const params = useParams();
   const { data: service, isLoading: serviceLoading } = useGetServiceQuery(
-    params.id,
-  )
+    params.id
+  );
 
   return (
     <div className="">
@@ -37,8 +35,8 @@ export default function SVProductDetails() {
         </div>
       </div>
       <div className="w-3/4 m-auto">
-        <Service service={service?.data} loading={serviceLoading} role={true}/>
+        <Service service={service?.data} loading={serviceLoading} role={true} />
       </div>
     </div>
-  )
+  );
 }

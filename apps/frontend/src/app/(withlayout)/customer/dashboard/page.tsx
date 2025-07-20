@@ -1,5 +1,5 @@
-import SVBreadCrumb from '@/components/ui/SVBreadCrumb'
-import React from 'react'
+import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
+import React from 'react';
 
 export default function SellerDashboard() {
   return (
@@ -18,5 +18,5 @@ export default function SellerDashboard() {
       />
       This is seller dashboard
     </div>
-  )
+  );
 }

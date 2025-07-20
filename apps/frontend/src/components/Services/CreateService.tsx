@@ -1,43 +1,46 @@
-import { Button, Col, Row, message, notification } from 'antd'
-import { useEffect, useState } from 'react'
-import FormInput from '../Forms/FormInput'
-import Form from '../Forms/Form'
-import FormSelectField from '../Forms/FormSelectField'
-import { SERVICE_CATEGORIES, SERVICE_SUB_CATEGORIES } from '@/constants/options'
-import FormTextArea from '../Forms/FormTextArea'
-import SVUplaod from '../ui/SVUpload'
-import { SubmitHandler } from 'react-hook-form'
+import { Button, Col, Row, message, notification } from 'antd';
+import { useEffect, useState } from 'react';
+import FormInput from '../Forms/FormInput';
+import Form from '../Forms/Form';
+import FormSelectField from '../Forms/FormSelectField';
+import {
+  SERVICE_CATEGORIES,
+  SERVICE_SUB_CATEGORIES,
+} from '@/constants/options';
+import FormTextArea from '../Forms/FormTextArea';
+import SVUplaod from '../ui/SVUpload';
+import { SubmitHandler } from 'react-hook-form';
 import {
   useCreateServiceMutation,
   useUpdateServiceMutation,
-} from '@/redux/api/services'
-import { useDispatch } from 'react-redux'
-import { closeModal } from '@/redux/slices/globalSlice'
+} from '@/redux/api/services';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '@/redux/slices/globalSlice';
 
 type FormValues = {
-  name: string
-  price: string
-  category: string
-  subCategory: string
-  description: string
-  images: string[]
-}
+  name: string;
+  price: string;
+  category: string;
+  subCategory: string;
+  description: string;
+  images: string[];
+};
 
 export default function CreateService({ savedData }: any) {
   const [images, setImages] = useState<{ img: string }[]>(
-    savedData?.images || [],
-  )
-  const [createService] = useCreateServiceMutation()
-  const dispatch = useDispatch()
+    savedData?.images || []
+  );
+  const [createService] = useCreateServiceMutation();
+  const dispatch = useDispatch();
 
-  const [incomingData, setIncomingData] = useState(savedData || {})
-  const [updateService] = useUpdateServiceMutation()
+  const [incomingData, setIncomingData] = useState(savedData || {});
+  const [updateService] = useUpdateServiceMutation();
 
   useEffect(() => {
-    setIncomingData(savedData || {})
-  }, [savedData])
+    setIncomingData(savedData || {});
+  }, [savedData]);
 
-  console.log('data from create service', savedData)
+  console.log('data from create service', savedData);
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
@@ -49,25 +52,29 @@ export default function CreateService({ savedData }: any) {
             price: Number(data?.price),
             images,
           },
-        }).unwrap()
+        }).unwrap();
       } else {
         await createService({
           ...data,
           price: Number(data?.price),
           images,
-        }).unwrap()
+        }).unwrap();
       }
 
       notification.success({
-        message: savedData ? 'Service updated successfully' : 'Service created successfully',
-        description: savedData ? 'Your service has been updated successfully.' : 'Your service has been created successfully.',
-      })
-      setImages([])
-      dispatch(closeModal(false))
+        message: savedData
+          ? 'Service updated successfully'
+          : 'Service created successfully',
+        description: savedData
+          ? 'Your service has been updated successfully.'
+          : 'Your service has been created successfully.',
+      });
+      setImages([]);
+      dispatch(closeModal(false));
     } catch (err: any) {
-      message.error(err?.data?.message)
+      message.error(err?.data?.message);
     }
-  }
+  };
   return (
     <div className="p-5 bg-white">
       <h1 className="text-center text-2xl">
@@ -133,5 +140,5 @@ export default function CreateService({ savedData }: any) {
         </Form>
       </div>
     </div>
-  )
+  );
 }

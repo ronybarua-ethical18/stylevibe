@@ -1,13 +1,13 @@
-import React from 'react'
-import SVModal from './ui/SVModal'
+import React from 'react';
+import SVModal from './ui/SVModal';
 
 interface IPageHeading {
-  pageTitle: string
-  numberOfItems: string
-  pageSubTitle: string
-  modalTitle?: string
-  buttonTitle?: string
-  width?:string | number
+  pageTitle: string;
+  numberOfItems: string;
+  pageSubTitle: string;
+  modalTitle?: string;
+  buttonTitle?: string;
+  width?: string | number;
 }
 
 export default function SVPageHeading({
@@ -16,13 +16,13 @@ export default function SVPageHeading({
   pageSubTitle,
   modalTitle,
   buttonTitle,
-  width
+  width,
 }: IPageHeading): React.ReactNode {
   return (
     <div className="flexCenterBetween" style={{ margin: '20px 0px' }}>
       <div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <h1 style={{ margin: 0, fontSize:"20px" }}>{pageTitle}</h1>
+          <h1 style={{ margin: 0, fontSize: '20px' }}>{pageTitle}</h1>
           <div
             style={{
               background: '#fff',
@@ -35,14 +35,11 @@ export default function SVPageHeading({
             {numberOfItems}
           </div>
         </div>
-        <h4 className='font-light'>{pageSubTitle}</h4>
+        <h4 className="font-light">{pageSubTitle}</h4>
       </div>
       {modalTitle && buttonTitle && (
-        <SVModal
-          buttonTitle={buttonTitle}
-          width={width}
-        />
+        <SVModal buttonTitle={buttonTitle} width={width} />
       )}
     </div>
-  )
+  );
 }

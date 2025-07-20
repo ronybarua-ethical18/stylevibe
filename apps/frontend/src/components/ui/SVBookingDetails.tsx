@@ -1,11 +1,11 @@
-import { Checkbox, Col, Divider, Radio, Row, message } from 'antd'
-import React, { ReactNode, useEffect, useState } from 'react'
-import SVCalendar from './SVCalendar'
-import SVBookedService from './SVBookedService'
-import VisaImg from '../../../public/visa.png'
-import PaypalImg from '../../../public/picon.png'
-import Image from 'next/image'
-import SVButton from '../SVButton'
+import { Checkbox, Col, Divider, Radio, Row, message } from 'antd';
+import React, { ReactNode, useEffect, useState } from 'react';
+import SVCalendar from './SVCalendar';
+import SVBookedService from './SVBookedService';
+import VisaImg from '../../../public/visa.png';
+import PaypalImg from '../../../public/picon.png';
+import Image from 'next/image';
+import SVButton from '../SVButton';
 
 const paymentMethods = [
   {
@@ -22,7 +22,7 @@ const paymentMethods = [
     subTitle: 'Pay via your paypal account',
     img: PaypalImg,
   },
-]
+];
 
 export default function SVBookingDetails({
   service,
@@ -36,31 +36,31 @@ export default function SVBookingDetails({
   selectedMethod,
   handleSelect,
 }: {
-  service: any
-  next: () => void
-  processingFees: number
-  totalAmount: number
-  selectedDate: string
-  setSelectedDate: any
-  selectedTimeSlots: any
-  setSelectedTimeSlots: any
-  selectedMethod: any
-  handleSelect: any
+  service: any;
+  next: () => void;
+  processingFees: number;
+  totalAmount: number;
+  selectedDate: string;
+  setSelectedDate: any;
+  selectedTimeSlots: any;
+  setSelectedTimeSlots: any;
+  selectedMethod: any;
+  handleSelect: any;
 }): ReactNode {
-  const [isChecked, setIsChecked] = useState(true)
+  const [isChecked, setIsChecked] = useState(true);
 
   const handleCheckboxChange = (e: any) => {
-    setIsChecked(e.target.checked)
-  }
+    setIsChecked(e.target.checked);
+  };
 
   useEffect(() => {
     if (!isChecked) {
       message.warning({
         content: 'Please accept the privacy policy and terms to proceed.',
         duration: 3,
-      })
+      });
     }
-  }, [isChecked])
+  }, [isChecked]);
 
   return (
     <div>
@@ -83,7 +83,7 @@ export default function SVBookingDetails({
                 Select Payment Method
               </h2>
               <div className="flex space-x-4">
-                {paymentMethods.map(item => (
+                {paymentMethods.map((item) => (
                   <div
                     key={item.id}
                     className={`w-[50%] px-2 py-4 flex rounded-md border items-center justify-between ${
@@ -155,5 +155,5 @@ export default function SVBookingDetails({
         </Col>
       </Row>
     </div>
-  )
+  );
 }

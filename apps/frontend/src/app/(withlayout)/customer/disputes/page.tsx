@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function DisputePage() {
-  return <div>Dispute Page</div>
+  return <div>Dispute Page</div>;
 }
 
-export default DisputePage
+export default DisputePage;

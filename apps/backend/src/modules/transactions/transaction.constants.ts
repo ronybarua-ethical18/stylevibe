@@ -5,4 +5,4 @@ export const filterableFields = [
   'stripePaymentIntentId',
   'status',
   'transactionType',
-]
+];

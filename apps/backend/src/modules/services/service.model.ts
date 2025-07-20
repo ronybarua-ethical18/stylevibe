@@ -1,10 +1,10 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose';
 import {
   IServiceDocument,
   IServiceModel,
   ServiceStatusList,
-} from './service.interface'
-import { CATEGORIES, SUB_CATEGORIES } from '../../shared/enums/service.enum'
+} from './service.interface';
+import { CATEGORIES, SUB_CATEGORIES } from '../../shared/enums/service.enum';
 
 const serviceSchema = new mongoose.Schema<IServiceDocument, IServiceModel>(
   {
@@ -40,23 +40,23 @@ const serviceSchema = new mongoose.Schema<IServiceDocument, IServiceModel>(
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 // Create indexes
-serviceSchema.index({ name: 1 })
-serviceSchema.index({ category: 1 })
-serviceSchema.index({ subCategory: 1 })
-serviceSchema.index({ status: 1 })
+serviceSchema.index({ name: 1 });
+serviceSchema.index({ category: 1 });
+serviceSchema.index({ subCategory: 1 });
+serviceSchema.index({ status: 1 });
 
 // Custom method example in the IServiceModel interface
 serviceSchema.statics.findByName = async function (
-  name: string,
+  name: string
 ): Promise<IServiceDocument | null> {
-  return this.findOne({ name }).exec()
-}
+  return this.findOne({ name }).exec();
+};
 
 export const ServiceModel = mongoose.model<IServiceDocument, IServiceModel>(
   'service',
-  serviceSchema,
-)
+  serviceSchema
+);

@@ -1,32 +1,34 @@
 /* eslint-disable jsx-a11y/alt-text */
-'use client'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import SVServiceCard from './SVServiceCard'
-import SVTypesOfServices from './SVTypesOfServices'
-import SVHowItWorks from './SVHowItWorks'
-import SVTotalClients from './SVTotalClients'
-import SVClientReview from './SVClientReview'
-import SVLatestBlogs from './SVLatestBlogs'
-import SVFAQ from './SVFAQ'
-import SVNewsLetter from './SVNewsLetter'
-import SVFooter from './SVFooter'
-import SVHeroSection from './SVHeroSection'
-import SVNavMenus from './SVNavMenus'
-import SVHeaderCarousel from './SVHeaderCarousel'
-import AuthButton from '@/app/components/AuthButton'
-import { getUserInfo } from '@/services/auth.service'
-import { BiLogOut } from 'react-icons/bi'
-import { removeUserInfo } from '@/utils/handleLocalStorage'
-import { authKey } from '@/constants/authKey'
-import { useGetTopServicesQuery } from '@/redux/api/services'
+'use client';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import SVServiceCard from './SVServiceCard';
+import SVTypesOfServices from './SVTypesOfServices';
+import SVHowItWorks from './SVHowItWorks';
+import SVTotalClients from './SVTotalClients';
+import SVClientReview from './SVClientReview';
+import SVLatestBlogs from './SVLatestBlogs';
+import SVFAQ from './SVFAQ';
+import SVNewsLetter from './SVNewsLetter';
+import SVFooter from './SVFooter';
+import SVHeroSection from './SVHeroSection';
+import SVNavMenus from './SVNavMenus';
+import SVHeaderCarousel from './SVHeaderCarousel';
+import AuthButton from '@/app/components/AuthButton';
+import { getUserInfo } from '@/services/auth.service';
+import { BiLogOut } from 'react-icons/bi';
+import { removeUserInfo } from '@/utils/handleLocalStorage';
+import { authKey } from '@/constants/authKey';
+import { useGetTopServicesQuery } from '@/redux/api/services';
 
 export default function LandingPage() {
-  const userInfo: any = getUserInfo()
-  const role = userInfo?.role
-  const router = useRouter()
-  const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery({})
+  const userInfo: any = getUserInfo();
+  const role = userInfo?.role;
+  const router = useRouter();
+  const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery(
+    {}
+  );
 
   return (
     <div>
@@ -56,13 +58,19 @@ export default function LandingPage() {
               </h1>
               {role ? (
                 <div className="flex items-center">
-                  <Link className="text-customPrimary-800" href={`/${role}/dashboard`}>
+                  <Link
+                    className="text-customPrimary-800"
+                    href={`/${role}/dashboard`}
+                  >
                     Dashboard
                   </Link>{' '}
-                  <BiLogOut className="ml-5 text-xl cursor-pointer text-customPrimary-800" onClick={() => {
-                    removeUserInfo(authKey)
-                    router.push('/login')
-                  }} />
+                  <BiLogOut
+                    className="ml-5 text-xl cursor-pointer text-customPrimary-800"
+                    onClick={() => {
+                      removeUserInfo(authKey);
+                      router.push('/login');
+                    }}
+                  />
                 </div>
               ) : (
                 <AuthButton />
@@ -76,7 +84,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      <SVServiceCard services={services?.data} loading={servicesLoading}/>
+      <SVServiceCard services={services?.data} loading={servicesLoading} />
       <SVHowItWorks />
       <SVTypesOfServices />
       <SVTotalClients />
@@ -86,5 +94,5 @@ export default function LandingPage() {
       <SVNewsLetter />
       <SVFooter />
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose'
-import { IShopTimeSlots } from './shop_timeslots.interface'
+import mongoose, { Schema } from 'mongoose';
+import { IShopTimeSlots } from './shop_timeslots.interface';
 
 // Create the Mongoose Schema
 const ShopTimeSlotsSchema = new mongoose.Schema<IShopTimeSlots>(
@@ -24,13 +24,13 @@ const ShopTimeSlotsSchema = new mongoose.Schema<IShopTimeSlots>(
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 // Create the Mongoose Model
 const ShopTimeSlotsModel = mongoose.model<IShopTimeSlots>(
   'shopTimeSlot',
-  ShopTimeSlotsSchema,
-)
+  ShopTimeSlotsSchema
+);
 
-export default ShopTimeSlotsModel
+export default ShopTimeSlotsModel;

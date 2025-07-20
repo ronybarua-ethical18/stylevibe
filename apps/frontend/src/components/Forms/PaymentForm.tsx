@@ -1,21 +1,25 @@
-import React, { useState } from 'react'
-import { Col, notification, Rate, Row, Modal } from 'antd'
-import { loadStripe } from '@stripe/stripe-js'
+import React, { useState } from 'react';
+import { Col, notification, Rate, Row, Modal } from 'antd';
+import { loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
   PaymentElement,
   useElements,
   useStripe,
-} from '@stripe/react-stripe-js'
-import SVButton from '../SVButton'
-import { useCreatePaymentIntentMutation } from '@/redux/api/stripe'
-import { CheckCircleOutlined, CloseCircleOutlined, CopyOutlined } from '@ant-design/icons'
-import Link from 'next/link'
-import { useCreateBookingMutation } from '@/redux/api/bookings'
+} from '@stripe/react-stripe-js';
+import SVButton from '../SVButton';
+import { useCreatePaymentIntentMutation } from '@/redux/api/stripe';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  CopyOutlined,
+} from '@ant-design/icons';
+import Link from 'next/link';
+import { useCreateBookingMutation } from '@/redux/api/bookings';
 
 const stripePromise = loadStripe(
-  'pk_test_51PnMRKBfR7AXQAHn19WtEzjkCGuPKG8BmMHFqZap098kURuMhn8wuXiEEL1tg8m0QU0bryWuH3iy8ztpR3Du6hrK00BmbdnBcg',
-)
+  'pk_test_51PnMRKBfR7AXQAHn19WtEzjkCGuPKG8BmMHFqZap098kURuMhn8wuXiEEL1tg8m0QU0bryWuH3iy8ztpR3Du6hrK00BmbdnBcg'
+);
 
 interface Service {
   _id: string;
@@ -35,47 +39,49 @@ const PaymentForm = ({
   totalAmount,
   service,
 }: {
-  paymentIntentId: string | null
-  clientSecret: string | null
-  handleClose: () => void
-  serviceDate: string
-  serviceStartTime: string
-  processingFees: number
-  totalAmount: number
-  service: Service
+  paymentIntentId: string | null;
+  clientSecret: string | null;
+  handleClose: () => void;
+  serviceDate: string;
+  serviceStartTime: string;
+  processingFees: number;
+  totalAmount: number;
+  service: Service;
 }) => {
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const stripe = useStripe()
-  const elements = useElements()
-  const [createBooking] = useCreateBookingMutation()
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const stripe = useStripe();
+  const elements = useElements();
+  const [createBooking] = useCreateBookingMutation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    
+    event.preventDefault();
+
     try {
       if (!stripe || !elements) {
-        throw new Error('Stripe has not been initialized')
+        throw new Error('Stripe has not been initialized');
       }
 
-      setIsProcessing(true)
-      setErrorMessage('')
+      setIsProcessing(true);
+      setErrorMessage('');
 
-      const { error: submitError } = await elements.submit()
+      const { error: submitError } = await elements.submit();
       if (submitError) {
-        throw new Error(submitError.message || 'An error occurred during submission.')
+        throw new Error(
+          submitError.message || 'An error occurred during submission.'
+        );
       }
 
       const result = await stripe.confirmPayment({
         elements,
         clientSecret: clientSecret as string,
         redirect: 'if_required',
-      })
+      });
 
       if (result.error) {
-        throw new Error(result.error.message || 'Payment failed.')
+        throw new Error(result.error.message || 'Payment failed.');
       }
 
       const bookingData = {
@@ -88,151 +94,157 @@ const PaymentForm = ({
         shop: service.shop,
         stripePaymentIntentId: paymentIntentId,
         paymentMethod: 'card',
-      }
+      };
 
-      const response = await createBooking(bookingData).unwrap()
+      const response = await createBooking(bookingData).unwrap();
       if (response) {
-        setIsSuccess(true)
+        setIsSuccess(true);
       }
     } catch (error: any) {
-      setErrorMessage(error.message || 'An unexpected error occurred')
-      setIsSuccess(false)
+      setErrorMessage(error.message || 'An unexpected error occurred');
+      setIsSuccess(false);
     } finally {
-      setIsProcessing(false)
-      setIsModalVisible(true)
-      handleClose()
+      setIsProcessing(false);
+      setIsModalVisible(true);
+      handleClose();
     }
-  }
+  };
 
   const copyToClipboard = () => {
     if (paymentIntentId) {
-      navigator.clipboard.writeText(paymentIntentId)
+      navigator.clipboard.writeText(paymentIntentId);
       notification.success({
         message: 'Copied to clipboard',
         placement: 'top',
-      })
+      });
     }
-  }
+  };
 
-  const modalContent = React.useMemo(() => (
-    isSuccess ? (
-      <>
-        <CheckCircleOutlined
-          style={{ fontSize: '64px', color: '#52c41a', marginBottom: '24px' }}
-        />
-        <h2 style={{ fontSize: '28px', marginBottom: '16px' }}>
-          Payment Successful!
-        </h2>
-        <p
-          style={{
-            fontSize: '18px',
-            marginBottom: '24px',
-            textAlign: 'center',
-          }}
-        >
-          Your payment was processed successfully. Thank you for your purchase!
-        </p>
-        <div
-          style={{
-            padding: '12px 16px',
-            borderRadius: '8px',
-            marginBottom: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            maxWidth: '400px',
-          }}
-          className="bg-gray-50"
-        >
-          <div>
-            <p style={{ fontSize: '14px', color: '#888', margin: '0 0 4px' }}>
-              Payment Intent ID
-            </p>
-            <p style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
-              {paymentIntentId}
-            </p>
-          </div>
-          <CopyOutlined
-            style={{ fontSize: '20px', color: '#4d3ca3', cursor: 'pointer' }}
-            onClick={copyToClipboard}
+  const modalContent = React.useMemo(
+    () =>
+      isSuccess ? (
+        <>
+          <CheckCircleOutlined
+            style={{ fontSize: '64px', color: '#52c41a', marginBottom: '24px' }}
           />
-        </div>
-        <p
-          style={{
-            marginBottom: '24px',
-            textAlign: 'center',
-          }}
-          className="text-center text-gray-500 font-light text-sm"
-        >
-          Visit your dashboard to manage your services or request a refund.
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
-          <Link href="/customer/dashboard">
+          <h2 style={{ fontSize: '28px', marginBottom: '16px' }}>
+            Payment Successful!
+          </h2>
+          <p
+            style={{
+              fontSize: '18px',
+              marginBottom: '24px',
+              textAlign: 'center',
+            }}
+          >
+            Your payment was processed successfully. Thank you for your
+            purchase!
+          </p>
+          <div
+            style={{
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              maxWidth: '400px',
+            }}
+            className="bg-gray-50"
+          >
+            <div>
+              <p style={{ fontSize: '14px', color: '#888', margin: '0 0 4px' }}>
+                Payment Intent ID
+              </p>
+              <p style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
+                {paymentIntentId}
+              </p>
+            </div>
+            <CopyOutlined
+              style={{ fontSize: '20px', color: '#4d3ca3', cursor: 'pointer' }}
+              onClick={copyToClipboard}
+            />
+          </div>
+          <p
+            style={{
+              marginBottom: '24px',
+              textAlign: 'center',
+            }}
+            className="text-center text-gray-500 font-light text-sm"
+          >
+            Visit your dashboard to manage your services or request a refund.
+          </p>
+          <div
+            style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}
+          >
+            <Link href="/customer/dashboard">
+              <SVButton
+                title="Go to Dashboard"
+                style={{
+                  background: '#4d3ca3',
+                  width: '200px',
+                  height: '40px',
+                  fontSize: '16px',
+                }}
+              />
+            </Link>
             <SVButton
-              title="Go to Dashboard"
+              title="Close"
               style={{
-                background: '#4d3ca3',
+                background: '#ffffff',
+                color: '#4d3ca3',
+                border: '1px solid #4d3ca3',
                 width: '200px',
                 height: '40px',
                 fontSize: '16px',
               }}
+              onClick={() => setIsModalVisible(false)}
             />
-          </Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <CloseCircleOutlined
+            style={{ fontSize: '64px', color: '#ff4d4f', marginBottom: '24px' }}
+          />
+          <h2 style={{ fontSize: '28px', marginBottom: '16px' }}>
+            Payment Failed
+          </h2>
+          <p
+            style={{
+              fontSize: '18px',
+              marginBottom: '24px',
+              textAlign: 'center',
+            }}
+          >
+            We are sorry, but something went wrong with your payment. Please try
+            again later.
+          </p>
+          <p
+            style={{
+              fontSize: '16px',
+              marginBottom: '24px',
+              textAlign: 'center',
+              color: '#ff4d4f',
+            }}
+          >
+            Error: {errorMessage}
+          </p>
           <SVButton
             title="Close"
             style={{
-              background: '#ffffff',
-              color: '#4d3ca3',
-              border: '1px solid #4d3ca3',
+              background: '#4d3ca3',
               width: '200px',
               height: '40px',
               fontSize: '16px',
             }}
             onClick={() => setIsModalVisible(false)}
           />
-        </div>
-      </>
-    ) : (
-      <>
-        <CloseCircleOutlined
-          style={{ fontSize: '64px', color: '#ff4d4f', marginBottom: '24px' }}
-        />
-        <h2 style={{ fontSize: '28px', marginBottom: '16px' }}>
-          Payment Failed
-        </h2>
-        <p
-          style={{
-            fontSize: '18px',
-            marginBottom: '24px',
-            textAlign: 'center',
-          }}
-        >
-          We are sorry, but something went wrong with your payment. Please try again later.
-        </p>
-        <p
-          style={{
-            fontSize: '16px',
-            marginBottom: '24px',
-            textAlign: 'center',
-            color: '#ff4d4f',
-          }}
-        >
-          Error: {errorMessage}
-        </p>
-        <SVButton
-          title="Close"
-          style={{
-            background: '#4d3ca3',
-            width: '200px',
-            height: '40px',
-            fontSize: '16px',
-          }}
-          onClick={() => setIsModalVisible(false)}
-        />
-      </>
-    )
-  ), [isSuccess, paymentIntentId, errorMessage])
+        </>
+      ),
+    [isSuccess, paymentIntentId, errorMessage]
+  );
 
   return (
     <>
@@ -242,11 +254,11 @@ const PaymentForm = ({
           title={isProcessing ? 'Processing...' : 'Pay'}
           loading={isProcessing}
           disabled={isProcessing}
-          style={{ 
-            background: isProcessing ? '#a9a9a9' : '#4d3ca3', 
-            width: '100%', 
+          style={{
+            background: isProcessing ? '#a9a9a9' : '#4d3ca3',
+            width: '100%',
             marginTop: '20px',
-            cursor: isProcessing ? 'not-allowed' : 'pointer'
+            cursor: isProcessing ? 'not-allowed' : 'pointer',
           }}
           htmlType="submit"
         />
@@ -272,8 +284,8 @@ const PaymentForm = ({
         {modalContent}
       </Modal>
     </>
-  )
-}
+  );
+};
 
 const PaymentWrapper = ({
   service,
@@ -283,48 +295,48 @@ const PaymentWrapper = ({
   serviceDate,
   serviceStartTime,
 }: {
-  service: Service
-  processingFees: number
-  totalAmount: number
-  handleClose: () => void
-  serviceDate: string
-  serviceStartTime: string
+  service: Service;
+  processingFees: number;
+  totalAmount: number;
+  handleClose: () => void;
+  serviceDate: string;
+  serviceStartTime: string;
 }) => {
-  const [createPaymentIntent, { isLoading }] = useCreatePaymentIntentMutation()
-  const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [intentCreated, setIntentCreated] = useState<boolean>(false)
-  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
+  const [createPaymentIntent, { isLoading }] = useCreatePaymentIntentMutation();
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [intentCreated, setIntentCreated] = useState<boolean>(false);
+  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
   const handlePaymentIntent = async () => {
     if (!clientSecret && !intentCreated) {
       try {
         const response = await createPaymentIntent({
           amount: totalAmount,
-          currency: 'eur', 
+          currency: 'eur',
           seller: service.seller,
-        }).unwrap()
+        }).unwrap();
 
-        setPaymentIntentId(response.data.id)
-        setClientSecret(response.data.client_secret)
-        setIntentCreated(true)
+        setPaymentIntentId(response.data.id);
+        setClientSecret(response.data.client_secret);
+        setIntentCreated(true);
       } catch (error: any) {
         notification.error({
           message: error.data.message,
-        })
+        });
       }
     }
-  }
+  };
 
   React.useEffect(() => {
-    handlePaymentIntent()
-  }, [])
+    handlePaymentIntent();
+  }, []);
 
   if (isLoading) {
-    return <div>Creating payment intent...</div>
+    return <div>Creating payment intent...</div>;
   }
 
   if (!clientSecret) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -386,7 +398,7 @@ const PaymentWrapper = ({
         </Row>
       </div>
     </Elements>
-  )
-}
+  );
+};
 
-export default PaymentWrapper
+export default PaymentWrapper;

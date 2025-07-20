@@ -1,6 +1,6 @@
-import React from 'react'
-import { SegmentedValue } from 'antd/es/segmented'
-import SharedTabs from '../ui/SVSharedTabs'
+import React from 'react';
+import { SegmentedValue } from 'antd/es/segmented';
+import SharedTabs from '../ui/SVSharedTabs';
 
 const SVBookingsTabs = ({
   columns,
@@ -10,12 +10,12 @@ const SVBookingsTabs = ({
   setSearchTerm,
   bookingsLoading,
 }: {
-  columns: any
-  bookings:any
-  activeTab: any
-  setActiveTab: any
-  setSearchTerm: any
-  bookingsLoading: any
+  columns: any;
+  bookings: any;
+  activeTab: any;
+  setActiveTab: any;
+  setSearchTerm: any;
+  bookingsLoading: any;
 }) => {
   const items = [
     {
@@ -45,15 +45,15 @@ const SVBookingsTabs = ({
       chipValue: bookings?.meta?.totalCancelled || 0,
       activeColor: '#ff5c33',
     },
-  ]
+  ];
 
   const handleTabChange = (value: SegmentedValue) => {
-    setActiveTab(value)
-  }
+    setActiveTab(value);
+  };
 
   const handleSearch = (term: string) => {
-    setSearchTerm(term)
-  }
+    setSearchTerm(term);
+  };
 
   return (
     <SharedTabs
@@ -66,7 +66,7 @@ const SVBookingsTabs = ({
       onTabChange={handleTabChange}
       onSearch={handleSearch}
     />
-  )
-}
+  );
+};
 
-export default SVBookingsTabs
+export default SVBookingsTabs;

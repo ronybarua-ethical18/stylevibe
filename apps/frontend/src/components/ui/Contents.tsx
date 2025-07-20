@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { Layout } from 'antd'
-import SVTopbar from './SVTopbar'
+import React from 'react';
+import { Layout } from 'antd';
+import SVTopbar from './SVTopbar';
 
-const { Content } = Layout
+const { Content } = Layout;
 
 export default function Contents({ children }: { children: React.ReactNode }) {
   return (
@@ -20,5 +20,5 @@ export default function Contents({ children }: { children: React.ReactNode }) {
 
       <div>{children}</div>
     </Content>
-  )
+  );
 }

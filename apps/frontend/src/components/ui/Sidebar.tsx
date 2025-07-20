@@ -1,28 +1,29 @@
-'use client'
-import React from 'react'
-import { Layout, Menu } from 'antd'
-import { usePathname } from 'next/navigation'
-import { sidebarItems } from '@/constants/sidebarItems'
-import { MdOutlineAdminPanelSettings } from 'react-icons/md'
-import { getUserInfo } from '@/services/auth.service'
+'use client';
+import React from 'react';
+import { Layout, Menu } from 'antd';
+import { usePathname } from 'next/navigation';
+import { sidebarItems } from '@/constants/sidebarItems';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
+import { getUserInfo } from '@/services/auth.service';
 
-const { Sider } = Layout
+const { Sider } = Layout;
 
 export default function Sidebar(): React.ReactNode {
-  const userInfo:any = getUserInfo()
-  const role = userInfo?.role
-  const pathname = usePathname()
+  const userInfo: any = getUserInfo();
+  const role = userInfo?.role;
+  const pathname = usePathname();
+  const val= 5
 
   return (
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
       width={250}
-      onBreakpoint={broken => {
-        console.log(broken)
+      onBreakpoint={(broken) => {
+        console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
-        console.log(collapsed, type)
+        console.log(collapsed, type);
       }}
       style={{
         overflow: 'auto',
@@ -61,5 +62,5 @@ export default function Sidebar(): React.ReactNode {
         items={sidebarItems(role)}
       />
     </Sider>
-  )
+  );
 }

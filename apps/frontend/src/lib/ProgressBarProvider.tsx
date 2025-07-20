@@ -1,4 +1,4 @@
-import NextTopLoader from "nextjs-toploader";
+import NextTopLoader from 'nextjs-toploader';
 
 export function ProgressbarProvider() {
   return (

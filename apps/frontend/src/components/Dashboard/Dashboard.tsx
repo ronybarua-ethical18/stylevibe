@@ -1,12 +1,11 @@
-import React from 'react'
-import moment from 'moment'
-import SVButton from '@/components/SVButton'
-import DashboardStats from './DashboardStats'
-
+import React from 'react';
+import moment from 'moment';
+import SVButton from '@/components/SVButton';
+import DashboardStats from './DashboardStats';
 
 export default function Dashboard() {
-  const userName = 'Courtney'
-  const today = moment().format('ddd, MMMM D')
+  const userName = 'Courtney';
+  const today = moment().format('ddd, MMMM D');
 
   return (
     <div>
@@ -36,8 +35,7 @@ export default function Dashboard() {
           />
         </div> */}
         <DashboardStats />
-
       </div>
     </div>
-  )
+  );
 }

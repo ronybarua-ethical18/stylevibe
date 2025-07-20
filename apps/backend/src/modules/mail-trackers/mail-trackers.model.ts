@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose'
-import { EmailTypes, MailModelInterface } from './mail-trackers.interface'
+import { Schema, model } from 'mongoose';
+import { EmailTypes, MailModelInterface } from './mail-trackers.interface';
 
 const mailSchema = new Schema<MailModelInterface>(
   {
@@ -39,7 +39,7 @@ const mailSchema = new Schema<MailModelInterface>(
       },
     },
   },
-  { timestamps: true },
-)
+  { timestamps: true }
+);
 
-export default model<MailModelInterface>('mail-tracker', mailSchema)
+export default model<MailModelInterface>('mail-tracker', mailSchema);

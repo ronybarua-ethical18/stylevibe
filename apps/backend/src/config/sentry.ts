@@ -1,8 +1,8 @@
 // src/config/sentry.ts
 
-import * as Sentry from '@sentry/node'
-import { nodeProfilingIntegration } from '@sentry/profiling-node'
-import express from 'express'
+import * as Sentry from '@sentry/node';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
+import express from 'express';
 
 export const initSentry = (app: express.Application) => {
   Sentry.init({
@@ -20,13 +20,12 @@ export const initSentry = (app: express.Application) => {
     // This is relative to tracesSampleRate
     profilesSampleRate: 1.0,
     debug: true, // Enable debugging for more detailed logs
-  })
+  });
 
   Sentry.captureMessage('Sentry is connected!');
   app.use(Sentry.expressErrorHandler());
-}
+};
 
-
-export const SentrycaptureException = Sentry.captureException
-export const SentryCaptureMessage = Sentry.captureMessage
-export const SentrySetContext = Sentry.setContext
+export const SentrycaptureException = Sentry.captureException;
+export const SentryCaptureMessage = Sentry.captureMessage;
+export const SentrySetContext = Sentry.setContext;

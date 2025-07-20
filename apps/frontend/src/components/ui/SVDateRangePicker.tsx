@@ -6,8 +6,10 @@ import type { Dayjs } from 'dayjs';
 
 const { RangePicker } = DatePicker;
 
-
-const onRangeChange = (dates: null | (Dayjs | null)[], dateStrings: string[]) => {
+const onRangeChange = (
+  dates: null | (Dayjs | null)[],
+  dateStrings: string[]
+) => {
   if (dates) {
     console.log('From: ', dates[0], ', to: ', dates[1]);
     console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
@@ -23,9 +25,14 @@ const rangePresets: TimeRangePickerProps['presets'] = [
   { label: 'Last 90 Days', value: [dayjs().add(-90, 'd'), dayjs()] },
 ];
 
-const SVDateRangePicker = ({className,}:{className:string}) => (
+const SVDateRangePicker = ({ className }: { className: string }) => (
   <Space direction="vertical" size={12}>
-    <RangePicker presets={rangePresets} onChange={onRangeChange} className="!ml-5" size='large' />
+    <RangePicker
+      presets={rangePresets}
+      onChange={onRangeChange}
+      className="!ml-5"
+      size="large"
+    />
   </Space>
 );
 

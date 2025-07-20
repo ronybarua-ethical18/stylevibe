@@ -1,9 +1,9 @@
-import { z } from 'zod'
+import { z } from 'zod';
 import {
   AmountStatus,
   PaymentMethod,
   TransactionType,
-} from './transactions.interface'
+} from './transactions.interface';
 
 // Define the Zod schema for Transactions
 const TransactionZodSchema = z.object({
@@ -31,8 +31,8 @@ const TransactionZodSchema = z.object({
     applicationFee: z.number().optional().default(0),
     isPaymentDisbursed: z.boolean().optional().default(false),
   }),
-})
+});
 
 export const TransactionValidation = {
   TransactionZodSchema,
-}
+};

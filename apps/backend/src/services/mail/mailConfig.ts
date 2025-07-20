@@ -1,7 +1,7 @@
-import nodemailer from 'nodemailer'
-import hbs from 'nodemailer-express-handlebars'
-import handlebarOptions from './viewEngine'
-import config from '../../config'
+import nodemailer from 'nodemailer';
+import hbs from 'nodemailer-express-handlebars';
+import handlebarOptions from './viewEngine';
+import config from '../../config';
 
 // mail sender
 const transporterOptions = {
@@ -14,12 +14,12 @@ const transporterOptions = {
   tls: {
     rejectUnauthorized: false,
   },
-}
+};
 
 const transporter: nodemailer.Transporter =
-  nodemailer.createTransport(transporterOptions)
+  nodemailer.createTransport(transporterOptions);
 
 // Use compile instead of use for setting up handlebars
-transporter.use('compile', hbs(handlebarOptions))
+transporter.use('compile', hbs(handlebarOptions));
 
-export default transporter
+export default transporter;

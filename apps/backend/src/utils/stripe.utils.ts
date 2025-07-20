@@ -1,5 +1,5 @@
 export const manipulateLineItem = () => {
-  const totalAmount = 1000
+  const totalAmount = 1000;
 
   // Create a single line item
   const singleLineItem = {
@@ -16,7 +16,7 @@ export const manipulateLineItem = () => {
       unit_amount: totalAmount,
     },
     quantity: 1,
-  }
+  };
 
-  return [singleLineItem]
-}
+  return [singleLineItem];
+};

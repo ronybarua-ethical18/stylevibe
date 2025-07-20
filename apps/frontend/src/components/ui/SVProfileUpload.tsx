@@ -1,71 +1,82 @@
-import Image from 'next/image'
-import React, { useState, ChangeEvent } from 'react'
-import { PiPlus, PiPencilSimple, PiTrash } from 'react-icons/pi'
+import Image from 'next/image';
+import React, { useState, ChangeEvent } from 'react';
+import { PiPlus, PiPencilSimple, PiTrash } from 'react-icons/pi';
 
 interface ProfilePhotoUploadProps {
-  maxSizeInMB?: number
-  photoUrl: string | null
-  setPhotoUrl: (url: string | null) => void
+  maxSizeInMB?: number;
+  photoUrl: string | null;
+  setPhotoUrl: (url: string | null) => void;
 }
 
 const SVProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
   maxSizeInMB = 5,
   photoUrl,
-  setPhotoUrl
+  setPhotoUrl,
 }) => {
-
-  const [isUploading, setIsUploading] = useState<boolean>(false)
-  const [error, setError] = useState<string>('')
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const handlePhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
+    const file = event.target.files?.[0];
+    if (!file) return;
 
     if (file.size > maxSizeInMB * 1024 * 1024) {
-      setError(`File size should not exceed ${maxSizeInMB}MB`)
-      return
+      setError(`File size should not exceed ${maxSizeInMB}MB`);
+      return;
     }
 
-    setIsUploading(true)
-    setError('')
+    setIsUploading(true);
+    setError('');
 
-    const formData = new FormData()
-    formData.append('img', file)
+    const formData = new FormData();
+    formData.append('img', file);
 
     try {
       const response = await fetch('http://localhost:8000/api/v1/uploads', {
         method: 'POST',
         body: formData,
-      })
+      });
 
-      if (!response.ok) throw new Error('Upload failed')
+      if (!response.ok) throw new Error('Upload failed');
 
-      const data = await response.json()
+      const data = await response.json();
 
-      console.log("uploaded profile photo", data)
-      setPhotoUrl(data?.data)
+      console.log('uploaded profile photo', data);
+      setPhotoUrl(data?.data);
     } catch (err) {
-      setError('Error uploading image')
+      setError('Error uploading image');
     } finally {
-      setIsUploading(false)
+      setIsUploading(false);
     }
-  }
+  };
 
   const handleDelete = () => {
-    setPhotoUrl(null)
-  }
+    setPhotoUrl(null);
+  };
 
   return (
     <div className="flex flex-col items-center">
       <div className="relative w-20 h-20 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center group">
         {photoUrl ? (
           <>
-            <Image src={photoUrl} alt="Profile" className="w-full h-full object-cover" width={80} height={80} />
+            <Image
+              src={photoUrl}
+              alt="Profile"
+              className="w-full h-full object-cover"
+              width={80}
+              height={80}
+            />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <label htmlFor="photo-upload" className="cursor-pointer p-1 bg-white rounded-full mr-2">
+              <label
+                htmlFor="photo-upload"
+                className="cursor-pointer p-1 bg-white rounded-full mr-2"
+              >
                 <PiPencilSimple className="text-gray-700" size={16} />
               </label>
-              <button onClick={handleDelete} className="p-1 bg-white rounded-full">
+              <button
+                onClick={handleDelete}
+                className="p-1 bg-white rounded-full"
+              >
                 <PiTrash className="text-gray-700" size={16} />
               </button>
             </div>
@@ -90,7 +101,7 @@ const SVProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
       />
       {error && <div className="mt-2 text-red-500 text-sm">{error}</div>}
     </div>
-  )
-}
+  );
+};
 
-export default SVProfilePhotoUpload
+export default SVProfilePhotoUpload;

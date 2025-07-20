@@ -3,7 +3,7 @@ export const SERVICE_CATEGORIES = [
   { value: 'Makeup Services', label: 'Makeup Services' },
   { value: 'Skincare Services', label: 'Skincare Services' },
   { value: 'Special Occasion Services', label: 'Special Occasion Services' },
-]
+];
 
 export const SERVICE_SUB_CATEGORIES = [
   { value: 'Haircut Deluxe', label: 'Haircut Deluxe' },
@@ -16,4 +16,4 @@ export const SERVICE_SUB_CATEGORIES = [
   { value: 'Skin Consultation', label: 'Skin Consultation' },
   { value: 'Acne Treatment', label: 'Acne Treatment' },
   { value: 'Anti-Aging Facial', label: 'Anti-Aging Facial' },
-]
+];

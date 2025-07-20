@@ -1,11 +1,10 @@
-import SVProductDetails from '@/components/ui/SVProductDetails'
-import React from 'react'
+import SVProductDetails from '@/components/ui/SVProductDetails';
+import React from 'react';
 
 export default function ProductDetails() {
   return (
     <div>
-  
-        <SVProductDetails />
+      <SVProductDetails />
     </div>
-  )
+  );
 }

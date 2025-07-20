@@ -1,71 +1,74 @@
-'use client'
+'use client';
 
-import SVPageHeading from '@/components/SVPageHeading'
-import SVBreadCrumb from '@/components/ui/SVBreadCrumb'
-import React, { useState, useCallback } from 'react'
-import SVPagination from '../ui/SVPagination'
-import SVServiceTabs from './components/SVServiceTabs'
-import { SegmentedValue } from 'antd/es/segmented'
-import useDebounce from '@/hooks/useDebounce'
+import SVPageHeading from '@/components/SVPageHeading';
+import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
+import React, { useState, useCallback } from 'react';
+import SVPagination from '../ui/SVPagination';
+import SVServiceTabs from './components/SVServiceTabs';
+import { SegmentedValue } from 'antd/es/segmented';
+import useDebounce from '@/hooks/useDebounce';
 import {
   useDeleteServiceMutation,
   useGetServicesQuery,
-} from '@/redux/api/services'
-import { getQueryParams } from '@/utils/getQueryParams'
-import SVStatusChip from '../SVStatusChip'
-import { transformingText } from '@/utils/transformingText'
-import { IoEyeOutline } from 'react-icons/io5'
-import SVModal from '../ui/SVModal'
-import { useRouter } from 'next/navigation'
-import { getUserInfo } from '@/services/auth.service'
-import { getBreadcrumbItems } from '@/utils/getBreadcumItems'
-import SVConfirmationModal from '../ui/SVConfirmationModal'
-import { useDispatch } from 'react-redux'
-import { showModal } from '@/redux/slices/globalSlice'
-import { LiaEdit } from 'react-icons/lia'
+} from '@/redux/api/services';
+import { getQueryParams } from '@/utils/getQueryParams';
+import SVStatusChip from '../SVStatusChip';
+import { transformingText } from '@/utils/transformingText';
+import { IoEyeOutline } from 'react-icons/io5';
+import SVModal from '../ui/SVModal';
+import { useRouter } from 'next/navigation';
+import { getUserInfo } from '@/services/auth.service';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
+import SVConfirmationModal from '../ui/SVConfirmationModal';
+import { useDispatch } from 'react-redux';
+import { showModal } from '@/redux/slices/globalSlice';
+import { LiaEdit } from 'react-icons/lia';
 
 export default function Services() {
-  const [activeTab, setActiveTab] = useState<SegmentedValue>('1')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [pageNumber, setPageNumber] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [selectedRecord, setSelectedRecord] = useState<any>(null)
-  const userDetails: any = getUserInfo()
+  const [activeTab, setActiveTab] = useState<SegmentedValue>('1');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [selectedRecord, setSelectedRecord] = useState<any>(null);
+  const userDetails: any = getUserInfo();
 
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPageNumber(page)
-    setLimit(pageSize)
-  }
+    setPageNumber(page);
+    setLimit(pageSize);
+  };
 
-  const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 })
-  const [deleteService, { isLoading: isDeleting }] = useDeleteServiceMutation()
+  const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 });
+  const [deleteService, { isLoading: isDeleting }] = useDeleteServiceMutation();
   const { query } = getQueryParams(
     pageNumber,
     limit,
     debouncedSearchTerm,
-    activeTab,
-  )
+    activeTab
+  );
 
   const { data: services, isLoading: servicesLoading } = useGetServicesQuery({
     ...query,
-  })
+  });
 
   const handleDelete = async (serviceId: any) => {
     try {
-      await deleteService(serviceId).unwrap()
-      console.log('Service deleted successfully')
+      await deleteService(serviceId).unwrap();
+      console.log('Service deleted successfully');
     } catch (error) {
-      console.error('Failed to delete service:', error)
+      console.error('Failed to delete service:', error);
     }
-  }
+  };
 
-  const handleEditClick = useCallback((record: any) => {
-    setSelectedRecord(record)
-    dispatch(showModal(true))
-  }, [dispatch])
+  const handleEditClick = useCallback(
+    (record: any) => {
+      setSelectedRecord(record);
+      dispatch(showModal(true));
+    },
+    [dispatch]
+  );
 
   const columns = [
     {
@@ -74,7 +77,9 @@ export default function Services() {
       render: (name: string, record: any) => (
         <span
           className="cursor-pointer"
-          onClick={() => router.push(`/${userDetails?.role}/services/${record?._id}`)}
+          onClick={() =>
+            router.push(`/${userDetails?.role}/services/${record?._id}`)
+          }
         >
           {name}
         </span>
@@ -118,7 +123,9 @@ export default function Services() {
           <div className="flex align-baseline">
             <IoEyeOutline
               className="mr-2 text-xl cursor-pointer"
-              onClick={() => router.push(`/${userDetails?.role}/services/${record?._id}`)}
+              onClick={() =>
+                router.push(`/${userDetails?.role}/services/${record?._id}`)
+              }
             />
             <LiaEdit
               className="mr-2 text-xl cursor-pointer"
@@ -134,7 +141,7 @@ export default function Services() {
         </div>
       ),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -164,12 +171,14 @@ export default function Services() {
         />
       </div>
       {selectedRecord && (
-        <div className='visibility: hidden'><SVModal
-        width="800px"
-        data={selectedRecord}
-        setSelectedRecord={setSelectedRecord}
-      /></div>
+        <div className="visibility: hidden">
+          <SVModal
+            width="800px"
+            data={selectedRecord}
+            setSelectedRecord={setSelectedRecord}
+          />
+        </div>
       )}
     </div>
-  )
+  );
 }

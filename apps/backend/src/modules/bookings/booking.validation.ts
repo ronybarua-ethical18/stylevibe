@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 // Define the Zod schema for IBookingPayload
 const createBookingZodSchema = z.object({
@@ -19,8 +19,8 @@ const createBookingZodSchema = z.object({
     }),
     paymentMethod: z.string({ required_error: 'Payment method is required' }),
   }),
-})
+});
 
 export const BookingValidation = {
   createBookingZodSchema,
-}
+};

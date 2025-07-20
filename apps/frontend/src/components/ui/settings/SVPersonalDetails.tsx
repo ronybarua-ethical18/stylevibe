@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { Divider } from 'antd'
-import Image from 'next/image'
-import React from 'react'
-import placeholderImg from '../../../../public/placeholder.jpg'
-import { BiEdit } from 'react-icons/bi'
-import { Dispatch, SetStateAction } from 'react'
+import { Divider } from 'antd';
+import Image from 'next/image';
+import React from 'react';
+import placeholderImg from '../../../../public/placeholder.jpg';
+import { BiEdit } from 'react-icons/bi';
+import { Dispatch, SetStateAction } from 'react';
 
 interface SVPersonalDetailsProps {
-  userProfile: any
-  setIsEditMode: Dispatch<SetStateAction<boolean>>
+  userProfile: any;
+  setIsEditMode: Dispatch<SetStateAction<boolean>>;
 }
 
 function SVPersonalDetails({
@@ -71,7 +71,7 @@ function SVPersonalDetails({
         <p className="mt-0 font-light text-base">{userProfile?.bio}</p>
       </div>
     </div>
-  )
+  );
 }
 
-export default SVPersonalDetails
+export default SVPersonalDetails;

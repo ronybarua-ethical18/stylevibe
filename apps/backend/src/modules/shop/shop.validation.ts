@@ -1,11 +1,11 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 const StylistSchema = z.object({
   name: z.string(),
   specialization: z.string(),
   experience: z.number(),
   contact: z.string(),
-})
+});
 
 const AppointmentSchema = z.object({
   customer: z.string(),
@@ -13,13 +13,13 @@ const AppointmentSchema = z.object({
   stylist: z.string(),
   appointmentDate: z.date(),
   appointmentTime: z.string(),
-})
+});
 
 const OpeningHoursSchema = z.object({
   weekday: z.string(),
   startTime: z.string(),
   endTime: z.string(),
-})
+});
 
 const createShopZodSchema = z.object({
   body: z.object({
@@ -38,12 +38,12 @@ const createShopZodSchema = z.object({
       .array(
         z.object({
           img: z.string(), // Ensures `img` is of type `string`
-        }),
+        })
       )
       .optional(),
   }),
-})
+});
 
 export const ShopZodSchema = {
   createShopZodSchema,
-}
+};

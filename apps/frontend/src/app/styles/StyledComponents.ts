@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { Steps } from 'antd'
+import styled from 'styled-components';
+import { Steps } from 'antd';
 
 // Styled Steps component
 export const CustomizedSteps = styled(Steps)`
@@ -45,4 +45,4 @@ export const CustomizedSteps = styled(Steps)`
     background-color: #ffffff !important;
     border-color: #d9d9d9 !important;
   }
-`
+`;

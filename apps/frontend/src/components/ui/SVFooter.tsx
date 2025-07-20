@@ -1,12 +1,12 @@
-import React from 'react'
-import SVNavMenus from './SVNavMenus'
+import React from 'react';
+import SVNavMenus from './SVNavMenus';
 import {
   FaFacebookF,
   FaInstagram,
   FaLinkedin,
   FaTwitter,
-} from 'react-icons/fa6'
-import { Divider } from 'antd'
+} from 'react-icons/fa6';
+import { Divider } from 'antd';
 
 export default function SVFooter() {
   return (
@@ -21,17 +21,19 @@ export default function SVFooter() {
           </span>
         </h1>
         <div className="flex justify-center my-6">
-          <SVNavMenus footer={true}/>
+          <SVNavMenus footer={true} />
         </div>
         <div className="flex justify-center mt-5">
-          <FaFacebookF className='text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600'/>
-          <FaTwitter className='ml-5 text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600' />
-          <FaInstagram  className='mx-5 text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600'/>
-          <FaLinkedin className='text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600'/>
+          <FaFacebookF className="text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600" />
+          <FaTwitter className="ml-5 text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600" />
+          <FaInstagram className="mx-5 text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600" />
+          <FaLinkedin className="text-3xl text-customPrimary-800 cursor-pointer hover:text-gray-600" />
         </div>
         <Divider />
-        <h6 className='text-center text-sm font-light'>Copyright 2024 | All rights reserved</h6>
+        <h6 className="text-center text-sm font-light">
+          Copyright 2024 | All rights reserved
+        </h6>
       </div>
     </div>
-  )
+  );
 }

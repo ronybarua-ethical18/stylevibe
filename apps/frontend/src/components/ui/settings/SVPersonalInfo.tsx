@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import SVPersonalInfoEditForm from './SVPersonalInfoEditForm'
-import SVPersonalDetails from './SVPersonalDetails'
+import React, { useState } from 'react';
+import SVPersonalInfoEditForm from './SVPersonalInfoEditForm';
+import SVPersonalDetails from './SVPersonalDetails';
 
 function SVPersonalInfo({ userProfile }: any) {
-  const [isEditMode, setIsEditMode] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false);
 
   return (
     <div>
       <h1 className="text-xl font-normal">Personal Information</h1>
       <div className="p-5 rounded-md " style={{ border: '1px solid #eee' }}>
-      {isEditMode ? (
+        {isEditMode ? (
           <SVPersonalInfoEditForm
             userProfile={userProfile}
             setIsEditMode={setIsEditMode}
@@ -23,9 +23,8 @@ function SVPersonalInfo({ userProfile }: any) {
           />
         )}
       </div>
-        
     </div>
-  )
+  );
 }
 
-export default SVPersonalInfo
+export default SVPersonalInfo;

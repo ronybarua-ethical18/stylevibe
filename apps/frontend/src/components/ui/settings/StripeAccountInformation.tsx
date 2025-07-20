@@ -1,12 +1,17 @@
 import React from 'react';
 import { Card, Typography, Button, Divider } from 'antd';
-import { CloseOutlined, BankOutlined, GlobalOutlined, DollarOutlined, SafetyOutlined, CreditCardOutlined } from '@ant-design/icons';
+import {
+  CloseOutlined,
+  BankOutlined,
+  GlobalOutlined,
+  DollarOutlined,
+  SafetyOutlined,
+  CreditCardOutlined,
+} from '@ant-design/icons';
 import { BiCreditCard } from 'react-icons/bi';
-import { CiBank } from "react-icons/ci";
-import { HiOutlineCurrencyRupee } from "react-icons/hi2";
-import { CiFlag1 } from "react-icons/ci";
-
-
+import { CiBank } from 'react-icons/ci';
+import { HiOutlineCurrencyRupee } from 'react-icons/hi2';
+import { CiFlag1 } from 'react-icons/ci';
 
 const { Text, Title } = Typography;
 
@@ -45,28 +50,38 @@ const StripeAccountInformation: React.FC<StripeAccountInformationProps> = ({
         <div className="flex items-center space-x-4">
           <CiBank className="text-3xl text-gray-500" />
           <div>
-            <Text className="block text-white text-opacity-70 text-lg">Bank</Text>
+            <Text className="block text-white text-opacity-70 text-lg">
+              Bank
+            </Text>
             <Text className="text-white font-medium text-xl">{bankName}</Text>
           </div>
         </div>
         <div className="flex items-center space-x-4">
           <CiFlag1 className="text-3xl text-gray-500" />
           <div>
-            <Text className="block text-white text-opacity-70 text-lg">Country</Text>
+            <Text className="block text-white text-opacity-70 text-lg">
+              Country
+            </Text>
             <Text className="text-white font-medium text-xl">{country}</Text>
           </div>
         </div>
         <div className="flex items-center space-x-4">
           <HiOutlineCurrencyRupee className="text-3xl text-gray-500" />
           <div>
-            <Text className="block text-white text-opacity-70 text-lg">Currency</Text>
-            <Text className="text-white font-medium text-xl">{currency.toUpperCase()}</Text>
+            <Text className="block text-white text-opacity-70 text-lg">
+              Currency
+            </Text>
+            <Text className="text-white font-medium text-xl">
+              {currency.toUpperCase()}
+            </Text>
           </div>
         </div>
         <div className="flex items-center space-x-4">
           <SafetyOutlined className="!text-2xl !text-gray-500" />
           <div>
-            <Text className="block text-white text-opacity-70 text-lg">Available Balance</Text>
+            <Text className="block text-white text-opacity-70 text-lg">
+              Available Balance
+            </Text>
             <Text className="text-white font-medium text-xl">
               {new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -79,7 +94,9 @@ const StripeAccountInformation: React.FC<StripeAccountInformationProps> = ({
       <Divider className="bg-white bg-opacity-20 my-4" />
       <div className="flex items-center justify-center space-x-3 text-white">
         <SafetyOutlined className="text-2xl" />
-        <Text className="text-white text-lg">Your Stripe account is securely connected</Text>
+        <Text className="text-white text-lg">
+          Your Stripe account is securely connected
+        </Text>
       </div>
     </Card>
   );

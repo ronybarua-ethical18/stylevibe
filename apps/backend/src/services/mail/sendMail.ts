@@ -1,14 +1,14 @@
-import transporter from './mailConfig'
+import transporter from './mailConfig';
 
 interface IMailContext {
-  subject: string
-  data: unknown
+  subject: string;
+  data: unknown;
 }
 
 const sendEmail = async (
   receiverEmail: Array<string>,
   context: IMailContext,
-  template: string,
+  template: string
 ): Promise<void> => {
   try {
     const reports = await transporter.sendMail({
@@ -17,12 +17,12 @@ const sendEmail = async (
       subject: context.subject,
       template: template,
       context: context.data,
-    } as object)
-    console.log(reports)
+    } as object);
+    console.log(reports);
   } catch (err) {
-    console.log(err)
-    console.log('EMAIL SEND FAILED')
+    console.log(err);
+    console.log('EMAIL SEND FAILED');
   }
-}
+};
 
-export default sendEmail
+export default sendEmail;
