@@ -1,2 +1,4 @@
 #!/bin/sh
+
+npm run format
 npx lint-staged
