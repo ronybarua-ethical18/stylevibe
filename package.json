@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-     "prepare": "husky install",
+      "prepare": "husky install",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },

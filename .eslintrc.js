@@ -5,16 +5,13 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended', // if using TypeScript
-    'prettier',
-  ],
-  parser: '@typescript-eslint/parser',
-  plugins: ['react', '@typescript-eslint'],
-  rules: {
-    // your rules here
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
-  ignorePatterns: ['dist/', 'build/'],
+  extends: ['eslint:recommended', 'prettier'],
+  rules: {
+    'no-unused-vars': 'error',
+  },
+  ignorePatterns: ['dist/', 'build/', 'node_modules/'],
 };
