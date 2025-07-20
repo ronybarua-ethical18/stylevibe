@@ -45,7 +45,6 @@ export default function DashboardStats() {
             </Col>
           </Row>
         </Col>
-        {/* Second column (empty or for future content) */}
         <Col xs={24} md={8}>
           <CustomerSchedule />
         </Col>
