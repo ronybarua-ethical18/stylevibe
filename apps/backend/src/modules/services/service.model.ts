@@ -1,10 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
+
+import { CATEGORIES, SUB_CATEGORIES } from '../../shared/enums/service.enum';
+
 import {
   IServiceDocument,
   IServiceModel,
   ServiceStatusList,
 } from './service.interface';
-import { CATEGORIES, SUB_CATEGORIES } from '../../shared/enums/service.enum';
 
 const serviceSchema = new mongoose.Schema<IServiceDocument, IServiceModel>(
   {

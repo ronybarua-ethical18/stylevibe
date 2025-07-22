@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // worker-optimized.ts
 import { parentPort } from 'worker_threads';
+
+import mongoose from 'mongoose';
+
 import { ServiceModel } from '../modules/services/service.model';
 import config from '../config';
-import mongoose from 'mongoose';
 import app from '../app';
 
 function getMongoUrl() {

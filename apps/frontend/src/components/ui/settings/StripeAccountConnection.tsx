@@ -1,7 +1,8 @@
-import { useConnectStripeAccountMutation } from '@/redux/api/stripe';
 import { Button } from 'antd';
 import React from 'react';
 import { BsFillBellFill } from 'react-icons/bs';
+
+import { useConnectStripeAccountMutation } from '@/redux/api/stripe';
 
 function StripeAccountConnection() {
   const [connectStripeAccount, { isLoading }] =

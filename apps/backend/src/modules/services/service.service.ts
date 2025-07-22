@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
-import ApiError from '../../errors/ApiError';
-import { IService, ServiceStatusList } from './service.interface';
-import { ServiceModel } from './service.model';
 import { JwtPayload } from 'jsonwebtoken';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import mongoose, { SortOrder, Types } from 'mongoose';
+
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
+import ApiError from '../../errors/ApiError';
 import { paginationHelpers } from '../../helpers/pagination';
 import {
   IFilterOptions,
@@ -14,6 +13,9 @@ import {
 } from '../../shared/interfaces/common.interface';
 import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
 import ShopModel from '../shop/shop.model';
+
+import { ServiceModel } from './service.model';
+import { IService, ServiceStatusList } from './service.interface';
 import { getTotals } from './service.utils';
 
 const createService = async (

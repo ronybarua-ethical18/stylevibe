@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import httpStatus from 'http-status';
+
 import cloudinary from '../../config/cloudinary';
 import ApiError from '../../errors/ApiError';
-import httpStatus from 'http-status';
 import sendResponse from '../../shared/sendResponse';
 
 const uploadFile = async (req: Request, res: Response) => {

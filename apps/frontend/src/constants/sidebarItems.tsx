@@ -1,4 +1,3 @@
-import { UserOutlined } from '@ant-design/icons';
 import { TbBrandBooking } from 'react-icons/tb';
 import { RxDashboard } from 'react-icons/rx';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -7,11 +6,10 @@ import { LiaBlogSolid } from 'react-icons/lia';
 import { GrServices } from 'react-icons/gr';
 import { MdOutlineQuestionAnswer } from 'react-icons/md';
 import { TbTransactionRupee } from 'react-icons/tb';
-import { VscSearchStop } from 'react-icons/vsc';
-
 import type { MenuProps } from 'antd';
-import { UserRole } from './role';
 import Link from 'next/link';
+
+import { UserRole } from './role';
 
 export const sidebarItems = (role: string) => {
   const defaultSidebarItems: MenuProps['items'] = [

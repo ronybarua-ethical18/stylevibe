@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Secret } from 'jsonwebtoken';
 import config from '../config';
 import { jwtHelpers } from '../helpers/jwtHelpers';
 import sendEmail from '../services/mail/sendMail';

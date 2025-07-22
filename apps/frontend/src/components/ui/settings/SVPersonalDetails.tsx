@@ -3,9 +3,10 @@
 import { Divider } from 'antd';
 import Image from 'next/image';
 import React from 'react';
-import placeholderImg from '../../../../public/placeholder.jpg';
 import { BiEdit } from 'react-icons/bi';
 import { Dispatch, SetStateAction } from 'react';
+
+import placeholderImg from '../../../../public/placeholder.jpg';
 
 interface SVPersonalDetailsProps {
   userProfile: any;

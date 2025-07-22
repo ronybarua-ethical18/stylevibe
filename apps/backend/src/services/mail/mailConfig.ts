@@ -1,7 +1,9 @@
 import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
-import handlebarOptions from './viewEngine';
+
 import config from '../../config';
+
+import handlebarOptions from './viewEngine';
 
 // mail sender
 const transporterOptions = {

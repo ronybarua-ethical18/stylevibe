@@ -1,8 +1,9 @@
 'use client';
 
-import useModalState from '@/hooks/useModalState';
 import { ReactElement, ReactNode, useEffect } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
+
+import useModalState from '@/hooks/useModalState';
 
 type FormConfig = {
   defaultValues?: Record<string, any>;
@@ -22,8 +23,8 @@ const Form = ({
 }: FormProps) => {
   const formConfig: FormConfig = {};
 
-  if (!!defaultValues) formConfig['defaultValues'] = defaultValues;
-  if (!!resolver) formConfig['resolver'] = resolver;
+  if (defaultValues) formConfig['defaultValues'] = defaultValues;
+  if (resolver) formConfig['resolver'] = resolver;
   const methods = useForm<FormProps>(formConfig);
   const { closeModal } = useModalState();
 

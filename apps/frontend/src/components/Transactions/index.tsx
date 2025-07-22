@@ -1,20 +1,23 @@
 'use client';
 
+import React, { useState, useCallback, useEffect } from 'react';
+import { SegmentedValue } from 'antd/es/segmented';
+import { IoEyeOutline } from 'react-icons/io5';
+import { useDispatch } from 'react-redux';
+
+import SVPagination from '../ui/SVPagination';
+import SVStatusChip from '../SVStatusChip';
+import SVModal from '../ui/SVModal';
+
+import SVTransactionTabs from './components/SVTransactionTabs';
+
 import SVPageHeading from '@/components/SVPageHeading';
 import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
-import React, { useState, useCallback, useEffect } from 'react';
-import SVPagination from '../ui/SVPagination';
-import { SegmentedValue } from 'antd/es/segmented';
 import useDebounce from '@/hooks/useDebounce';
 import { getQueryParams } from '@/utils/getQueryParams';
-import SVStatusChip from '../SVStatusChip';
 import { transformingText } from '@/utils/transformingText';
-import { IoEyeOutline } from 'react-icons/io5';
-import SVModal from '../ui/SVModal';
 import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
-import { useDispatch } from 'react-redux';
 import { showModal } from '@/redux/slices/globalSlice';
-import SVTransactionTabs from './components/SVTransactionTabs';
 import { useGetTransactionsQuery } from '@/redux/api/transactions';
 
 export default function Transactions({

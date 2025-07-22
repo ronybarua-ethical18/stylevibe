@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
+import Stripe from 'stripe';
+import httpStatus from 'http-status';
+
 import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
-import { StripeAccountService } from './stripe_accounts.service';
-import mongoose from 'mongoose';
 import config from '../../config';
 import { stripe } from '../../config/stripe';
-import Stripe from 'stripe';
 import ApiError from '../../errors/ApiError';
-import httpStatus from 'http-status';
+
+import { StripeAccountService } from './stripe_accounts.service';
 
 const createAndConnectStripeAccount = tryCatchAsync(
   async (req: Request, res: Response) => {

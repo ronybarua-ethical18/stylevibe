@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useSession, signOut, signIn } from 'next-auth/react';
 import { FaUser } from 'react-icons/fa';
+
 import { getFromLocalStorage } from '@/utils/handleLocalStorage';
 import { authKey } from '@/constants/authKey';
 

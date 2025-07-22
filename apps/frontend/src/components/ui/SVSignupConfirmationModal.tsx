@@ -2,11 +2,12 @@
 
 import React, { ReactNode, useState } from 'react';
 import { Modal } from 'antd';
-import SVButton from '../SVButton';
 import Image from 'next/image';
-import ModalImage from '../../../public/modal.jpg';
 import { GrClose } from 'react-icons/gr';
 import Link from 'next/link';
+
+import ModalImage from '../../../public/modal.jpg';
+import SVButton from '../SVButton';
 
 const SVSignupConfirmationModal = ({
   width,

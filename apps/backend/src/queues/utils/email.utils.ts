@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
+
 import ApiError from '../../errors/ApiError';
 import mailTrackersModel from '../../modules/mail-trackers/mail-trackers.model';
 import {

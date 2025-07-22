@@ -1,10 +1,10 @@
 'use client';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import React, { ReactElement, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Modal } from 'antd';
-import SVButton from '../SVButton';
-
 import { IoTrashOutline } from 'react-icons/io5';
+
+import SVButton from '../SVButton';
 
 interface IModal {
   modalTitle?: string;

@@ -1,8 +1,10 @@
 import express from 'express';
+
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
-import { ShopTimeSlotsController } from './shop_timeslots.controller';
 import validateRequest from '../../middlewares/validateRequest';
+
+import { ShopTimeSlotsController } from './shop_timeslots.controller';
 import { ShopTimeSlotsValidation } from './shop_timeslots.validation';
 const router = express.Router();
 

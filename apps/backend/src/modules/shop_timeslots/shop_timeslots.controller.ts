@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
+
 import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
-import mongoose from 'mongoose';
+
 import { ShopTimeSlotsServices } from './shop_timeslots.service';
 
 const createShopTimeSlots = tryCatchAsync(

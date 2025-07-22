@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+
 import { BookingStatusList, IBooking } from './booking.interface';
 
 const bookingSchema = new mongoose.Schema<IBooking>(

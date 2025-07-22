@@ -1,17 +1,20 @@
 'use client';
 import React from 'react';
-import SVBreadCrumb from '../ui/SVBreadCrumb';
-import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
 import { Col, Row } from 'antd';
-import SVImageGallery from '../ui/SVImageGallery';
-import SVRating from '../ui/SVRating';
 import { CiShop } from 'react-icons/ci';
 import { GoLocation } from 'react-icons/go';
 import { PiTimerLight } from 'react-icons/pi';
 import { IoLockClosedOutline } from 'react-icons/io5';
+
+import SVRating from '../ui/SVRating';
+import SVImageGallery from '../ui/SVImageGallery';
+import SVBreadCrumb from '../ui/SVBreadCrumb';
 import SVButton from '../SVButton';
 import RatingBar from '../ui/SVRatingBar';
+
 import SVReviews from './components/SVReviews';
+
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
 import Loading from '@/app/loading';
 
 export default function Service({ service, loading, role }: any) {

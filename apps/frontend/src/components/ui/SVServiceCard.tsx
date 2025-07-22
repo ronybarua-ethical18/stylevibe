@@ -1,8 +1,10 @@
 import React from 'react';
-import SVSectionTitle from '../SVSectionTitle';
-import SVCard from './SVCard';
 import { Col, Row } from 'antd';
-import Link from 'next/link';
+
+import SVSectionTitle from '../SVSectionTitle';
+
+import SVCard from './SVCard';
+
 import { dummyServices } from '@/utils/dummyServices';
 
 export default function SVServiceCard({ services, loading }: any) {

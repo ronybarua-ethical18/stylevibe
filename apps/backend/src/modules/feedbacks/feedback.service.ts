@@ -1,6 +1,7 @@
+import { JwtPayload } from 'jsonwebtoken';
+
 import { IFeedback } from './feedback.interface';
 import FeedBackModel from './feedback.model';
-import { JwtPayload } from 'jsonwebtoken';
 
 const createFeedback = async (
   loggedUser: JwtPayload,

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import SVDataTable from './SVDataTable';
 
 export default function SVDataTableWithUtils({

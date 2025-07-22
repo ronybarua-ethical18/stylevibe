@@ -1,4 +1,5 @@
 import React from 'react';
+
 import SVModal from './ui/SVModal';
 
 interface IPageHeading {

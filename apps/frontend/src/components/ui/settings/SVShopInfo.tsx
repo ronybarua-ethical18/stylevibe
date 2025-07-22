@@ -1,9 +1,11 @@
 import React from 'react';
-import SVImageGallery from '../SVImageGallery';
-import { Divider, Switch } from 'antd';
+import { Divider } from 'antd';
 import { GoLocation } from 'react-icons/go';
 import { PiTimerLight } from 'react-icons/pi';
 import { IoLockClosedOutline } from 'react-icons/io5';
+
+import SVImageGallery from '../SVImageGallery';
+
 import SVShopModal from './SVShopModal';
 
 function SVShopInfo({ shopData }: any) {

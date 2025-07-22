@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+
 import { IBlog } from './blog.interface';
 const blogSchema = new mongoose.Schema<IBlog>(
   {

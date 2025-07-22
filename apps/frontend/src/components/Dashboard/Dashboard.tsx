@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import SVButton from '@/components/SVButton';
+
 import DashboardStats from './DashboardStats';
 
 export default function Dashboard() {

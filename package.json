@@ -2,6 +2,7 @@
   "name": "style-vibe-2.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "build": "turbo run build",
     "prepare": "husky install",
@@ -12,6 +13,7 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "eslint": "^9.31.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
@@ -21,9 +23,15 @@
   },
   "lint-staged": {
     "apps/frontend/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
       "prettier --write"
     ],
-    "apps/backend/**/*.{js,jsx,ts,tsx}": [
+    "apps/backend/**/*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/**/*.{js,ts}": [
+      "eslint --fix",
       "prettier --write"
     ],
     "*.{json,md,css,scss}": [
@@ -32,10 +40,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "packageManager": "npm@10.7.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  }
 }

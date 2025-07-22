@@ -1,5 +1,6 @@
-import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
 import React from 'react';
+
+import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
 
 export default function SellerDashboard() {
   return (

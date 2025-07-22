@@ -1,28 +1,31 @@
 'use client';
 
+import React, { useState, useCallback } from 'react';
+import { SegmentedValue } from 'antd/es/segmented';
+import { IoEyeOutline } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { LiaEdit } from 'react-icons/lia';
+
+import SVPagination from '../ui/SVPagination';
+import SVStatusChip from '../SVStatusChip';
+import SVModal from '../ui/SVModal';
+import SVConfirmationModal from '../ui/SVConfirmationModal';
+
+import SVServiceTabs from './components/SVServiceTabs';
+
 import SVPageHeading from '@/components/SVPageHeading';
 import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
-import React, { useState, useCallback } from 'react';
-import SVPagination from '../ui/SVPagination';
-import SVServiceTabs from './components/SVServiceTabs';
-import { SegmentedValue } from 'antd/es/segmented';
 import useDebounce from '@/hooks/useDebounce';
 import {
   useDeleteServiceMutation,
   useGetServicesQuery,
 } from '@/redux/api/services';
 import { getQueryParams } from '@/utils/getQueryParams';
-import SVStatusChip from '../SVStatusChip';
 import { transformingText } from '@/utils/transformingText';
-import { IoEyeOutline } from 'react-icons/io5';
-import SVModal from '../ui/SVModal';
-import { useRouter } from 'next/navigation';
 import { getUserInfo } from '@/services/auth.service';
 import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
-import SVConfirmationModal from '../ui/SVConfirmationModal';
-import { useDispatch } from 'react-redux';
 import { showModal } from '@/redux/slices/globalSlice';
-import { LiaEdit } from 'react-icons/lia';
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState<SegmentedValue>('1');

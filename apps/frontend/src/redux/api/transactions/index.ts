@@ -1,5 +1,6 @@
-import { tagTypes } from '@/utils/tagTypes';
 import { baseApi } from '../baseApi';
+
+import { tagTypes } from '@/utils/tagTypes';
 
 const transactionApi = baseApi.injectEndpoints({
   endpoints: (build) => ({

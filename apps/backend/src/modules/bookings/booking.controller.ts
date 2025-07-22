@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
+
 import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
-import mongoose from 'mongoose';
-import { IBooking } from './booking.interface';
 import pick from '../../shared/pick';
 import { paginationFields } from '../../constants/pagination';
+import { addJobToPaymentDispatchQueue } from '../../queues/payment/paymentQueue';
+
+import { IBooking } from './booking.interface';
 import { filterableFields } from './booking.constants';
 import { BookingService } from './booking.service';
-import { addJobToPaymentDispatchQueue } from '../../queues/payment/paymentQueue';
 
 const createBooking = tryCatchAsync(async (req: Request, res: Response) => {
   const loggedUser = req.user as {

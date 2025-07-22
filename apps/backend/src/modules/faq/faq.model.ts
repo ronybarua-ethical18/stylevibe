@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import { IFAQ } from './faq.interface';
 const faqSchema = new mongoose.Schema<IFAQ>(
   {

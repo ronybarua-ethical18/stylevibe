@@ -1,13 +1,6 @@
 import React from 'react';
 import { Card, Typography, Button, Divider } from 'antd';
-import {
-  CloseOutlined,
-  BankOutlined,
-  GlobalOutlined,
-  DollarOutlined,
-  SafetyOutlined,
-  CreditCardOutlined,
-} from '@ant-design/icons';
+import { CloseOutlined, SafetyOutlined } from '@ant-design/icons';
 import { BiCreditCard } from 'react-icons/bi';
 import { CiBank } from 'react-icons/ci';
 import { HiOutlineCurrencyRupee } from 'react-icons/hi2';

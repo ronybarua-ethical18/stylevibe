@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
+
 import { isLoggedIn } from '@/services/auth.service';
 import Sidebar from '@/components/ui/Sidebar';
 import Contents from '@/components/ui/Contents';

@@ -1,6 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
-import { IShopDocument } from './shop.interface';
+
 import { DayOfWeeks } from '../bookings/booking.interface';
+
+import { IShopDocument } from './shop.interface';
 
 const GallerySchema = new mongoose.Schema({
   img: {

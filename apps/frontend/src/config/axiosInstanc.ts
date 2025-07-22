@@ -1,6 +1,7 @@
+import axios from 'axios';
+
 import { authKey } from '@/constants/authKey';
 import { getFromLocalStorage } from '@/utils/handleLocalStorage';
-import axios from 'axios';
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/json';

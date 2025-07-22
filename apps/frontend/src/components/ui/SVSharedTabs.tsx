@@ -1,9 +1,10 @@
 import React from 'react';
 import { Segmented } from 'antd';
 import type { SegmentedValue } from 'antd/es/segmented';
+import { BiSearch } from 'react-icons/bi';
+
 import SVDataTableWithUtils from './SVDataTableWithUtils';
 import SVFilledInput from './SVFilledInput';
-import { BiSearch } from 'react-icons/bi';
 import SVDateRangePicker from './SVDateRangePicker';
 import SVTabChip from './SVTabChip';
 

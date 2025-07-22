@@ -1,12 +1,14 @@
 import React from 'react';
-import SVSectionTitle from '../SVSectionTitle';
 import { Col, Row } from 'antd';
-import { dummyBlogs } from '@/utils/dummyServices';
 import Image from 'next/image';
-import dummyImage from '../../../public/5.jpg';
 import moment from 'moment';
 import { FaEdit } from 'react-icons/fa';
+
+import dummyImage from '../../../public/5.jpg';
+import SVSectionTitle from '../SVSectionTitle';
 import SVButton from '../SVButton';
+
+import { dummyBlogs } from '@/utils/dummyServices';
 
 export default function SVLatestBlogs() {
   return (

@@ -1,13 +1,15 @@
 'use client';
-import { Button, Col, Row, Select, message } from 'antd';
+import { Button, Col, Row, Select } from 'antd';
 import { SubmitHandler } from 'react-hook-form';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import helloImage from '../../../public/hello.png';
+
 import Form from '@/components/Forms/Form';
 import FormInput from '@/components/Forms/FormInput';
 import SVCarousel from '@/components/ui/SVCarousel';
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import Image from 'next/image';
-import helloImage from '../../../public/hello.png';
-import Link from 'next/link';
 
 type FormValues = {
   id: string;

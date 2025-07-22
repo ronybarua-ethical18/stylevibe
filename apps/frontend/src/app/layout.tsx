@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth/next';
+
 import 'antd/dist/reset.css';
 import './globals.css';
-import Providers from '@/lib/Providers';
-import SessionProvider from './components/SessionProvider';
-import AntRegistryProvider from '@/lib/AntRegistryProvider';
 import { PropsWithChildren } from 'react';
+
+import SessionProvider from './components/SessionProvider';
+
+import Providers from '@/lib/Providers';
+import AntRegistryProvider from '@/lib/AntRegistryProvider';
 import { ProgressbarProvider } from '@/lib/ProgressBarProvider';
 
 export const metadata: Metadata = {

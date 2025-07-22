@@ -1,9 +1,6 @@
-import { Col, Row } from 'antd';
 import React from 'react';
-import SVNavMenus from './SVNavMenus';
+
 import SVButton from '../SVButton';
-import Image from 'next/image';
-import HeaderImage from '@/assets/2.png';
 
 export default function SVHeroSection() {
   return (

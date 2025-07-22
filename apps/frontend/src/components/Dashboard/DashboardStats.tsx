@@ -1,16 +1,18 @@
 'use client';
 
 import React from 'react';
-import { Row, Col, Card } from 'antd';
+import { Row, Col } from 'antd';
 import {
   MessageOutlined,
   FileTextOutlined,
   DollarOutlined,
   StarOutlined,
 } from '@ant-design/icons';
+
+import Transactions from '../Transactions';
+
 import DashboardCard from './DashboardCard';
 import DailySalesChart from './DailySalesChart';
-import Transactions from '../Transactions';
 import TopBookingsByServiceCategory from './TopBookingsByServiceCategory';
 import CustomerSchedule from './CustomerSchedule';
 

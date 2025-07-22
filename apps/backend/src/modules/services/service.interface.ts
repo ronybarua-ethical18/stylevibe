@@ -1,4 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose';
+
 import { CATEGORIES, SUB_CATEGORIES } from '../../shared/enums/service.enum';
 type Images = {
   img: string;

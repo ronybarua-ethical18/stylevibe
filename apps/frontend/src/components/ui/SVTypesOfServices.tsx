@@ -1,13 +1,15 @@
-/* eslint-disable react/jsx-no-undef */
 import React, { useState } from 'react';
-import SVSectionTitle from '../SVSectionTitle';
-import SVCard from './SVCard';
 import { Col, Row } from 'antd';
-import { dummyServices, serviceCategories } from '@/utils/dummyServices';
 import Image from 'next/image';
+
+import SVSectionTitle from '../SVSectionTitle';
 import HairImage from '../../../public/hair1.png';
 import Makeup from '../../../public/makeup1.png';
 import Skin from '../../../public/skin1.png';
+
+import SVCard from './SVCard';
+
+import { dummyServices, serviceCategories } from '@/utils/dummyServices';
 
 export default function SVTypesOfServices() {
   const [active, setActive] = useState(2);

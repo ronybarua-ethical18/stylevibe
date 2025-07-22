@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable react/jsx-no-undef */
+
 'use client';
 import Image from 'next/image';
 import React from 'react';
 import Slider from 'react-slick';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import imgOne from '../../../public/1.png';

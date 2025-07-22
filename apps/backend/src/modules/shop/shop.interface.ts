@@ -1,4 +1,5 @@
 import mongoose, { Document } from 'mongoose';
+
 import { DayOfWeeks } from '../bookings/booking.interface';
 
 interface IServiceTime {

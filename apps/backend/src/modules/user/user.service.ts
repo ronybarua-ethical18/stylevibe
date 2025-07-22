@@ -1,15 +1,17 @@
 import httpStatus from 'http-status';
-import { UserModel } from '../user/user.model';
 import mongoose from 'mongoose';
-import { IUser } from './user.interface';
+import Stripe from 'stripe';
+
 import ApiError from '../../errors/ApiError';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import ShopModel from '../shop/shop.model';
 import { IShopDocument } from '../shop/shop.interface';
 import StripeAccountModel from '../stripe_accounts/stripe_accounts.model';
 import { StripeAccountService } from '../stripe_accounts/stripe_accounts.service';
-import Stripe from 'stripe';
+import { UserModel } from '../user/user.model';
 import { IStripeAccountDetails } from '../stripe_accounts/stripe_accounts.interface';
+
+import { IUser } from './user.interface';
 
 const getUser = async (
   userId: mongoose.Types.ObjectId

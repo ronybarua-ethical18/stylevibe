@@ -3,18 +3,20 @@
 import React, { ReactNode, useState } from 'react';
 import { Button, Col, Modal, Row, Switch, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { GrAdd } from 'react-icons/gr';
+import { SubmitHandler } from 'react-hook-form';
+
+import SVUplaod from '../SVUpload';
+
 import {
   closeModal,
   globalSelector,
   showModal,
 } from '@/redux/slices/globalSlice';
-import { GrAdd } from 'react-icons/gr';
 import Form from '@/components/Forms/Form';
 import FormInput from '@/components/Forms/FormInput';
 import FormSelectField from '@/components/Forms/FormSelectField';
 import FormTextArea from '@/components/Forms/FormTextArea';
-import SVUplaod from '../SVUpload';
-import { SubmitHandler } from 'react-hook-form';
 import { useCreateShopMutation, useUpdateShopMutation } from '@/redux/api/shop';
 import { useGetUserProfileQuery } from '@/redux/api/users';
 import { getUserInfo } from '@/services/auth.service';

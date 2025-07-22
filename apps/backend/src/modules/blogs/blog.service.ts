@@ -1,4 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
+
 import { IBlog } from './blog.interface';
 import BlogModel from './blog.model';
 

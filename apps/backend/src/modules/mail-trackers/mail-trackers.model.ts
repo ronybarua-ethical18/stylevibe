@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+
 import { EmailTypes, MailModelInterface } from './mail-trackers.interface';
 
 const mailSchema = new Schema<MailModelInterface>(

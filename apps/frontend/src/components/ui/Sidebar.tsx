@@ -2,8 +2,9 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { usePathname } from 'next/navigation';
-import { sidebarItems } from '@/constants/sidebarItems';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
+
+import { sidebarItems } from '@/constants/sidebarItems';
 import { getUserInfo } from '@/services/auth.service';
 
 const { Sider } = Layout;

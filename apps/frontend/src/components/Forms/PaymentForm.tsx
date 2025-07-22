@@ -7,14 +7,16 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import SVButton from '../SVButton';
-import { useCreatePaymentIntentMutation } from '@/redux/api/stripe';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   CopyOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
+
+import SVButton from '../SVButton';
+
+import { useCreatePaymentIntentMutation } from '@/redux/api/stripe';
 import { useCreateBookingMutation } from '@/redux/api/bookings';
 
 const stripePromise = loadStripe(

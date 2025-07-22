@@ -2,12 +2,14 @@
 
 import React, { ReactNode, useState } from 'react';
 import { Modal } from 'antd';
-import SVButton from '../SVButton';
-import SVBookingDetails from './SVBookingDetails';
-import PaymentWrapper from '../Forms/PaymentForm';
-import SVStepper from './SVStepper';
 import { BiArrowBack } from 'react-icons/bi';
 import moment from 'moment';
+
+import SVButton from '../SVButton';
+import PaymentWrapper from '../Forms/PaymentForm';
+
+import SVBookingDetails from './SVBookingDetails';
+import SVStepper from './SVStepper';
 
 const SVBookingConfirmationModal = ({
   width,

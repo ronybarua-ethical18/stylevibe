@@ -2,8 +2,10 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { transformingText } from '@/utils/transformingText';
+
 import SVBreadCrumb from '../ui/SVBreadCrumb';
+
+import { transformingText } from '@/utils/transformingText';
 
 const SVDataTableWithUtils = dynamic(
   () => import('@/components/ui/SVDataTableWithUtils'),

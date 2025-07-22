@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+
 import { IShopTimeSlots } from './shop_timeslots.interface';
 
 // Create the Mongoose Schema

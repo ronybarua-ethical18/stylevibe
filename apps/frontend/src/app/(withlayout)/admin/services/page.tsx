@@ -1,6 +1,7 @@
-import Services from '@/components/Services/Services';
 import { Metadata } from 'next';
 import React from 'react';
+
+import Services from '@/components/Services/Services';
 
 export const metadata: Metadata = {
   title: 'Style Vibe | Seller | Services',

@@ -1,12 +1,12 @@
-/* eslint-disable react/jsx-key */
-import React, { useState } from 'react';
+import React from 'react';
 import { Calendar, Col, Row, Tooltip, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
 import { CaretDownOutlined, CalendarOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Select as AntSelect } from 'antd';
-import { months, timeSlots } from '@/utils/dummyServices';
+
+import { months } from '@/utils/dummyServices';
 import { useGetSingleShopTimeSlotsQuery } from '@/redux/api/timeslots';
 import { generateTimeSlots } from '@/utils/generateTimeSlots';
 

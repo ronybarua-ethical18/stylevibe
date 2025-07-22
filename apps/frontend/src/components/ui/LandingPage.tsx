@@ -3,6 +3,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { BiLogOut } from 'react-icons/bi';
+
 import SVServiceCard from './SVServiceCard';
 import SVTypesOfServices from './SVTypesOfServices';
 import SVHowItWorks from './SVHowItWorks';
@@ -15,9 +17,9 @@ import SVFooter from './SVFooter';
 import SVHeroSection from './SVHeroSection';
 import SVNavMenus from './SVNavMenus';
 import SVHeaderCarousel from './SVHeaderCarousel';
+
 import AuthButton from '@/app/components/AuthButton';
 import { getUserInfo } from '@/services/auth.service';
-import { BiLogOut } from 'react-icons/bi';
 import { removeUserInfo } from '@/utils/handleLocalStorage';
 import { authKey } from '@/constants/authKey';
 import { useGetTopServicesQuery } from '@/redux/api/services';

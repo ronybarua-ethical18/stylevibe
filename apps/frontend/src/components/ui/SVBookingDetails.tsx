@@ -1,11 +1,13 @@
 import { Checkbox, Col, Divider, Radio, Row, message } from 'antd';
 import React, { ReactNode, useEffect, useState } from 'react';
-import SVCalendar from './SVCalendar';
-import SVBookedService from './SVBookedService';
+import Image from 'next/image';
+
 import VisaImg from '../../../public/visa.png';
 import PaypalImg from '../../../public/picon.png';
-import Image from 'next/image';
 import SVButton from '../SVButton';
+
+import SVCalendar from './SVCalendar';
+import SVBookedService from './SVBookedService';
 
 const paymentMethods = [
   {

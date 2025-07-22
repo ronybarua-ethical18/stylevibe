@@ -1,7 +1,8 @@
-import { topServices } from '@/utils/dummyServices';
 import { Button } from 'antd';
 import React from 'react';
 import Chart from 'react-apexcharts';
+
+import { topServices } from '@/utils/dummyServices';
 
 const chartOptions = {
   chart: {

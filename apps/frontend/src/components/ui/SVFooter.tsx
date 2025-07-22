@@ -1,5 +1,4 @@
 import React from 'react';
-import SVNavMenus from './SVNavMenus';
 import {
   FaFacebookF,
   FaInstagram,
@@ -7,6 +6,8 @@ import {
   FaTwitter,
 } from 'react-icons/fa6';
 import { Divider } from 'antd';
+
+import SVNavMenus from './SVNavMenus';
 
 export default function SVFooter() {
   return (

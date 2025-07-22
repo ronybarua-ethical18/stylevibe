@@ -2,20 +2,21 @@
 
 import React, { ReactNode } from 'react';
 import { Modal } from 'antd';
-import SVButton from '../SVButton';
 import { useDispatch, useSelector } from 'react-redux';
+import { usePathname } from 'next/navigation';
+import { IoEyeOutline } from 'react-icons/io5';
+
+import CreateService from '../Services/CreateService';
+import ServiceStatusUpdate from '../Services/ServiceStatusUpdate';
+import BookingStatusUpdate from '../Bookings/BookingStatusUpdate';
+import SVTransactionDetails from '../Transactions/components/SVTransactionDetails';
+import SVButton from '../SVButton';
+
 import {
   closeModal,
   globalSelector,
   showModal,
 } from '@/redux/slices/globalSlice';
-import { LiaEdit } from 'react-icons/lia';
-import { usePathname } from 'next/navigation';
-import CreateService from '../Services/CreateService';
-import ServiceStatusUpdate from '../Services/ServiceStatusUpdate';
-import BookingStatusUpdate from '../Bookings/BookingStatusUpdate';
-import SVTransactionDetails from '../Transactions/components/SVTransactionDetails';
-import { IoEyeOutline } from 'react-icons/io5';
 
 interface IModal {
   modalTitle?: string;

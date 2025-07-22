@@ -1,8 +1,10 @@
+import http from 'http';
+
 import mongoose from 'mongoose';
+
 import config from './config/index';
 import app from './app';
 import ApiError from './errors/ApiError';
-import http from 'http';
 // import { redis } from './config/redis'
 
 let server: http.Server;

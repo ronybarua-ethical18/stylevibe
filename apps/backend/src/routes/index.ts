@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+
 import { AuthRoutes } from '../modules/auth/auth.route';
 import { UserRoutes } from '../modules/user/user.route';
 import { SaloonServiceRoutes } from '../modules/services/service.route';

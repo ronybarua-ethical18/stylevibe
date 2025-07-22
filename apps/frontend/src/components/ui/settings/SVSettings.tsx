@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import SVBreadCrumb from '../SVBreadCrumb';
 import SVSettingTabs from '../SVSettingTabs';
+import SVStripeSuccessfulConnectionModal from '../SVStripeSuccessfulConnectionModal';
+
 import { useGetUserProfileQuery } from '@/redux/api/users';
 import { getUserInfo } from '@/services/auth.service';
-import { useRouter, useSearchParams } from 'next/navigation';
-import SVStripeSuccessfulConnectionModal from '../SVStripeSuccessfulConnectionModal';
 
 function SVSettings() {
   const loggedUser: any = getUserInfo();

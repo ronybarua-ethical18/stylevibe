@@ -1,7 +1,8 @@
 import React from 'react';
-import HappyClient from '../../../public/client.png';
 import Image from 'next/image';
 import { CountUp } from 'use-count-up';
+
+import HappyClient from '../../../public/client.png';
 
 export default function SVTotalClients() {
   return (

@@ -2,33 +2,21 @@
 import httpStatus from 'http-status';
 // import moment from 'moment'
 
-import ApiError from '../../errors/ApiError';
-import {
-  BookingStatusList,
-  DayOfWeeks,
-  IBooking,
-  IPaymentDisbursedEssentials,
-  PopulatedBooking,
-} from './booking.interface';
-import BookingModel from './booking.model';
 import { JwtPayload } from 'jsonwebtoken';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import mongoose, { SortOrder } from 'mongoose';
-import { paginationHelpers } from '../../helpers/pagination';
+import moment from 'moment';
+
+import ShopModel from '../shop/shop.model';
+import { IShopDocument } from '../shop/shop.interface';
+import { ShopTimeSlotsServices } from '../shop_timeslots/shop_timeslots.service';
 import {
   IFilterOptions,
   IGenericResponse,
   IPaginationOptions,
 } from '../../shared/interfaces/common.interface';
-import {
-  bookingsAggregationPipeline,
-  generateId,
-  isServiceDateTimeAtLeastOneHourInPast,
-} from './booking.utils';
-import ShopModel from '../shop/shop.model';
-import { IShopDocument } from '../shop/shop.interface';
-import { ShopTimeSlotsServices } from '../shop_timeslots/shop_timeslots.service';
-import moment from 'moment';
+import { paginationHelpers } from '../../helpers/pagination';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
+import ApiError from '../../errors/ApiError';
 import Transaction from '../transactions/transactions.model';
 import {
   AmountStatus,
@@ -39,6 +27,20 @@ import { getTotals } from '../services/service.utils';
 import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
 import { SentryCaptureMessage, SentrySetContext } from '../../config/sentry';
 import { toFixConverter } from '../../utils/toFixConverter';
+
+import {
+  bookingsAggregationPipeline,
+  generateId,
+  isServiceDateTimeAtLeastOneHourInPast,
+} from './booking.utils';
+import BookingModel from './booking.model';
+import {
+  BookingStatusList,
+  DayOfWeeks,
+  IBooking,
+  IPaymentDisbursedEssentials,
+  PopulatedBooking,
+} from './booking.interface';
 
 interface IBookingPayload {
   serviceDate: string;

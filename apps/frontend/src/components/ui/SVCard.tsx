@@ -1,13 +1,15 @@
 import { Rate, Skeleton } from 'antd';
 import Image from 'next/image';
 import React from 'react';
-import { FaEye, FaRegEye, FaStore } from 'react-icons/fa';
-import SVButton from '../SVButton';
-import { getUserInfo } from '@/services/auth.service';
-import SVSignupConfirmationModal from './SVSignupConfirmationModal';
-import { IoEye } from 'react-icons/io5';
+import { FaRegEye, FaStore } from 'react-icons/fa';
 import Link from 'next/link';
+
+import SVButton from '../SVButton';
+
+import SVSignupConfirmationModal from './SVSignupConfirmationModal';
 import SVBookingConfirmationModal from './SVBookingConfirmationModal';
+
+import { getUserInfo } from '@/services/auth.service';
 
 interface ICard {
   images: { img: string }[];

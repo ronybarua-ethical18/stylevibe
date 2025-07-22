@@ -5,6 +5,7 @@ import { Segmented, Spin } from 'antd';
 import type { SegmentedValue } from 'antd/es/segmented';
 import { CiUser } from 'react-icons/ci';
 import { CiCreditCard2 } from 'react-icons/ci';
+
 import SVShopInfo from './settings/SVShopInfo';
 import SVPersonalInfo from './settings/SVPersonalInfo';
 import StripeAccountConnection from './settings/StripeAccountConnection';

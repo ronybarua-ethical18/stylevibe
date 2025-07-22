@@ -4,8 +4,9 @@ import cors from 'cors';
 import httpStatus from 'http-status';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import globalErrorHandler from './errors/globalErrorHandler';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
+
+import globalErrorHandler from './errors/globalErrorHandler';
 import routes from './routes';
 import { initSentry, SentryCaptureMessage } from './config/sentry';
 const app: Application = express();

@@ -1,5 +1,6 @@
-import { getBaseUrl } from '@/config/envConfig';
 import { cookies } from 'next/headers';
+
+import { getBaseUrl } from '@/config/envConfig';
 
 export const getDynamicValueById = async (
   key: string,

@@ -1,12 +1,14 @@
+import httpStatus from 'http-status';
+import moment from 'moment';
+import mongoose from 'mongoose';
+
 import { UserModel } from '../user/user.model';
 import ApiError from '../../errors/ApiError';
-import httpStatus from 'http-status';
-import { IShopTimeSlots, ITimeSlot } from './shop_timeslots.interface';
 import ShopModel from '../shop/shop.model';
+
+import { IShopTimeSlots, ITimeSlot } from './shop_timeslots.interface';
 import ShopTimeSlotsModel from './shop_timeslots.model';
-import moment from 'moment';
 import { generateTimeSlots } from './shop_timeslots.utils';
-import mongoose from 'mongoose';
 
 const createShopTimeSlots = async (
   payload: {

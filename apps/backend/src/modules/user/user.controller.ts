@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
+import { JwtPayload } from 'jsonwebtoken';
+
 import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { IUser } from '../user/user.interface';
+
 import { UserService } from './user.service';
-import mongoose from 'mongoose';
-import { JwtPayload } from 'jsonwebtoken';
 
 const getAllUsers = tryCatchAsync(async (req: Request, res: Response) => {
   const loggedUser = req.user as {

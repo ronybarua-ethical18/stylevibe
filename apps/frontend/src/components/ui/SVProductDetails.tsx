@@ -2,10 +2,13 @@
 'use client';
 import React from 'react';
 import { FaUser } from 'react-icons/fa';
-import SVNavMenus from './SVNavMenus';
-import Service from '../Services/Service';
-import { useGetServiceQuery } from '@/redux/api/services';
 import { useParams } from 'next/navigation';
+
+import Service from '../Services/Service';
+
+import SVNavMenus from './SVNavMenus';
+
+import { useGetServiceQuery } from '@/redux/api/services';
 
 export default function SVProductDetails() {
   const params = useParams();

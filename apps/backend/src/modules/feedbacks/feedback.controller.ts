@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
+
 import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
+
 import { FeedbackService } from './feedback.service';
-import mongoose from 'mongoose';
 import { IFeedback } from './feedback.interface';
 
 const createFeedback = tryCatchAsync(async (req: Request, res: Response) => {

@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+
 import styles from './page.module.css';
 const LandingPage = dynamic(() => import('../components/ui/LandingPage'), {
   ssr: false,

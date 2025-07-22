@@ -1,5 +1,6 @@
 // worker.ts
 import { Job, Worker } from 'bullmq';
+
 import redis from '../../config/redis';
 import { emailDispatch } from '../utils/email.utils';
 

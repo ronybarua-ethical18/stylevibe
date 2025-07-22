@@ -1,8 +1,7 @@
 import React from 'react';
 import { SegmentedValue } from 'antd/es/segmented';
-import { useGetServicesQuery } from '@/redux/api/services';
+
 import SharedTabs from '@/components/ui/SVSharedTabs';
-import useDebounce from '@/hooks/useDebounce';
 
 const SVServiceTabs = ({
   columns,

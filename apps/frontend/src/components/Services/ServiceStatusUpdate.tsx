@@ -1,13 +1,15 @@
 'use client';
 
 import React from 'react';
-import { message, Select, Input } from 'antd';
-import SVButton from '../SVButton';
-import { useUpdateServiceMutation } from '@/redux/api/services';
+import { message, Input } from 'antd';
 import { MdMiscellaneousServices } from 'react-icons/md'; // Import the new icon
+
+import SVButton from '../SVButton';
 import Form from '../Forms/Form';
 import FormSelectField from '../Forms/FormSelectField';
 import FormTextArea from '../Forms/FormTextArea';
+
+import { useUpdateServiceMutation } from '@/redux/api/services';
 
 const { TextArea } = Input;
 

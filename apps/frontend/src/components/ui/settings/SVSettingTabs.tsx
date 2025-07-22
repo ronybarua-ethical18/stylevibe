@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Tabs } from 'antd';
+
 import SVShopInfo from './SVShopInfo';
 import SVPersonalInfo from './SVPersonalInfo';
 

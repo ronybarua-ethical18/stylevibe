@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+
 import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
+
 import { FAQService } from './faq.service';
 import { IFAQ } from './faq.interface';
 

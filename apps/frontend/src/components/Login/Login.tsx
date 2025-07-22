@@ -1,19 +1,20 @@
-/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { Button, Col, Row, message } from 'antd';
 import { useRouter } from 'next/navigation';
+import { SubmitHandler } from 'react-hook-form';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect } from 'react';
+
+import helloImage from '../../../public/hello.png';
+import GoogleIcon from '../../../public/google.png';
+
 import Form from '@/components/Forms/Form';
 import FormInput from '@/components/Forms/FormInput';
-import { SubmitHandler } from 'react-hook-form';
 import SVCarousel from '@/components/ui/SVCarousel';
-import Image from 'next/image';
-import helloImage from '../../../public/hello.png';
-import Link from 'next/link';
 import { useUserLoginMutation } from '@/redux/api/auth';
 import { isLoggedIn, storeUserInfo } from '@/services/auth.service';
-import GoogleIcon from '../../../public/google.png';
-import { useEffect } from 'react';
 
 type FormValues = {
   id: string;

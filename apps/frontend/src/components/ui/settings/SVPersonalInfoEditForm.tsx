@@ -1,14 +1,16 @@
-import FormInput from '@/components/Forms/FormInput';
-import FormTextArea from '@/components/Forms/FormTextArea';
 import { Button, Divider, message } from 'antd';
 import React, { Dispatch, SetStateAction, useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+
 import SVProfilePhotoUpload from '../SVProfileUpload';
+
+import FormInput from '@/components/Forms/FormInput';
+import FormTextArea from '@/components/Forms/FormTextArea';
 import { getUserInfo } from '@/services/auth.service';
 import {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
 } from '@/redux/api/users';
-import { SubmitHandler } from 'react-hook-form';
 import Form from '@/components/Forms/Form';
 
 type FormValues = {

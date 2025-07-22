@@ -1,13 +1,7 @@
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
-import { Secret } from 'jsonwebtoken';
+
 import { UserModel } from '../user/user.model';
-import {
-  ILoginUser,
-  ILoginUserResponse,
-  IRefreshTokenResponse,
-  ISignUpUserResponse,
-} from './auth.interface';
 import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
 import config from '../../config';
@@ -17,6 +11,13 @@ import {
   VERIFY_EMAIL_TEMPLATE,
 } from '../../services/mail/constants';
 import { sendMailWithToken } from '../../utils/auth.utils';
+
+import {
+  ILoginUser,
+  ILoginUserResponse,
+  IRefreshTokenResponse,
+  ISignUpUserResponse,
+} from './auth.interface';
 
 const signUpUser = async (
   payload: ILoginUser

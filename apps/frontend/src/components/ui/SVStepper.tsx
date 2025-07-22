@@ -1,5 +1,6 @@
-import { CustomizedSteps } from '@/app/styles/StyledComponents';
 import React from 'react';
+
+import { CustomizedSteps } from '@/app/styles/StyledComponents';
 
 interface Step {
   title: string;
