@@ -1,6 +1,6 @@
 // app/api/auth/[...nextauth]/auth.ts
-import { AuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
+import { AuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -12,4 +12,4 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: '/login',
   },
-}
+};

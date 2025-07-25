@@ -1,31 +1,32 @@
-'use client'
+'use client';
 
-import React, { ReactNode } from 'react'
-import { Modal } from 'antd'
-import SVButton from '../SVButton'
-import { useDispatch, useSelector } from 'react-redux'
+import { Modal } from 'antd';
+import { usePathname } from 'next/navigation';
+import React, { ReactNode } from 'react';
+import { IoEyeOutline } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+
+import BookingStatusUpdate from '../Bookings/BookingStatusUpdate';
+import CreateService from '../Services/CreateService';
+import ServiceStatusUpdate from '../Services/ServiceStatusUpdate';
+import SVButton from '../SVButton';
+import SVTransactionDetails from '../Transactions/components/SVTransactionDetails';
+
 import {
   closeModal,
   globalSelector,
   showModal,
-} from '@/redux/slices/globalSlice'
-import { LiaEdit } from 'react-icons/lia'
-import { usePathname } from 'next/navigation'
-import CreateService from '../Services/CreateService'
-import ServiceStatusUpdate from '../Services/ServiceStatusUpdate'
-import BookingStatusUpdate from '../Bookings/BookingStatusUpdate'
-import SVTransactionDetails from '../Transactions/components/SVTransactionDetails'
-import { IoEyeOutline } from 'react-icons/io5'
+} from '@/redux/slices/globalSlice';
 
 interface IModal {
-  modalTitle?: string
-  buttonTitle?: string
-  width?: string | number
-  data?: any
-  isOpen?: boolean
-  setSelectedRecord?: any
-  bookingId?: any
-  transaction?: any
+  modalTitle?: string;
+  buttonTitle?: string;
+  width?: string | number;
+  data?: any;
+  isOpen?: boolean;
+  setSelectedRecord?: any;
+  bookingId?: any;
+  transaction?: any;
 }
 
 const SVModal = ({
@@ -36,42 +37,42 @@ const SVModal = ({
   setSelectedRecord,
   transaction,
 }: IModal): ReactNode => {
-  const { isModalOpen } = useSelector(globalSelector)
-  const dispatch = useDispatch()
-  const pathname = usePathname()
-  const adminServicePath = pathname === '/admin/services'
-  const sellerServicePath = pathname === '/seller/services'
-  const sellerTransactionPath = pathname === '/seller/transactions'
+  const { isModalOpen } = useSelector(globalSelector);
+  const dispatch = useDispatch();
+  const pathname = usePathname();
+  const adminServicePath = pathname === '/admin/services';
+  const sellerServicePath = pathname === '/seller/services';
+  const sellerTransactionPath = pathname === '/seller/transactions';
 
   const renderContent = (): any => {
     if (sellerServicePath && !bookingId) {
-      return data ? <CreateService savedData={data} /> : <CreateService />
+      return data ? <CreateService savedData={data} /> : <CreateService />;
     } else if (sellerTransactionPath && transaction) {
-      return <SVTransactionDetails transaction={transaction} />
+      return <SVTransactionDetails transaction={transaction} />;
     } else if (adminServicePath && !bookingId) {
       return (
         <ServiceStatusUpdate
           serviceId={data?._id}
           serviceName={data?.name}
           onClose={() => {
-            setSelectedRecord(null)
-            dispatch(closeModal(false))
+            setSelectedRecord(null);
+            dispatch(closeModal(false));
           }}
         />
-      )
+      );
     } else {
       return (
         <BookingStatusUpdate
           bookingId={bookingId}
           serviceName={data?.name}
           onClose={() => {
-            setSelectedRecord(null)
-            dispatch(closeModal(false))
+            setSelectedRecord(null);
+            dispatch(closeModal(false));
           }}
         />
-      )
+      );
     }
-  }
+  };
 
   return (
     <div>
@@ -97,12 +98,12 @@ const SVModal = ({
         open={isModalOpen}
         footer={null}
         onCancel={() => {
-          setSelectedRecord(null) ?? null
-          dispatch(closeModal(false))
+          setSelectedRecord(null) ?? null;
+          dispatch(closeModal(false));
         }}
         onClose={() => {
-          setSelectedRecord(null) ?? null
-          dispatch(closeModal(false))
+          setSelectedRecord(null) ?? null;
+          dispatch(closeModal(false));
         }}
         maskStyle={{ background: 'rgba(0,0,0,0.09)' }}
         maskAnimation={true}
@@ -115,7 +116,7 @@ const SVModal = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default SVModal
+export default SVModal;

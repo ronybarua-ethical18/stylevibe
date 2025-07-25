@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
-import { InboxOutlined, DeleteOutlined } from '@ant-design/icons'
-import type { UploadProps } from 'antd'
-import { message, Upload, Spin } from 'antd'
-import Image from 'next/image'
+import { InboxOutlined, DeleteOutlined } from '@ant-design/icons';
+import type { UploadProps } from 'antd';
+import { message, Upload, Spin } from 'antd';
+import Image from 'next/image';
+import React, { useState } from 'react';
 
-const { Dragger } = Upload
+const { Dragger } = Upload;
 
 interface ImageObject {
   img: string;
 }
 
 interface SVUploadProps {
-  images: ImageObject[]
-  setImages: React.Dispatch<React.SetStateAction<ImageObject[]>>
+  images: ImageObject[];
+  setImages: React.Dispatch<React.SetStateAction<ImageObject[]>>;
 }
 
 const SVUpload = ({ images, setImages }: SVUploadProps) => {
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false);
 
   const props: UploadProps = {
     name: 'img',
@@ -25,32 +25,34 @@ const SVUpload = ({ images, setImages }: SVUploadProps) => {
     method: 'POST',
     showUploadList: false,
     onChange(info) {
-      const { status } = info.file
+      const { status } = info.file;
 
       if (status === 'uploading') {
-        setUploading(true)
+        setUploading(true);
       }
 
       if (status === 'done') {
         const newImages = info.fileList
-          .map(item => ({ img: item.response?.data }))
-          .filter(imgObj => !images.some(existing => existing.img === imgObj.img))
+          .map((item) => ({ img: item.response?.data }))
+          .filter(
+            (imgObj) => !images.some((existing) => existing.img === imgObj.img)
+          );
 
-        setImages(prev => [...prev, ...newImages])
-        setUploading(false)
+        setImages((prev) => [...prev, ...newImages]);
+        setUploading(false);
       } else if (status === 'error') {
-        setUploading(false)
-        message.error(`${info.file.name} file upload failed.`)
+        setUploading(false);
+        message.error(`${info.file.name} file upload failed.`);
       }
     },
     onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files)
+      console.log('Dropped files', e.dataTransfer.files);
     },
-  }
+  };
 
   const handleDelete = (imgToDelete: ImageObject) => {
-    setImages(images.filter(image => image.img !== imgToDelete.img))
-  }
+    setImages(images.filter((image) => image.img !== imgToDelete.img));
+  };
 
   return (
     <div>
@@ -118,7 +120,7 @@ const SVUpload = ({ images, setImages }: SVUploadProps) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SVUpload
+export default SVUpload;

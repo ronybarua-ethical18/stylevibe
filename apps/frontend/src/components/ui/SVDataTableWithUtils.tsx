@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
-import React from 'react'
-import SVDataTable from './SVDataTable'
+import React from 'react';
+
+import SVDataTable from './SVDataTable';
 
 export default function SVDataTableWithUtils({
   columns,
@@ -9,7 +10,6 @@ export default function SVDataTableWithUtils({
   totalPages,
   isLoading,
 }: any) {
-
   return (
     <SVDataTable
       loading={isLoading}
@@ -19,5 +19,5 @@ export default function SVDataTableWithUtils({
       showSizeChanger={true}
       showPagination={false}
     />
-  )
+  );
 }

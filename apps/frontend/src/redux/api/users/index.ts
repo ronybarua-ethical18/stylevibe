@@ -1,10 +1,11 @@
-import { tagTypes } from '@/utils/tagTypes'
-import { baseApi } from '../baseApi'
+import { baseApi } from '../baseApi';
+
+import { tagTypes } from '@/utils/tagTypes';
 
 const serviceApi = baseApi.injectEndpoints({
-  endpoints: build => ({
+  endpoints: (build) => ({
     getUserProfile: build.query({
-      query: userId => ({
+      query: (userId) => ({
         url: `/users/${userId}`, // Corrected the URL format
         method: 'GET',
       }),
@@ -22,7 +23,7 @@ const serviceApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.USER],
     }),
   }),
-})
+});
 
 export const { useGetUserProfileQuery, useUpdateUserProfileMutation } =
-  serviceApi
+  serviceApi;

@@ -1,25 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import httpStatus from 'http-status'
-import ApiError from '../../errors/ApiError'
-import mailTrackersModel from '../../modules/mail-trackers/mail-trackers.model'
+import httpStatus from 'http-status';
+
+import ApiError from '../../errors/ApiError';
+import { EmailTypes } from '../../modules/mail-trackers/mail-trackers.interface';
+import mailTrackersModel from '../../modules/mail-trackers/mail-trackers.model';
 import {
   PAYMENT_DISBURSEMENT_OWNER,
   PAYMENT_DISBURSEMENT_SELLER,
   SERVICE_COMPLETION_CUSTOMER,
-} from '../../services/mail/constants'
-import sendEmail from '../../services/mail/sendMail'
-import { EmailTypes } from '../../modules/mail-trackers/mail-trackers.interface'
+} from '../../services/mail/constants';
+import sendEmail from '../../services/mail/sendMail';
 
 export const emailPayloadsByUser = (
   ownerPayload: any,
   sellerPayload: any,
-  customerPayload: any,
+  customerPayload: any
 ) => {
   const mailTrackerPayload = {
     seller: sellerPayload?.sellerId,
     customer: customerPayload?.customerId,
     booking: customerPayload?.bookingId,
-  }
+  };
   return [
     {
       id: 1,
@@ -51,8 +52,8 @@ export const emailPayloadsByUser = (
       emailType: EmailTypes.SERVICE_COMPLETION_EMAIL,
       mailTrackerPayload,
     },
-  ]
-}
+  ];
+};
 
 export const emailDispatch = async (
   email: string,
@@ -60,7 +61,7 @@ export const emailDispatch = async (
   template: string,
   subject: string,
   emailType: string,
-  essentialPayload: any,
+  essentialPayload: any
 ) => {
   try {
     await sendEmail(
@@ -69,8 +70,8 @@ export const emailDispatch = async (
         subject: subject,
         data: payload,
       },
-      template,
-    )
+      template
+    );
 
     await mailTrackersModel.create({
       subject: subject,
@@ -78,11 +79,11 @@ export const emailDispatch = async (
       emailType: emailType,
       isMailSent: true,
       essentialPayload,
-    })
+    });
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      'Something went wrong with sending mail',
-    )
+      'Something went wrong with sending mail'
+    );
   }
-}
+};

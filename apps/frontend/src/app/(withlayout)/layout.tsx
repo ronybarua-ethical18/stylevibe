@@ -1,42 +1,44 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import dynamic from 'next/dynamic'
-import { Layout } from 'antd'
-import React from 'react'
-import { isLoggedIn } from '@/services/auth.service'
+import { Layout } from 'antd';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-// Dynamically import Sidebar and Contents with loading fallbacks
-const Sidebar = dynamic(() => import('@/components/ui/Sidebar'), {
-  ssr: false,
-  loading: () => <div>Loading Sidebar...</div>,
-})
-
-const Contents = dynamic(() => import('@/components/ui/Contents'), {
-  ssr: false,
-  loading: () => <div>Loading Content...</div>,
-})
+import Contents from '@/components/ui/Contents';
+import Sidebar from '@/components/ui/Sidebar';
+import { isLoggedIn } from '@/services/auth.service';
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const router = useRouter()
-  const userLoggedIn = isLoggedIn()
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>(null);
 
-  // Redirect to login page if the user is not logged in
-  if (!userLoggedIn) {
-    if (typeof window !== 'undefined') {
-      router.push('/login')
+  useEffect(() => {
+    setIsClient(true);
+    setUserLoggedIn(isLoggedIn());
+  }, []);
+
+  useEffect(() => {
+    if (isClient && userLoggedIn === false) {
+      router.push('/login');
     }
-    return null // Avoid rendering layout if redirecting
+  }, [isClient, userLoggedIn, router]);
+
+  if (!isClient || userLoggedIn === null) {
+    // Optionally show a loading spinner here
+    return null;
   }
 
+  const AntdLayout = Layout as any;
+
   return (
-    <Layout>
+    <AntdLayout>
       <Sidebar />
       <Contents>{children}</Contents>
-    </Layout>
-  )
+    </AntdLayout>
+  );
 }

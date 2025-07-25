@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { Button } from 'antd'
-import { ButtonType } from 'antd/es/button'
-import { SizeType } from 'antd/es/config-provider/SizeContext'
-import React from 'react'
+import { Button } from 'antd';
+import { ButtonType } from 'antd/es/button';
+import { SizeType } from 'antd/es/config-provider/SizeContext';
+import React from 'react';
 
 interface IButton {
-  title: string
-  type?: ButtonType
-  style?: object
-  size?: SizeType
-  onClick?: any
-  className?: any
-  disabled?: any
-  icon?: any
-  loading?:any
-  htmlType?:any
+  title: string;
+  type?: ButtonType;
+  style?: object;
+  size?: SizeType;
+  onClick?: any;
+  className?: any;
+  disabled?: any;
+  icon?: any;
+  loading?: any;
+  htmlType?: any;
 }
 export default function SVButton({
   type,
@@ -27,7 +27,7 @@ export default function SVButton({
   disabled,
   icon,
   loading,
-  htmlType
+  htmlType,
 }: IButton): React.ReactNode {
   return (
     <Button
@@ -42,5 +42,5 @@ export default function SVButton({
     >
       {title}
     </Button>
-  )
+  );
 }

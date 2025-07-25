@@ -1,20 +1,20 @@
 import {
   IFilterOptions,
   IShopFilterOptions,
-} from '../shared/interfaces/common.interface'
+} from '../shared/interfaces/common.interface';
 
 export const queryFieldsManipulation = (
   searchTerm: string | undefined,
   searchableFields: Array<string>,
-  filterableFields: IFilterOptions | IShopFilterOptions,
+  filterableFields: IFilterOptions | IShopFilterOptions
 ) => {
-  const andConditions = []
+  const andConditions = [];
   if (searchTerm) {
     andConditions.push({
-      $or: searchableFields.map(field => ({
+      $or: searchableFields.map((field) => ({
         [field]: { $regex: searchTerm, $options: 'i' },
       })),
-    })
+    });
   }
 
   if (Object.keys(filterableFields).length) {
@@ -22,10 +22,10 @@ export const queryFieldsManipulation = (
       $and: Object.entries(filterableFields).map(([key, value]) => ({
         [key]: value,
       })),
-    })
+    });
   }
 
-  console.log('and conditions', filterableFields)
+  console.log('and conditions', filterableFields);
 
-  return andConditions
-}
+  return andConditions;
+};

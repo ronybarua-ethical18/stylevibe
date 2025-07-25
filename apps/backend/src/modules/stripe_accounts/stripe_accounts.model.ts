@@ -1,10 +1,11 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose';
+
 import {
   IStripeAccount,
   UserType,
   AccountType,
   StripeAccountStatus,
-} from './stripe_accounts.interface'
+} from './stripe_accounts.interface';
 
 // Create the Mongoose Schema
 const StripeAccountSchema = new mongoose.Schema<IStripeAccount>(
@@ -47,15 +48,15 @@ const StripeAccountSchema = new mongoose.Schema<IStripeAccount>(
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
-StripeAccountSchema.index({ stripeAccountId: 1 }, { unique: true })
+StripeAccountSchema.index({ stripeAccountId: 1 }, { unique: true });
 
 // Create the Mongoose Model
 const StripeAccount = mongoose.model<IStripeAccount>(
   'StripeAccount',
-  StripeAccountSchema,
-)
+  StripeAccountSchema
+);
 
-export default StripeAccount
+export default StripeAccount;

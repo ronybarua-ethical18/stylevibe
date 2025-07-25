@@ -1,50 +1,56 @@
-'use client'
+'use client';
 
-import React, { ReactNode, useState } from 'react'
-import { Modal } from 'antd'
-import SVButton from '../SVButton'
-import SVBookingDetails from './SVBookingDetails'
-import PaymentWrapper from '../Forms/PaymentForm'
-import SVStepper from './SVStepper'
-import { BiArrowBack } from 'react-icons/bi'
-import moment from 'moment'
+import { Modal } from 'antd';
+import moment from 'moment';
+import React, { ReactNode, useState } from 'react';
+import { BiArrowBack } from 'react-icons/bi';
+
+import PaymentWrapper from '../Forms/PaymentForm';
+import SVButton from '../SVButton';
+
+import SVBookingDetails from './SVBookingDetails';
+import SVStepper from './SVStepper';
 
 const SVBookingConfirmationModal = ({
   width,
   service,
 }: {
-  width: string | number
-  service: any
+  width: string | number;
+  service: any;
 }): ReactNode => {
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(!open)
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(!open);
 
   // Update the default date to use UTC
-  const [selectedDate, setSelectedDate] = useState(moment.utc().format('YYYY-MM-DD'))
+  const [selectedDate, setSelectedDate] = useState(
+    moment.utc().format('YYYY-MM-DD')
+  );
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<{
-    _id: string
-    startTime: string
-    maxResourcePerHour: number
-  }>()
+    _id: string;
+    startTime: string;
+    maxResourcePerHour: number;
+  }>();
 
-  const [selectedMethod, setSelectedMethod] = useState<any>()
+  const [selectedMethod, setSelectedMethod] = useState<any>();
 
   const handleSelect = (item: { item: any }) => {
-    setSelectedMethod(item)
-  }
+    setSelectedMethod(item);
+  };
 
-  const [current, setCurrent] = useState(0)
+  const [current, setCurrent] = useState(0);
   const next = () => {
-    setCurrent(current + 1)
-  }
+    setCurrent(current + 1);
+  };
 
   const prev = () => {
-    setCurrent(current - 1)
-  }
+    setCurrent(current - 1);
+  };
 
-  const processingFees = Number(((service?.price * 2.9) / 100 + 0.3).toFixed(2))
-  const totalAmount = Number((processingFees + service?.price).toFixed(2))
+  const processingFees = Number(
+    ((service?.price * 2.9) / 100 + 0.3).toFixed(2)
+  );
+  const totalAmount = Number((processingFees + service?.price).toFixed(2));
 
   const steps = [
     {
@@ -77,9 +83,9 @@ const SVBookingConfirmationModal = ({
         />
       ),
     },
-  ]
+  ];
 
-  console.log("selected method", selectedMethod)
+  console.log('selected method', selectedMethod);
 
   return (
     <div>
@@ -123,7 +129,7 @@ const SVBookingConfirmationModal = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default SVBookingConfirmationModal
+export default SVBookingConfirmationModal;

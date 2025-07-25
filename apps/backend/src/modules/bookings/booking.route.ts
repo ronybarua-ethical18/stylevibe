@@ -1,27 +1,26 @@
-import express from 'express'
-import auth from '../../middlewares/auth'
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import validateRequest from '../../middlewares/validateRequest'
-import { BookingValidation } from './booking.validation'
-import { BookingController } from './booking.controller'
-const router = express.Router()
+import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
+import { BookingController } from './booking.controller';
+import { BookingValidation } from './booking.validation';
+import { router } from '@/utils/typedRouter';
 
 router.post(
   '/',
   auth(ENUM_USER_ROLE.CUSTOMER),
   validateRequest(BookingValidation.createBookingZodSchema),
-  BookingController.createBooking,
-)
+  BookingController.createBooking
+);
 router.get(
   '/',
   auth(
     ENUM_USER_ROLE.SELLER,
     ENUM_USER_ROLE.ADMIN,
     ENUM_USER_ROLE.SUPER_ADMIN,
-    ENUM_USER_ROLE.CUSTOMER,
+    ENUM_USER_ROLE.CUSTOMER
   ),
-  BookingController.getAllBookings,
-)
+  BookingController.getAllBookings
+);
 
 router.get(
   '/:bookingId',
@@ -29,30 +28,26 @@ router.get(
     ENUM_USER_ROLE.SELLER,
     ENUM_USER_ROLE.ADMIN,
     ENUM_USER_ROLE.SUPER_ADMIN,
-    ENUM_USER_ROLE.CUSTOMER,
+    ENUM_USER_ROLE.CUSTOMER
   ),
-  BookingController.getBooking,
-)
+  BookingController.getBooking
+);
 
 router.patch(
   '/:serviceId',
-  auth(
-    ENUM_USER_ROLE.SELLER
-  ),
-  BookingController.updateBooking,
-)
+  auth(ENUM_USER_ROLE.SELLER),
+  BookingController.updateBooking
+);
 router.put(
   '/update-many',
-  auth(
-    ENUM_USER_ROLE.SELLER
-  ),
-  BookingController.updateBookings,
-)
+  auth(ENUM_USER_ROLE.SELLER),
+  BookingController.updateBookings
+);
 
 router.delete(
   '/:serviceId',
   auth(ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
-  BookingController.deleteBooking,
-)
+  BookingController.deleteBooking
+);
 
-export const BookingRoutes = router
+export const BookingRoutes = router;

@@ -1,62 +1,72 @@
-'use client'
+'use client';
 
-import SVPageHeading from '@/components/SVPageHeading'
-import SVBreadCrumb from '@/components/ui/SVBreadCrumb'
-import React, { useState, useCallback } from 'react'
-import SVPagination from '../ui/SVPagination'
-import { SegmentedValue } from 'antd/es/segmented'
-import useDebounce from '@/hooks/useDebounce'
-import { getQueryParams } from '@/utils/getQueryParams'
-import SVStatusChip from '../SVStatusChip'
-import { transformingText } from '@/utils/transformingText'
-import { IoEyeOutline } from 'react-icons/io5'
-import SVModal from '../ui/SVModal'
-import { useRouter } from 'next/navigation'
-import { getUserInfo } from '@/services/auth.service'
-import { getBreadcrumbItems } from '@/utils/getBreadcumItems'
-import { useDispatch } from 'react-redux'
-import { showModal } from '@/redux/slices/globalSlice'
-import { LiaEdit } from 'react-icons/lia'
-import SVTransactionTabs from './components/SVTransactionTabs'
-import { useGetTransactionsQuery } from '@/redux/api/transactions'
+import { SegmentedValue } from 'antd/es/segmented';
+import React, { useState, useCallback, useEffect } from 'react';
+import { IoEyeOutline } from 'react-icons/io5';
+import { useDispatch } from 'react-redux';
 
-export default function Transactions() {
-  const [activeTab, setActiveTab] = useState<SegmentedValue>('1')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [pageNumber, setPageNumber] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [selectedRecord, setSelectedRecord] = useState<any>(null)
-  const userDetails: any = getUserInfo()
+import SVStatusChip from '../SVStatusChip';
+import SVModal from '../ui/SVModal';
+import SVPagination from '../ui/SVPagination';
 
-  const router = useRouter()
-  const dispatch = useDispatch()
+import SVTransactionTabs from './components/SVTransactionTabs';
+
+import SVPageHeading from '@/components/SVPageHeading';
+import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
+import useDebounce from '@/hooks/useDebounce';
+import { useGetTransactionsQuery } from '@/redux/api/transactions';
+import { showModal } from '@/redux/slices/globalSlice';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
+import { getQueryParams } from '@/utils/getQueryParams';
+import { transformingText } from '@/utils/transformingText';
+
+export default function Transactions({
+  fromDashboard = false,
+}: {
+  fromDashboard?: boolean;
+}) {
+  const [activeTab, setActiveTab] = useState<SegmentedValue>('1');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  // Set initial limit based on fromDashboard
+  const [limit, setLimit] = useState(fromDashboard ? 5 : 10);
+  const [selectedRecord, setSelectedRecord] = useState<any>(null);
+  const dispatch = useDispatch();
+
+  // Ensure limit is always 5 if fromDashboard is true
+  useEffect(() => {
+    if (fromDashboard) setLimit(5);
+  }, [fromDashboard]);
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPageNumber(page)
-    setLimit(pageSize)
-  }
+    setPageNumber(page);
+    if (!fromDashboard) setLimit(pageSize);
+  };
 
-  const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 })
+  const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 });
   const { query } = getQueryParams(
     pageNumber,
     limit,
     debouncedSearchTerm,
     activeTab,
     'transactions'
-  )
+  );
 
-  const { data: transactions, isLoading: transactionLoading } = useGetTransactionsQuery({
-    ...query,
-  })
+  const { data: transactions, isLoading: transactionLoading } =
+    useGetTransactionsQuery({
+      ...query,
+    });
 
-  const handleEditClick = useCallback((record: any) => {
-    setSelectedRecord(record)
-    dispatch(showModal(true))
-  }, [dispatch])
+  const handleEditClick = useCallback(
+    (record: any) => {
+      setSelectedRecord(record);
+      dispatch(showModal(true));
+    },
+    [dispatch]
+  );
 
-  console.log("transactions", transactions)
-
-  const columns = [
+  // Define all columns
+  const allColumns = [
     // {
     //   title: 'Transaction ID',
     //   render: function (data: any) {
@@ -66,18 +76,21 @@ export default function Transactions() {
     {
       title: 'Payment Intent ID',
       dataIndex: 'stripePaymentIntentId',
+      key: 'stripePaymentIntentId',
     },
     {
       title: 'Booking ID',
       render: function (data: any) {
-        return <>{data?.booking?.bookingId || "SVBA2345-43242342"}</>
-      }
+        return <>{data?.booking?.bookingId || 'SVBA2345-43242342'}</>;
+      },
+      key: 'bookingId',
     },
     {
       title: 'Service Name',
       render: function (data: any) {
-        return <>{data?.service?.name || "SVBA2345-43242342"}</>
-      }
+        return <>{data?.service?.name || 'SVBA2345-43242342'}</>;
+      },
+      key: 'serviceName',
     },
     // {
     //   title: 'Seller',
@@ -88,24 +101,29 @@ export default function Transactions() {
     {
       title: 'Customer',
       render: function (data: any) {
-        return <>{data?.customer?.email || "N/A"}</>
+        return <>{data?.customer?.email || 'N/A'}</>;
       },
+      key: 'customer',
     },
     {
       title: 'Payment Method',
       dataIndex: 'paymentMethod',
+      key: 'paymentMethod',
     },
     {
       title: 'Payout Amount',
       dataIndex: 'sellerAmount',
+      key: 'sellerAmount',
     },
     {
       title: 'Application Fee',
       dataIndex: 'applicationFee',
+      key: 'applicationFee',
     },
     {
       title: 'Processing Fee',
       dataIndex: 'stripeProcessingFee',
+      key: 'stripeProcessingFee',
     },
     {
       title: 'Status',
@@ -114,6 +132,7 @@ export default function Transactions() {
       render: (status: string) => (
         <SVStatusChip status={transformingText(status)} />
       ),
+      key: 'status',
     },
     {
       title: 'Action',
@@ -128,17 +147,37 @@ export default function Transactions() {
           </div>
         </div>
       ),
+      key: 'action',
     },
-  ]
+  ];
+
+  // Filter columns based on fromDashboard
+  const columns = fromDashboard
+    ? allColumns.filter(
+        (col) =>
+          ![
+            'stripePaymentIntentId',
+            'applicationFee',
+            'stripeProcessingFee',
+            'paymentMethod',
+            'action',
+          ].includes(col.key as string)
+      )
+    : allColumns;
 
   return (
     <div>
-      <SVBreadCrumb items={getBreadcrumbItems('services')} />
-      <SVPageHeading
-        pageTitle="Transactions"
-        pageSubTitle="See your active and inactive transactions and make changes"
-        numberOfItems={`${transactions?.meta?.total || 0} transactions`}
-      />
+      {/* Only show these if not fromDashboard */}
+      {!fromDashboard && (
+        <>
+          <SVBreadCrumb items={getBreadcrumbItems('services')} />
+          <SVPageHeading
+            pageTitle="Transactions"
+            pageSubTitle="See your active and inactive transactions and make changes"
+            numberOfItems={`${transactions?.meta?.total || 0} transactions`}
+          />
+        </>
+      )}
       <SVTransactionTabs
         columns={columns}
         activeTab={activeTab}
@@ -146,22 +185,29 @@ export default function Transactions() {
         transactionsLoading={transactionLoading}
         setActiveTab={setActiveTab}
         setSearchTerm={setSearchTerm}
+        fromDashboard={fromDashboard}
       />
 
-      <div className="mt-12">
-        <SVPagination
-          onPageChange={handlePageChange}
-          defaultCurrent={1}
-          total={transactions?.meta?.total}
-        />
-      </div>
-      {selectedRecord && (
-        <div className='visibility: hidden'><SVModal
-        width="800px"
-        data={selectedRecord}
-        setSelectedRecord={setSelectedRecord}
-      /></div>
+      {!fromDashboard && (
+        <>
+          <div className="mt-12">
+            <SVPagination
+              onPageChange={handlePageChange}
+              defaultCurrent={1}
+              total={transactions?.meta?.total}
+            />
+          </div>
+          {selectedRecord && (
+            <div className="visibility: hidden">
+              <SVModal
+                width="800px"
+                data={selectedRecord}
+                setSelectedRecord={setSelectedRecord}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
-  )
+  );
 }

@@ -3,7 +3,7 @@ export const getQueryParams = (
   limit: number = 50,
   debouncedSearchTerm: string = '',
   activeTab: any = '1',
-  queryFor: string = 'service',
+  queryFor: string = 'service'
 ) => {
   const status =
     queryFor === 'transactions'
@@ -28,13 +28,13 @@ export const getQueryParams = (
             ? 'PENDING'
             : activeTab === '4'
               ? 'REJECTED'
-              : undefined
+              : undefined;
 
-  const query: Record<string, any> = {}
-  query['page'] = pageNumber
-  query['limit'] = limit
-  query['searchTerm'] = debouncedSearchTerm
-  query['status'] = status
+  const query: Record<string, any> = {};
+  query['page'] = pageNumber;
+  query['limit'] = limit;
+  query['searchTerm'] = debouncedSearchTerm;
+  query['status'] = status;
 
-  return { query }
-}
+  return { query };
+};

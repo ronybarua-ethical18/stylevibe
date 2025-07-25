@@ -1,19 +1,20 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { message, Select, Input } from 'antd'
-import SVButton from '../SVButton'
-import { useUpdateServiceMutation } from '@/redux/api/services'
-import { MdMiscellaneousServices } from 'react-icons/md' // Import the new icon
-import Form from '../Forms/Form'
-import FormSelectField from '../Forms/FormSelectField'
-import FormTextArea from '../Forms/FormTextArea'
-import { useUpdateBookingMutation } from '@/redux/api/bookings'
+import { message } from 'antd';
+import React from 'react';
+import { MdMiscellaneousServices } from 'react-icons/md'; // Import the new icon
+
+import Form from '../Forms/Form';
+import FormSelectField from '../Forms/FormSelectField';
+import FormTextArea from '../Forms/FormTextArea';
+import SVButton from '../SVButton';
+
+import { useUpdateBookingMutation } from '@/redux/api/bookings';
 
 interface BookingStatusUpdateProps {
-  bookingId: string
-  serviceName: string // Add this prop
-  onClose: () => void
+  bookingId: string;
+  serviceName: string; // Add this prop
+  onClose: () => void;
 }
 
 const BookingStatusUpdate: React.FC<BookingStatusUpdateProps> = ({
@@ -21,25 +22,25 @@ const BookingStatusUpdate: React.FC<BookingStatusUpdateProps> = ({
   serviceName,
   onClose,
 }) => {
-  const [updateBooking, { isLoading }] = useUpdateBookingMutation()
+  const [updateBooking, { isLoading }] = useUpdateBookingMutation();
 
   const onFinish = async (values: any) => {
     try {
       await updateBooking({
         id: bookingId,
         data: { status: values.status, notes: values.notes },
-      }).unwrap()
-      message.success('Booking status updated successfully')
-      onClose()
+      }).unwrap();
+      message.success('Booking status updated successfully');
+      onClose();
     } catch (error) {
-      message.error('Failed to update booking status')
+      message.error('Failed to update booking status');
     }
-  }
+  };
 
   const statusOptions = [
     { label: 'Completed', value: 'COMPLETED' },
     { label: 'Cancelled', value: 'CANCELLED' },
-  ]
+  ];
 
   return (
     <div className="p-8 bg-white rounded-lg shadow-md">
@@ -77,7 +78,7 @@ const BookingStatusUpdate: React.FC<BookingStatusUpdateProps> = ({
         />
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default BookingStatusUpdate
+export default BookingStatusUpdate;

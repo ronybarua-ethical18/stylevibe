@@ -1,7 +1,8 @@
-import React from 'react'
-import HappyClient from '../../../public/client.png'
-import Image from 'next/image'
-import { CountUp } from 'use-count-up'
+import Image from 'next/image';
+import React from 'react';
+import { CountUp } from 'use-count-up';
+
+import HappyClient from '../../../public/client.png';
 
 export default function SVTotalClients() {
   return (
@@ -46,23 +47,35 @@ export default function SVTotalClients() {
       <div className="w-3/4 m-auto mt-14 flex items-center">
         <div>
           <h1 className="text-4xl text-customPrimary-800">
-            <CountUp thousandsSeparator="," isCounting end={1320} duration={3.2} /> +
+            <CountUp
+              thousandsSeparator=","
+              isCounting
+              end={1320}
+              duration={3.2}
+            />{' '}
+            +
           </h1>
-          <h1 className="text-base text-gray-600 font-medium">Happy Customers</h1>
+          <h1 className="text-base text-gray-600 font-medium">
+            Happy Customers
+          </h1>
         </div>
-        <div className='mx-16'>
+        <div className="mx-16">
           <h1 className="text-4xl text-customPrimary-800">
             <CountUp isCounting end={330} duration={3.2} /> +
           </h1>
-          <h1 className="text-base text-gray-600 font-medium">Number of shops</h1>
+          <h1 className="text-base text-gray-600 font-medium">
+            Number of shops
+          </h1>
         </div>
         <div>
           <h1 className="text-4xl text-customPrimary-800">
             <CountUp isCounting end={250} duration={3.2} /> +
           </h1>
-          <h1 className="text-base text-gray-600 font-medium">Professional services</h1>
+          <h1 className="text-base text-gray-600 font-medium">
+            Professional services
+          </h1>
         </div>
       </div>
     </div>
-  )
+  );
 }

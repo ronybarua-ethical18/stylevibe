@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 // Define the Zod schema for Service
 const ServiceZodSchema = z.object({
@@ -10,7 +10,7 @@ const ServiceZodSchema = z.object({
     images: z.array(
       z.object({
         img: z.string({ required_error: 'Image link should be valid' }),
-      }),
+      })
     ),
     description: z.string({ required_error: 'Description required' }),
     availability: z.boolean().optional(),
@@ -22,12 +22,12 @@ const ServiceZodSchema = z.object({
           comment: z.string(),
           user: z.string({ required_error: 'User ID is required' }),
           date: z.date(),
-        }),
+        })
       )
       .optional(),
   }),
-})
+});
 
 export const ServiceValidation = {
   ServiceZodSchema,
-}
+};

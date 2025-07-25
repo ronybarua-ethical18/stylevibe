@@ -1,19 +1,19 @@
-import { createApi } from '@reduxjs/toolkit/query'
-import type { BaseQueryFn } from '@reduxjs/toolkit/query'
-import type { AxiosRequestConfig, AxiosError } from 'axios'
-import { axiosInstance } from './axiosInstanc'
+import type { BaseQueryFn } from '@reduxjs/toolkit/query';
+import type { AxiosRequestConfig, AxiosError } from 'axios';
+
+import { axiosInstance } from './axiosInstanc';
 
 export const axiosBaseQuery =
   (
-    { baseUrl }: { baseUrl: string } = { baseUrl: '' },
+    { baseUrl }: { baseUrl: string } = { baseUrl: '' }
   ): BaseQueryFn<
     {
-      url: string
-      method?: AxiosRequestConfig['method']
-      data?: AxiosRequestConfig['data']
-      params?: AxiosRequestConfig['params']
-      headers?: AxiosRequestConfig['headers']
-      contentType?: string
+      url: string;
+      method?: AxiosRequestConfig['method'];
+      data?: AxiosRequestConfig['data'];
+      params?: AxiosRequestConfig['params'];
+      headers?: AxiosRequestConfig['headers'];
+      contentType?: string;
     },
     unknown,
     unknown
@@ -37,15 +37,15 @@ export const axiosBaseQuery =
           ...headers,
         },
         withCredentials: true,
-      })
-      return { data: result.data }
+      });
+      return { data: result.data };
     } catch (axiosError) {
-      const err = axiosError as AxiosError
+      const err = axiosError as AxiosError;
       return {
         error: {
           status: err.response?.status,
           data: err.response?.data || err.message,
         },
-      }
+      };
     }
-  }
+  };

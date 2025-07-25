@@ -1,8 +1,9 @@
-import Image from 'next/image'
-import React from 'react'
-import moment from 'moment'
-import { reviews } from '@/utils/dummyServices'
-import SVRating from '@/components/ui/SVRating'
+import moment from 'moment';
+import Image from 'next/image';
+import React from 'react';
+
+import SVRating from '@/components/ui/SVRating';
+import { reviews } from '@/utils/dummyServices';
 
 export default function SVReviews() {
   return reviews.map((review: any) => (
@@ -37,5 +38,5 @@ export default function SVReviews() {
         </p>
       </div>
     </div>
-  ))
+  ));
 }

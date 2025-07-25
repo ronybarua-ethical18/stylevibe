@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 // Define the Zod schema for Service
 const createBlogZodSchema = z.object({
@@ -11,8 +11,8 @@ const createBlogZodSchema = z.object({
       .array(z.string())
       .min(1, { message: 'At least one tag is required' }),
   }),
-})
+});
 
 export const BlogValidation = {
   createBlogZodSchema,
-}
+};

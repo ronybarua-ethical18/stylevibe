@@ -1,6 +1,6 @@
 // antdCustomTheme.ts
 
-import { ThemeConfig } from 'antd'
+import { ThemeConfig } from 'antd';
 
 const customTheme: ThemeConfig = {
   token: {
@@ -40,7 +40,7 @@ const customTheme: ThemeConfig = {
     },
     // Add more component-specific customizations
   },
-}
+};
 
 // You can also define custom styles that are not part of Ant Design's theme system
 const customStyles = {
@@ -51,6 +51,6 @@ const customStyles = {
     },
   },
   // Add more custom styles here
-}
+};
 
-export { customTheme, customStyles }
+export { customTheme, customStyles };

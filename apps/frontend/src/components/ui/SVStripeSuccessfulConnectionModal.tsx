@@ -1,15 +1,15 @@
-import React from 'react'
-import { Modal, Result, Typography, List, Button } from 'antd'
-import { CheckCircleFilled, RightCircleOutlined } from '@ant-design/icons'
+import { CheckCircleFilled, RightCircleOutlined } from '@ant-design/icons';
+import { Modal, Result, Typography, List, Button } from 'antd';
+import React from 'react';
 
-const { Paragraph, Text } = Typography
+const { Paragraph, Text } = Typography;
 
 const SVStripeSuccessfulConnectionModal = ({
   visible,
   onClose,
 }: {
-  visible: boolean
-  onClose: () => void
+  visible: boolean;
+  onClose: () => void;
 }) => {
   return (
     <>
@@ -19,7 +19,7 @@ const SVStripeSuccessfulConnectionModal = ({
         footer={null}
         width={800}
         centered
-        bodyStyle={{ padding: 0 }}
+        style={{ padding: 0 }}
       >
         <Result
           icon={<CheckCircleFilled style={{ color: '#52c41a' }} />}
@@ -52,7 +52,7 @@ const SVStripeSuccessfulConnectionModal = ({
                 'Webhook endpoints are configured for real-time updates',
                 'Your dashboard is set up for easy management',
               ]}
-              renderItem={item => (
+              renderItem={(item) => (
                 <List.Item>
                   <RightCircleOutlined
                     style={{ color: '#1890ff', marginRight: 8 }}
@@ -78,7 +78,7 @@ const SVStripeSuccessfulConnectionModal = ({
         </Result>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default SVStripeSuccessfulConnectionModal
+export default SVStripeSuccessfulConnectionModal;

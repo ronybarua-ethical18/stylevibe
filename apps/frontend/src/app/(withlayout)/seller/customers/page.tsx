@@ -1,14 +1,10 @@
-
-import dynamic from 'next/dynamic'
-import React from 'react'
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 const CustomerPage = dynamic(() => import('@/components/Customers'), {
-  ssr: false, 
-})
-
+  ssr: false,
+});
 
 export default function Customers() {
- return (
-  <CustomerPage />
-  )
+  return <CustomerPage />;
 }

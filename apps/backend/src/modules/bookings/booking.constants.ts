@@ -4,4 +4,4 @@ export const filterableFields = [
   'category',
   'subCategory',
   'status',
-]
+];

@@ -1,39 +1,49 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginReact from "eslint-plugin-react";
-import globals from "globals";
 import { config as baseConfig } from "./base.js";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 
 /**
- * A custom ESLint configuration for libraries that use React.
+ * ESLint configuration for internal React components/libraries.
  *
- * @type {import("eslint").Linter.Config[]} */
+ * @type {import("eslint").Linter.FlatConfig[]}
+ */
 export const config = [
   ...baseConfig,
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
   {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      react: reactPlugin,
+      "react-hooks": reactHooksPlugin,
+    },
+    rules: {
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "no-console": "warn",
+
+      // More lenient for component libraries
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn",
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
     languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
-        ...globals.serviceworker,
-        ...globals.browser,
+        React: "readonly",
+        JSX: "readonly",
       },
     },
   },
   {
-    plugins: {
-      "react-hooks": pluginReactHooks,
-    },
-    settings: { react: { version: "detect" } },
-    rules: {
-      ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
-    },
+    ignores: ["dist/**", "build/**", "node_modules/**"],
   },
 ];

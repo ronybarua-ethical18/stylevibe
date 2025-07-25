@@ -1,9 +1,6 @@
-import { Col, Row } from 'antd'
-import React from 'react'
-import SVNavMenus from './SVNavMenus'
-import SVButton from '../SVButton'
-import Image from 'next/image'
-import HeaderImage from '@/assets/2.png'
+import React from 'react';
+
+import SVButton from '../SVButton';
 
 export default function SVHeroSection() {
   return (
@@ -25,8 +22,13 @@ export default function SVHeroSection() {
         title="GET STARTED"
         type="primary"
         className="mt-5 border border-r-4 text-customPrimary-800"
-        style={{ background:'white', fontWeight:'bold', maxWidth:'150px', color:"#4d3ca3"}}
+        style={{
+          background: 'white',
+          fontWeight: 'bold',
+          maxWidth: '150px',
+          color: '#4d3ca3',
+        }}
       />
     </div>
-  )
+  );
 }

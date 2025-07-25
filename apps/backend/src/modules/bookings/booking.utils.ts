@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment';
 
 export const bookingsAggregationPipeline = (nameRegex: RegExp) => {
   return [
@@ -58,55 +58,55 @@ export const bookingsAggregationPipeline = (nameRegex: RegExp) => {
         ],
       },
     },
-  ]
-}
+  ];
+};
 
 export const areBothTimesInBetween = (
   startTime: string,
   endTime: string,
   openingHour: string,
-  closingHour: string,
+  closingHour: string
 ) => {
-  const time1 = moment(startTime, 'HH:mm')
-  const time2 = moment(endTime, 'HH:mm')
-  const openingTime = moment(openingHour, 'HH:mm')
-  const closingTime = moment(closingHour, 'HH:mm')
+  const time1 = moment(startTime, 'HH:mm');
+  const time2 = moment(endTime, 'HH:mm');
+  const openingTime = moment(openingHour, 'HH:mm');
+  const closingTime = moment(closingHour, 'HH:mm');
 
   return (
     time1.isBetween(openingTime, closingTime, null, '[]') &&
     time2.isBetween(openingTime, closingTime, null, '[]')
-  )
-}
+  );
+};
 
 export const generateId = (prefix: string, amount: number): string => {
   return `${prefix}${Math.floor(amount)}-${Math.floor(
-    10000000 + Math.random() * 90000000,
-  )}`
-}
+    10000000 + Math.random() * 90000000
+  )}`;
+};
 
 export const isServiceDateTimeAtLeastOneHourInPast = (
   serviceDateStr: string,
-  serviceTimeStr: string,
+  serviceTimeStr: string
 ) => {
-  const serviceDate = moment(serviceDateStr)
-  const serviceTimeMoment = moment(serviceTimeStr, 'h:mmA')
+  const serviceDate = moment(serviceDateStr);
+  const serviceTimeMoment = moment(serviceTimeStr, 'h:mmA');
 
   // Combine service date with service time
   const serviceDateTime = serviceDate
     .hours(serviceTimeMoment.hours())
-    .minutes(serviceTimeMoment.minutes())
+    .minutes(serviceTimeMoment.minutes());
 
   // Get the current date and time
-  const currentDateTime = moment()
+  const currentDateTime = moment();
 
   // Subtract one hour from the current date and time for comparison
-  const oneHourAfterServiceTime = serviceDateTime.clone().add(1, 'hour')
+  const oneHourAfterServiceTime = serviceDateTime.clone().add(1, 'hour');
 
   // Check if the current time is at least one hour after the service time
   if (currentDateTime.isBefore(oneHourAfterServiceTime)) {
-    return false
+    return false;
   }
 
   // Return true if the current time is at least one hour after the service date and time
-  return true
-}
+  return true;
+};

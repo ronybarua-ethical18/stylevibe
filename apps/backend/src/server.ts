@@ -1,39 +1,41 @@
-import mongoose from 'mongoose'
-import config from './config/index'
-import app from './app'
-import ApiError from './errors/ApiError'
-import http from 'http'
+import http from 'http';
+
+import mongoose from 'mongoose';
+
+import app from './app';
+import config from './config/index';
+import ApiError from './errors/ApiError';
 // import { redis } from './config/redis'
 
-let server: http.Server
+let server: http.Server;
 
 function getMongoUrl() {
   if (config.env === 'development') {
-    return config.database_url
+    return config.database_url;
   } else {
-    return config.production_db_url
+    return config.production_db_url;
   }
 }
 
-const url: string = getMongoUrl() || ''
+const url: string = getMongoUrl() || '';
 
 //server connect
 mongoose.connect(url).then(() => {
-  console.log('<===== Database Connected Successfully Yahoo! =====>')
+  console.log('<===== Database Connected Successfully Yahoo! =====>');
   server = app.listen(config.port, () => {
-    console.log(`Listening to port ${config.port}`)
-  })
-})
+    console.log(`Listening to port ${config.port}`);
+  });
+});
 const serverExitHandler = () => {
   if (server) {
     server.close(() => {
-      console.log('server closed')
-      process.exit(1)
-    })
+      console.log('server closed');
+      process.exit(1);
+    });
   } else {
-    process.exit(1)
+    process.exit(1);
   }
-}
+};
 
 // redis connect
 // redis.on('connect', () =>{
@@ -43,16 +45,16 @@ const serverExitHandler = () => {
 //  redis.set("test", JSON.stringify({test:"Test value 2"}))
 
 const unexpectedErrorHandler = (error: string) => {
-  serverExitHandler()
-  throw new ApiError(500, error)
-}
+  serverExitHandler();
+  throw new ApiError(500, error);
+};
 
-process.on('uncaughtException', unexpectedErrorHandler)
-process.on('unhandledRejection', unexpectedErrorHandler)
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received')
+  console.log('SIGTERM received');
   if (server) {
-    server.close()
+    server.close();
   }
-})
+});

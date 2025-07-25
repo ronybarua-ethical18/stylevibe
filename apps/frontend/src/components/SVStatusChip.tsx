@@ -23,13 +23,14 @@ export default function SVStatusChip({ status }: { status: string }) {
   switch (status) {
     case 'pending':
       return (
-        <div style={{ ...commonStyles, background: '#fff7cf', color: '#eda006' }}>
+        <div
+          style={{ ...commonStyles, background: '#fff7cf', color: '#eda006' }}
+        >
           <div style={{ ...flexContainerStyles }}>
             <div
               style={{
                 ...circleStyles,
                 background: '#eda006',
-               
               }}
             ></div>
             {status}
@@ -38,13 +39,14 @@ export default function SVStatusChip({ status }: { status: string }) {
       );
     case 'Booked':
       return (
-        <div style={{ ...commonStyles, background: ' #e6fff9', color: ' #00b359' }}>
+        <div
+          style={{ ...commonStyles, background: ' #e6fff9', color: ' #00b359' }}
+        >
           <div style={{ ...flexContainerStyles }}>
             <div
               style={{
                 ...circleStyles,
                 background: '#00b359',
-               
               }}
             ></div>
             {status}
@@ -55,13 +57,18 @@ export default function SVStatusChip({ status }: { status: string }) {
     case 'Rejected':
     case 'Inactive':
       return (
-        <div style={{ ...commonStyles, background: '  #ffebe6', color: '  #ff5c33' }}>
+        <div
+          style={{
+            ...commonStyles,
+            background: '  #ffebe6',
+            color: '  #ff5c33',
+          }}
+        >
           <div style={{ ...flexContainerStyles }}>
             <div
               style={{
                 ...circleStyles,
                 background: '#ff5c33',
-                
               }}
             ></div>
             {status}
@@ -70,13 +77,18 @@ export default function SVStatusChip({ status }: { status: string }) {
       );
     default:
       return (
-        <div style={{ ...commonStyles, background: '  #e9f1ff', color: '  #0661ff' }}>
+        <div
+          style={{
+            ...commonStyles,
+            background: '  #e9f1ff',
+            color: '  #0661ff',
+          }}
+        >
           <div style={{ ...flexContainerStyles }}>
             <div
               style={{
                 ...circleStyles,
                 background: '#0661ff',
-               
               }}
             ></div>
             {status}

@@ -1,8 +1,7 @@
-import React from 'react'
-import { SegmentedValue } from 'antd/es/segmented'
-import { useGetServicesQuery } from '@/redux/api/services'
-import SharedTabs from '@/components/ui/SVSharedTabs'
-import useDebounce from '@/hooks/useDebounce'
+import { SegmentedValue } from 'antd/es/segmented';
+import React from 'react';
+
+import SharedTabs from '@/components/ui/SVSharedTabs';
 
 const SVServiceTabs = ({
   columns,
@@ -12,12 +11,12 @@ const SVServiceTabs = ({
   setSearchTerm,
   servicesLoading,
 }: {
-  columns: any
-  services:any
-  activeTab: any
-  setActiveTab: any
-  setSearchTerm: any
-  servicesLoading: any
+  columns: any;
+  services: any;
+  activeTab: any;
+  setActiveTab: any;
+  setSearchTerm: any;
+  servicesLoading: any;
 }) => {
   const items = [
     {
@@ -47,15 +46,15 @@ const SVServiceTabs = ({
       chipValue: services?.meta?.totalRejected || 0,
       activeColor: '#ff5c33',
     },
-  ]
+  ];
 
   const handleTabChange = (value: SegmentedValue) => {
-    setActiveTab(value)
-  }
+    setActiveTab(value);
+  };
 
   const handleSearch = (term: string) => {
-    setSearchTerm(term)
-  }
+    setSearchTerm(term);
+  };
 
   return (
     <SharedTabs
@@ -68,7 +67,7 @@ const SVServiceTabs = ({
       onTabChange={handleTabChange}
       onSearch={handleSearch}
     />
-  )
-}
+  );
+};
 
-export default SVServiceTabs
+export default SVServiceTabs;

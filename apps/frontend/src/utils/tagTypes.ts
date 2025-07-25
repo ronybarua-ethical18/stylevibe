@@ -9,4 +9,4 @@ export const tagTypesList = [
   tagTypes.SERVICES,
   tagTypes.BOOKINGS,
   tagTypes.TRANSACTIONS,
-]
+];

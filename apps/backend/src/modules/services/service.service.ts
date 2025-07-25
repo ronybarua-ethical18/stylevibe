@@ -1,164 +1,164 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import httpStatus from 'http-status'
-import ApiError from '../../errors/ApiError'
-import { IService, ServiceStatusList } from './service.interface'
-import { ServiceModel } from './service.model'
-import { JwtPayload } from 'jsonwebtoken'
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import mongoose, { SortOrder, Types } from 'mongoose'
-import { paginationHelpers } from '../../helpers/pagination'
+import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
+import mongoose, { SortOrder, Types } from 'mongoose';
+
+import ApiError from '../../errors/ApiError';
+import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IFilterOptions,
   IGenericResponse,
   IPaginationOptions,
-} from '../../shared/interfaces/common.interface'
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation'
-import ShopModel from '../shop/shop.model'
-import { getTotals } from './service.utils'
+} from '../../shared/interfaces/common.interface';
+import ShopModel from '../shop/shop.model';
+
+import { IService, ServiceStatusList } from './service.interface';
+import { ServiceModel } from './service.model';
+import { getTotals } from './service.utils';
 
 const createService = async (
   loggedUser: JwtPayload,
-  servicePayload: IService,
+  servicePayload: IService
 ): Promise<IService> => {
   if (loggedUser.role === ENUM_USER_ROLE.SELLER) {
-    const standardizedServiceName = servicePayload.name.toLowerCase()
+    const standardizedServiceName = servicePayload.name.toLowerCase();
 
     // check if the seller has shop or not
-    const shop = await ShopModel.findOne({ seller: loggedUser.userId })
+    const shop = await ShopModel.findOne({ seller: loggedUser.userId });
 
-    console.log('shop', shop)
-    console.log('logged user', loggedUser)
+    console.log('shop', shop);
+    console.log('logged user', loggedUser);
     // Check if a service with a case-insensitive name already exists
     const existingService = await ServiceModel.findOne({
       name: { $regex: new RegExp('^' + standardizedServiceName + '$', 'i') },
-    })
+    });
 
     if (existingService) {
       throw new ApiError(
         httpStatus.CONFLICT,
-        'Service already created with the name',
-      )
+        'Service already created with the name'
+      );
     }
 
     const createdService = await ServiceModel.create({
       ...servicePayload,
       shop: shop?._id,
       seller: loggedUser.userId,
-    })
-    return createdService
+    });
+    return createdService;
   } else {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'You are not a seller')
+    throw new ApiError(httpStatus.BAD_REQUEST, 'You are not a seller');
   }
-}
+};
 
 const getService = async (
-  serviceId: mongoose.Types.ObjectId,
+  serviceId: mongoose.Types.ObjectId
 ): Promise<IService> => {
   const service = await ServiceModel.findById({ _id: serviceId }).populate(
-    'shop',
-  )
+    'shop'
+  );
 
   if (!service) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
   }
 
-  return service
-}
+  return service;
+};
 const updateService = async (
   loggedUser: JwtPayload,
   serviceId: mongoose.Types.ObjectId,
-  updatePayload: object,
+  updatePayload: object
 ): Promise<IService | null> => {
-  console.log('updatePayload', updatePayload)
+  console.log('updatePayload', updatePayload);
   const queryPayload = {
     _id: serviceId,
   } as {
-    _id: mongoose.Types.ObjectId
-    seller: mongoose.Types.ObjectId
-  }
+    _id: mongoose.Types.ObjectId;
+    seller: mongoose.Types.ObjectId;
+  };
   if (loggedUser.role === ENUM_USER_ROLE.SELLER) {
-    queryPayload.seller = loggedUser.userId
+    queryPayload.seller = loggedUser.userId;
   }
-  const service = await ServiceModel.findOne(queryPayload)
+  const service = await ServiceModel.findOne(queryPayload);
 
   if (!service) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
   }
   const updateService = await ServiceModel.findByIdAndUpdate(
     { _id: serviceId },
     { ...updatePayload },
-    { new: true },
-  )
+    { new: true }
+  );
 
-  return updateService
-}
+  return updateService;
+};
 
 const deleteService = async (
   loggedUser: JwtPayload,
-  serviceId: mongoose.Types.ObjectId,
+  serviceId: mongoose.Types.ObjectId
 ): Promise<void> => {
   const queryPayload: {
-    _id: mongoose.Types.ObjectId
-    seller?: mongoose.Types.ObjectId
+    _id: mongoose.Types.ObjectId;
+    seller?: mongoose.Types.ObjectId;
   } = {
     _id: serviceId,
-  }
+  };
 
   if (loggedUser.role === ENUM_USER_ROLE.SELLER) {
-    queryPayload.seller = loggedUser.userId
+    queryPayload.seller = loggedUser.userId;
   }
 
-  const service = await ServiceModel.findOneAndDelete(queryPayload)
+  const service = await ServiceModel.findOneAndDelete(queryPayload);
 
   if (!service) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
   }
-}
+};
 
 const getAllServices = async (
   loggedUser: JwtPayload,
   queryOptions: IPaginationOptions,
-  filterOptions: IFilterOptions,
+  filterOptions: IFilterOptions
 ): Promise<IGenericResponse<IService[]>> => {
-  let queryPayload = { seller: loggedUser.userId } as any
+  let queryPayload = { seller: loggedUser.userId } as any;
   if (
     loggedUser.role === ENUM_USER_ROLE.ADMIN ||
     loggedUser.role === ENUM_USER_ROLE.SUPER_ADMIN
   ) {
-    queryPayload = {}
+    queryPayload = {};
   }
-  const { searchTerm, ...filterableFields } = filterOptions
+  const { searchTerm, ...filterableFields } = filterOptions;
   const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(queryOptions)
+    paginationHelpers.calculatePagination(queryOptions);
 
-  const sortCondition: { [key: string]: SortOrder } = {}
+  const sortCondition: { [key: string]: SortOrder } = {};
 
   if (sortBy && sortOrder) {
-    sortCondition[sortBy] = sortOrder
+    sortCondition[sortBy] = sortOrder;
   }
 
   const queriesWithFilterableFields = queryFieldsManipulation(
     searchTerm,
     ['name', 'category', 'subCategory', 'status'],
-    filterableFields,
-  )
+    filterableFields
+  );
 
   if (queriesWithFilterableFields.length > 0) {
-    queryPayload.$and = queriesWithFilterableFields
+    queryPayload.$and = queriesWithFilterableFields;
   }
-
-  console.log('filterOptions', filterOptions)
 
   const services = await ServiceModel.find(queryPayload)
     .populate('shop', 'shopName')
     .sort(sortCondition)
     .skip(skip)
-    .limit(limit)
+    .limit(limit);
   const totals = await getTotals(
     ServiceModel as any,
     { seller: new Types.ObjectId(loggedUser.userId) },
-    ['APPROVED', 'PENDING', 'REJECTED'],
-  )
+    ['APPROVED', 'PENDING', 'REJECTED']
+  );
 
   return {
     meta: {
@@ -170,23 +170,23 @@ const getAllServices = async (
       totalRejected: totals['REJECTED'],
     },
     data: services,
-  }
-}
+  };
+};
 const getTopServices = async (
-  queryOptions: IPaginationOptions,
+  queryOptions: IPaginationOptions
 ): Promise<IGenericResponse<IService[]>> => {
-  const { page, limit } = paginationHelpers.calculatePagination(queryOptions)
+  const { page, limit } = paginationHelpers.calculatePagination(queryOptions);
   const services = await ServiceModel.find({
     status: ServiceStatusList.APPROVED,
   })
     .sort({ updatedAt: -1 })
     .populate('shop', 'shopName serviceTime')
-    .limit(limit)
+    .limit(limit);
   const totals = await getTotals(ServiceModel as any, {}, [
     'PENDING',
     'APPROVED',
     'REJECTED',
-  ])
+  ]);
 
   return {
     meta: {
@@ -195,8 +195,8 @@ const getTopServices = async (
       total: totals?.total,
     },
     data: services,
-  }
-}
+  };
+};
 
 export const SaloonService = {
   createService,
@@ -205,4 +205,4 @@ export const SaloonService = {
   deleteService,
   getAllServices,
   getTopServices,
-}
+};

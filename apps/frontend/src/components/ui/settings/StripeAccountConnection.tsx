@@ -1,21 +1,22 @@
-import { useConnectStripeAccountMutation } from '@/redux/api/stripe'
-import { Button } from 'antd'
-import React from 'react'
-import { BsFillBellFill } from 'react-icons/bs'
+import { Button } from 'antd';
+import React from 'react';
+import { BsFillBellFill } from 'react-icons/bs';
+
+import { useConnectStripeAccountMutation } from '@/redux/api/stripe';
 
 function StripeAccountConnection() {
   const [connectStripeAccount, { isLoading }] =
-    useConnectStripeAccountMutation()
+    useConnectStripeAccountMutation();
 
   const handleConnectStripeAccount = async () => {
     try {
-      const response = await connectStripeAccount({}).unwrap()
-      console.log('connect response', response)
-      window.location.href = response?.data?.url
+      const response = await connectStripeAccount({}).unwrap();
+      console.log('connect response', response);
+      window.location.href = response?.data?.url;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <div className="flex justify-between items-center p-5 rounded-md bg-gray-50 border-blue-400 border-2">
       <div className="flex items-center gap-4">
@@ -48,7 +49,7 @@ function StripeAccountConnection() {
         </Button>
       )}
     </div>
-  )
+  );
 }
 
-export default StripeAccountConnection
+export default StripeAccountConnection;
