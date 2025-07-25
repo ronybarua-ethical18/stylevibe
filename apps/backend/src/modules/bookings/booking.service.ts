@@ -3,37 +3,31 @@ import httpStatus from 'http-status';
 // import moment from 'moment'
 
 import { JwtPayload } from 'jsonwebtoken';
-import mongoose, { SortOrder } from 'mongoose';
 import moment from 'moment';
+import mongoose, { SortOrder } from 'mongoose';
 
-import ShopModel from '../shop/shop.model';
-import { IShopDocument } from '../shop/shop.interface';
-import { ShopTimeSlotsServices } from '../shop_timeslots/shop_timeslots.service';
+import { SentryCaptureMessage, SentrySetContext } from '../../config/sentry';
+import ApiError from '../../errors/ApiError';
+import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IFilterOptions,
   IGenericResponse,
   IPaginationOptions,
 } from '../../shared/interfaces/common.interface';
-import { paginationHelpers } from '../../helpers/pagination';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
-import ApiError from '../../errors/ApiError';
-import Transaction from '../transactions/transactions.model';
+import { toFixConverter } from '../../utils/toFixConverter';
+import { getTotals } from '../services/service.utils';
+import { IShopDocument } from '../shop/shop.interface';
+import ShopModel from '../shop/shop.model';
+import { ShopTimeSlotsServices } from '../shop_timeslots/shop_timeslots.service';
 import {
   AmountStatus,
   PaymentMethod,
   TransactionType,
 } from '../transactions/transactions.interface';
-import { getTotals } from '../services/service.utils';
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
-import { SentryCaptureMessage, SentrySetContext } from '../../config/sentry';
-import { toFixConverter } from '../../utils/toFixConverter';
+import Transaction from '../transactions/transactions.model';
 
-import {
-  bookingsAggregationPipeline,
-  generateId,
-  isServiceDateTimeAtLeastOneHourInPast,
-} from './booking.utils';
-import BookingModel from './booking.model';
 import {
   BookingStatusList,
   DayOfWeeks,
@@ -41,6 +35,12 @@ import {
   IPaymentDisbursedEssentials,
   PopulatedBooking,
 } from './booking.interface';
+import BookingModel from './booking.model';
+import {
+  bookingsAggregationPipeline,
+  generateId,
+  isServiceDateTimeAtLeastOneHourInPast,
+} from './booking.utils';
 
 interface IBookingPayload {
   serviceDate: string;

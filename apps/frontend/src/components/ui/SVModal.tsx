@@ -1,16 +1,16 @@
 'use client';
 
-import React, { ReactNode } from 'react';
 import { Modal } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
+import React, { ReactNode } from 'react';
 import { IoEyeOutline } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
 
+import BookingStatusUpdate from '../Bookings/BookingStatusUpdate';
 import CreateService from '../Services/CreateService';
 import ServiceStatusUpdate from '../Services/ServiceStatusUpdate';
-import BookingStatusUpdate from '../Bookings/BookingStatusUpdate';
-import SVTransactionDetails from '../Transactions/components/SVTransactionDetails';
 import SVButton from '../SVButton';
+import SVTransactionDetails from '../Transactions/components/SVTransactionDetails';
 
 import {
   closeModal,

@@ -4,14 +4,14 @@ import { SubmitHandler } from 'react-hook-form';
 
 import SVProfilePhotoUpload from '../SVProfileUpload';
 
+import Form from '@/components/Forms/Form';
 import FormInput from '@/components/Forms/FormInput';
 import FormTextArea from '@/components/Forms/FormTextArea';
-import { getUserInfo } from '@/services/auth.service';
 import {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
 } from '@/redux/api/users';
-import Form from '@/components/Forms/Form';
+import { getUserInfo } from '@/services/auth.service';
 
 type FormValues = {
   firstName: string;

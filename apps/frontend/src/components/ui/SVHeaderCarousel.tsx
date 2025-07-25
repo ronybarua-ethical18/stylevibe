@@ -6,9 +6,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 // You can either import images like this:
-import imgOne from '../../../public/h5.jpg';
 import imgTwo from '../../../public/h3.jpg';
 import imgThree from '../../../public/h4.jpg';
+import imgOne from '../../../public/h5.jpg';
 
 // Or define an array of image paths:
 // const imagePaths = ['/assets/h5.jpg', '/assets/h3.jpg', '/assets/h4.jpg'];

@@ -1,10 +1,10 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 
-import SVSectionTitle from '../SVSectionTitle';
-import Search from '../../../public/search.png';
 import Book from '../../../public/book.png';
 import Enjoy from '../../../public/enjoy.png';
+import Search from '../../../public/search.png';
+import SVSectionTitle from '../SVSectionTitle';
 
 export default function SVHowItWorks() {
   return (

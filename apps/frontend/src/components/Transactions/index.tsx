@@ -1,24 +1,24 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
 import { SegmentedValue } from 'antd/es/segmented';
+import React, { useState, useCallback, useEffect } from 'react';
 import { IoEyeOutline } from 'react-icons/io5';
 import { useDispatch } from 'react-redux';
 
-import SVPagination from '../ui/SVPagination';
 import SVStatusChip from '../SVStatusChip';
 import SVModal from '../ui/SVModal';
+import SVPagination from '../ui/SVPagination';
 
 import SVTransactionTabs from './components/SVTransactionTabs';
 
 import SVPageHeading from '@/components/SVPageHeading';
 import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
 import useDebounce from '@/hooks/useDebounce';
+import { useGetTransactionsQuery } from '@/redux/api/transactions';
+import { showModal } from '@/redux/slices/globalSlice';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
 import { getQueryParams } from '@/utils/getQueryParams';
 import { transformingText } from '@/utils/transformingText';
-import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
-import { showModal } from '@/redux/slices/globalSlice';
-import { useGetTransactionsQuery } from '@/redux/api/transactions';
 
 export default function Transactions({
   fromDashboard = false,

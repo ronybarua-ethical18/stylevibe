@@ -1,3 +1,4 @@
+import { Divider } from 'antd';
 import React from 'react';
 import {
   FaFacebookF,
@@ -5,7 +6,6 @@ import {
   FaLinkedin,
   FaTwitter,
 } from 'react-icons/fa6';
-import { Divider } from 'antd';
 
 import SVNavMenus from './SVNavMenus';
 

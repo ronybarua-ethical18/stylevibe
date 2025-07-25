@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FormInput from '../Forms/FormInput';
 import Form from '../Forms/Form';
+import FormInput from '../Forms/FormInput';
 
 export default function SVNewsLetter() {
   const onSubmit = () => {

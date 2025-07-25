@@ -1,17 +1,17 @@
 import express, { Router } from 'express';
 
 import { AuthRoutes } from '../modules/auth/auth.route';
-import { UserRoutes } from '../modules/user/user.route';
+import { BlogRoutes } from '../modules/blogs/blog.route';
+import { BookingRoutes } from '../modules/bookings/booking.route';
+import { FAQRoutes } from '../modules/faq/faq.route';
+import { FeedbackRoutes } from '../modules/feedbacks/feedback.route';
 import { SaloonServiceRoutes } from '../modules/services/service.route';
 import { ShopRoutes } from '../modules/shop/shop.route';
-import { BookingRoutes } from '../modules/bookings/booking.route';
-import { FeedbackRoutes } from '../modules/feedbacks/feedback.route';
-import { FAQRoutes } from '../modules/faq/faq.route';
-import { BlogRoutes } from '../modules/blogs/blog.route';
-import { uploadRoute } from '../modules/upload/upload.route';
-import { StripeAccountRoutes } from '../modules/stripe_accounts/stripe_accounts.route';
 import { ShopTimeSlotRoutes } from '../modules/shop_timeslots/shop_timeslots.route';
+import { StripeAccountRoutes } from '../modules/stripe_accounts/stripe_accounts.route';
 import { TransactionServiceRoutes } from '../modules/transactions/transactions.route';
+import { uploadRoute } from '../modules/upload/upload.route';
+import { UserRoutes } from '../modules/user/user.route';
 
 const router = express.Router();
 

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Card, Typography, Button, Divider } from 'antd';
 import { CloseOutlined, SafetyOutlined } from '@ant-design/icons';
+import { Card, Typography, Button, Divider } from 'antd';
+import React from 'react';
 import { BiCreditCard } from 'react-icons/bi';
 import { CiBank } from 'react-icons/ci';
-import { HiOutlineCurrencyRupee } from 'react-icons/hi2';
 import { CiFlag1 } from 'react-icons/ci';
+import { HiOutlineCurrencyRupee } from 'react-icons/hi2';
 
 const { Text, Title } = Typography;
 

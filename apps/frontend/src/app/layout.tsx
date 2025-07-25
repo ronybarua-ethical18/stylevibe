@@ -7,9 +7,9 @@ import { PropsWithChildren } from 'react';
 
 import SessionProvider from './components/SessionProvider';
 
-import Providers from '@/lib/Providers';
 import AntRegistryProvider from '@/lib/AntRegistryProvider';
 import { ProgressbarProvider } from '@/lib/ProgressBarProvider';
+import Providers from '@/lib/Providers';
 
 export const metadata: Metadata = {
   title: 'Home | Style Vibe',

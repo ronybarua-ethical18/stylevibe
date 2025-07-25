@@ -1,5 +1,5 @@
-import React from 'react';
 import { DownOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import React from 'react';
 
 const appointments = [
   {

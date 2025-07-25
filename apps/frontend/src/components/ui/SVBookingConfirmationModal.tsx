@@ -1,12 +1,12 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
 import { Modal } from 'antd';
-import { BiArrowBack } from 'react-icons/bi';
 import moment from 'moment';
+import React, { ReactNode, useState } from 'react';
+import { BiArrowBack } from 'react-icons/bi';
 
-import SVButton from '../SVButton';
 import PaymentWrapper from '../Forms/PaymentForm';
+import SVButton from '../SVButton';
 
 import SVBookingDetails from './SVBookingDetails';
 import SVStepper from './SVStepper';

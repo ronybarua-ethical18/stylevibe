@@ -1,5 +1,5 @@
-import React from 'react';
 import { SegmentedValue } from 'antd/es/segmented';
+import React from 'react';
 
 import SharedTabs from '@/components/ui/SVSharedTabs';
 

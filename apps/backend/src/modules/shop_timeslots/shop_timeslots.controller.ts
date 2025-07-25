@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
-import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
+import tryCatchAsync from '../../shared/tryCatchAsync';
 
 import { ShopTimeSlotsServices } from './shop_timeslots.service';
 

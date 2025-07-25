@@ -1,5 +1,5 @@
-import { Worker } from 'worker_threads';
 import path from 'path';
+import { Worker } from 'worker_threads';
 
 export const createWorker = () => {
   return new Promise((resolve, reject) => {

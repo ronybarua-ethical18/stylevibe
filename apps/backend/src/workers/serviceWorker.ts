@@ -4,9 +4,9 @@ import { parentPort } from 'worker_threads';
 
 import mongoose from 'mongoose';
 
-import { ServiceModel } from '../modules/services/service.model';
-import config from '../config';
 import app from '../app';
+import config from '../config';
+import { ServiceModel } from '../modules/services/service.model';
 
 function getMongoUrl() {
   if (config.env === 'development') {

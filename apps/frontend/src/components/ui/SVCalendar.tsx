@@ -1,13 +1,13 @@
-import React from 'react';
-import { Calendar, Col, Row, Tooltip, Typography } from 'antd';
-import type { Dayjs } from 'dayjs';
 import { CaretDownOutlined, CalendarOutlined } from '@ant-design/icons';
-import moment from 'moment';
-import styled from 'styled-components';
+import { Calendar, Col, Row, Tooltip, Typography } from 'antd';
 import { Select as AntSelect } from 'antd';
+import type { Dayjs } from 'dayjs';
+import moment from 'moment';
+import React from 'react';
+import styled from 'styled-components';
 
-import { months } from '@/utils/dummyServices';
 import { useGetSingleShopTimeSlotsQuery } from '@/redux/api/timeslots';
+import { months } from '@/utils/dummyServices';
 import { generateTimeSlots } from '@/utils/generateTimeSlots';
 
 const StyledCalendar = styled(Calendar)`

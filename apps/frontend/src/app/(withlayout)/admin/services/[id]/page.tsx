@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { getDynamicValueById } from '@/utils/getDynamicValueById';
 import Service from '@/components/Services/Service';
+import { getDynamicValueById } from '@/utils/getDynamicValueById';
 
 export async function generateMetadata(context: any) {
   const { params } = context;

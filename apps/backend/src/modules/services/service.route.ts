@@ -1,8 +1,8 @@
 import express from 'express';
 
 import auth from '../../middlewares/auth';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import validateRequest from '../../middlewares/validateRequest';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 
 import { SaloonServiceController } from './service.controller';
 import { ServiceValidation } from './service.validation';

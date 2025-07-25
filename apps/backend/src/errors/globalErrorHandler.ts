@@ -2,12 +2,12 @@
 import { Response, Request, NextFunction } from 'express';
 import { ZodError } from 'zod';
 
-import { IGenericErrorMessage } from '../shared/interfaces/error.interface';
 import config from '../config';
+import { IGenericErrorMessage } from '../shared/interfaces/error.interface';
 
+import ApiError from './ApiError';
 import handleValidationError from './handleValidationError';
 import handleZodError from './handleZodError';
-import ApiError from './ApiError';
 // import { errorLogger } from '../shared/logger'
 
 const globalErrorHandler = (

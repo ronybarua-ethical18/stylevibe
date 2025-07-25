@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/alt-text */
 'use client';
+import { useParams } from 'next/navigation';
 import React from 'react';
 import { FaUser } from 'react-icons/fa';
-import { useParams } from 'next/navigation';
 
 import Service from '../Services/Service';
 

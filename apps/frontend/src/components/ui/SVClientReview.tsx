@@ -1,8 +1,7 @@
 import React from 'react';
+import Slider from 'react-slick';
 
 import SVSectionTitle from '../SVSectionTitle';
-
-import Slider from 'react-slick';
 
 import { dummyClientReviews } from '@/utils/dummyServices';
 

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 
-import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
+import tryCatchAsync from '../../shared/tryCatchAsync';
 
-import { FAQService } from './faq.service';
 import { IFAQ } from './faq.interface';
+import { FAQService } from './faq.service';
 
 const createFAQ = tryCatchAsync(async (req: Request, res: Response) => {
   const result = await FAQService.createFAQ(req.body);

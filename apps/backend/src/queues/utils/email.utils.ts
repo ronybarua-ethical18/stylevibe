@@ -2,6 +2,7 @@
 import httpStatus from 'http-status';
 
 import ApiError from '../../errors/ApiError';
+import { EmailTypes } from '../../modules/mail-trackers/mail-trackers.interface';
 import mailTrackersModel from '../../modules/mail-trackers/mail-trackers.model';
 import {
   PAYMENT_DISBURSEMENT_OWNER,
@@ -9,7 +10,6 @@ import {
   SERVICE_COMPLETION_CUSTOMER,
 } from '../../services/mail/constants';
 import sendEmail from '../../services/mail/sendMail';
-import { EmailTypes } from '../../modules/mail-trackers/mail-trackers.interface';
 
 export const emailPayloadsByUser = (
   ownerPayload: any,

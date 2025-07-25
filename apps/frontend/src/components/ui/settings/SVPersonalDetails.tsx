@@ -3,8 +3,8 @@
 import { Divider } from 'antd';
 import Image from 'next/image';
 import React from 'react';
-import { BiEdit } from 'react-icons/bi';
 import { Dispatch, SetStateAction } from 'react';
+import { BiEdit } from 'react-icons/bi';
 
 import placeholderImg from '../../../../public/placeholder.jpg';
 

@@ -1,5 +1,5 @@
-import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import { loginMetadata } from '@/config/metaData';

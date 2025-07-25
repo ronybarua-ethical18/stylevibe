@@ -1,28 +1,27 @@
-/* eslint-disable jsx-a11y/alt-text */
 'use client';
-import React from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 import { BiLogOut } from 'react-icons/bi';
 
-import SVServiceCard from './SVServiceCard';
-import SVTypesOfServices from './SVTypesOfServices';
-import SVHowItWorks from './SVHowItWorks';
-import SVTotalClients from './SVTotalClients';
 import SVClientReview from './SVClientReview';
-import SVLatestBlogs from './SVLatestBlogs';
 import SVFAQ from './SVFAQ';
-import SVNewsLetter from './SVNewsLetter';
 import SVFooter from './SVFooter';
-import SVHeroSection from './SVHeroSection';
-import SVNavMenus from './SVNavMenus';
 import SVHeaderCarousel from './SVHeaderCarousel';
+import SVHeroSection from './SVHeroSection';
+import SVHowItWorks from './SVHowItWorks';
+import SVLatestBlogs from './SVLatestBlogs';
+import SVNavMenus from './SVNavMenus';
+import SVNewsLetter from './SVNewsLetter';
+import SVServiceCard from './SVServiceCard';
+import SVTotalClients from './SVTotalClients';
+import SVTypesOfServices from './SVTypesOfServices';
 
 import AuthButton from '@/app/components/AuthButton';
-import { getUserInfo } from '@/services/auth.service';
-import { removeUserInfo } from '@/utils/handleLocalStorage';
 import { authKey } from '@/constants/authKey';
 import { useGetTopServicesQuery } from '@/redux/api/services';
+import { getUserInfo } from '@/services/auth.service';
+import { removeUserInfo } from '@/utils/handleLocalStorage';
 
 export default function LandingPage() {
   const userInfo: any = getUserInfo();

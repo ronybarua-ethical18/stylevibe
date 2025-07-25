@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
-import tryCatchAsync from '../../shared/tryCatchAsync';
-import sendResponse from '../../shared/sendResponse';
-import pick from '../../shared/pick';
 import { paginationFields } from '../../constants/pagination';
+import pick from '../../shared/pick';
+import sendResponse from '../../shared/sendResponse';
+import tryCatchAsync from '../../shared/tryCatchAsync';
 import ShopModel from '../shop/shop.model';
 
-import { SaloonService } from './service.service';
-import { IService } from './service.interface';
 import { filterableFields } from './service.constants';
+import { IService } from './service.interface';
 import { ServiceModel } from './service.model';
+import { SaloonService } from './service.service';
 
 const createService = tryCatchAsync(async (req: Request, res: Response) => {
   const loggedUser = req.user as {

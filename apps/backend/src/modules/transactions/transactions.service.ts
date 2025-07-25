@@ -4,14 +4,14 @@ import { JwtPayload } from 'jsonwebtoken';
 import mongoose, { SortOrder } from 'mongoose';
 
 import ApiError from '../../errors/ApiError';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IFilterOptions,
   IGenericResponse,
   IPaginationOptions,
 } from '../../shared/interfaces/common.interface';
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
 import { getTotals } from '../services/service.utils';
 
 import { ITransactions } from './transactions.interface';

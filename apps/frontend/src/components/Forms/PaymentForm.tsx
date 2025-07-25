@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { Col, notification, Rate, Row, Modal } from 'antd';
-import { loadStripe } from '@stripe/stripe-js';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  CopyOutlined,
+} from '@ant-design/icons';
 import {
   Elements,
   PaymentElement,
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  CopyOutlined,
-} from '@ant-design/icons';
+import { loadStripe } from '@stripe/stripe-js';
+import { Col, notification, Rate, Row, Modal } from 'antd';
 import Link from 'next/link';
+import React, { useState } from 'react';
 
 import SVButton from '../SVButton';
 
-import { useCreatePaymentIntentMutation } from '@/redux/api/stripe';
 import { useCreateBookingMutation } from '@/redux/api/bookings';
+import { useCreatePaymentIntentMutation } from '@/redux/api/stripe';
 
 const stripePromise = loadStripe(
   'pk_test_51PnMRKBfR7AXQAHn19WtEzjkCGuPKG8BmMHFqZap098kURuMhn8wuXiEEL1tg8m0QU0bryWuH3iy8ztpR3Du6hrK00BmbdnBcg'

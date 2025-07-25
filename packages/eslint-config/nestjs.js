@@ -24,13 +24,13 @@ export const config = [
 
             // Dependency injection parameters are often not used directly
             "unused-imports/no-unused-vars": [
-                "warn",
+                "error",
                 {
                     "vars": "all",
                     "varsIgnorePattern": "^_",
                     "args": "after-used",
                     "argsIgnorePattern": "^_",
-                    "ignoreRestSiblings": true
+                    "ignoreRestSiblings": false // Changed from true to false
                 }
             ],
 

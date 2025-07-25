@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
 import { SegmentedValue } from 'antd/es/segmented';
 import moment from 'moment';
-import { LiaEdit } from 'react-icons/lia';
+import React, { useCallback, useState } from 'react';
 import { IoEyeOutline } from 'react-icons/io5';
+import { LiaEdit } from 'react-icons/lia';
 import { useDispatch } from 'react-redux';
 
 import SVPagination from '../ui/SVPagination';
@@ -15,12 +15,12 @@ import SVPageHeading from '@/components/SVPageHeading';
 import SVStatusChip from '@/components/SVStatusChip';
 import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
 import SVModal from '@/components/ui/SVModal';
-import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
-import { transformingText } from '@/utils/transformingText';
 import useDebounce from '@/hooks/useDebounce';
-import { getQueryParams } from '@/utils/getQueryParams';
 import { useGetBookingsQuery } from '@/redux/api/bookings';
 import { showModal } from '@/redux/slices/globalSlice';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
+import { getQueryParams } from '@/utils/getQueryParams';
+import { transformingText } from '@/utils/transformingText';
 
 export default function Bookings() {
   const [activeTab, setActiveTab] = useState<SegmentedValue>('1');

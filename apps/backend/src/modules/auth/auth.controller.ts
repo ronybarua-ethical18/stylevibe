@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 
-import tryCatchAsync from '../../shared/tryCatchAsync';
 import config from '../../config';
 import sendResponse from '../../shared/sendResponse';
+import tryCatchAsync from '../../shared/tryCatchAsync';
 import { IUser } from '../user/user.interface';
 
-import { AuthService } from './auth.service';
 import {
   ILoginUserResponse,
   IRefreshTokenResponse,
   ISignUpUserResponse,
 } from './auth.interface';
+import { AuthService } from './auth.service';
 
 const signUpUser = tryCatchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.signUpUser(req.body);

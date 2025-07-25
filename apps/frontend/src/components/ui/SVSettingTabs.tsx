@@ -1,15 +1,15 @@
 'use client';
 
-import React from 'react';
 import { Segmented, Spin } from 'antd';
 import type { SegmentedValue } from 'antd/es/segmented';
+import React from 'react';
 import { CiUser } from 'react-icons/ci';
 import { CiCreditCard2 } from 'react-icons/ci';
 
-import SVShopInfo from './settings/SVShopInfo';
-import SVPersonalInfo from './settings/SVPersonalInfo';
 import StripeAccountConnection from './settings/StripeAccountConnection';
 import StripeAccountInformation from './settings/StripeAccountInformation';
+import SVPersonalInfo from './settings/SVPersonalInfo';
+import SVShopInfo from './settings/SVShopInfo';
 
 const SVSettingTabs = ({ userProfile }: any) => {
   const [activeTab, setActiveTab] = React.useState<SegmentedValue>('1');

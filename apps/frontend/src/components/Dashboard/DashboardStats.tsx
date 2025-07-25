@@ -1,20 +1,20 @@
 'use client';
 
-import React from 'react';
-import { Row, Col } from 'antd';
 import {
   MessageOutlined,
   FileTextOutlined,
   DollarOutlined,
   StarOutlined,
 } from '@ant-design/icons';
+import { Row, Col } from 'antd';
+import React from 'react';
 
 import Transactions from '../Transactions';
 
-import DashboardCard from './DashboardCard';
-import DailySalesChart from './DailySalesChart';
-import TopBookingsByServiceCategory from './TopBookingsByServiceCategory';
 import CustomerSchedule from './CustomerSchedule';
+import DailySalesChart from './DailySalesChart';
+import DashboardCard from './DashboardCard';
+import TopBookingsByServiceCategory from './TopBookingsByServiceCategory';
 
 const cards = [
   { id: 1, icon: <MessageOutlined />, value: 289, title: 'Patient' },

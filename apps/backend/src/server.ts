@@ -2,8 +2,8 @@ import http from 'http';
 
 import mongoose from 'mongoose';
 
-import config from './config/index';
 import app from './app';
+import config from './config/index';
 import ApiError from './errors/ApiError';
 // import { redis } from './config/redis'
 

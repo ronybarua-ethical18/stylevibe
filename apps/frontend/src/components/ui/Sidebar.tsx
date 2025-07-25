@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
 import { Layout, Menu } from 'antd';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
 import { sidebarItems } from '@/constants/sidebarItems';

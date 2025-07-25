@@ -1,20 +1,20 @@
-import Stripe from 'stripe';
-import { JwtPayload } from 'jsonwebtoken';
 import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import Stripe from 'stripe';
 
 import config from '../../config';
-import { UserModel } from '../user/user.model';
-import ApiError from '../../errors/ApiError';
 import { stripe } from '../../config/stripe';
+import ApiError from '../../errors/ApiError';
 import { manipulateLineItem } from '../../utils/stripe.utils';
+import { UserModel } from '../user/user.model';
 
-import StripeAccountModel from './stripe_accounts.model';
 import {
   UserType,
   AccountType,
   StripeAccountStatus,
 } from './stripe_accounts.interface';
+import StripeAccountModel from './stripe_accounts.model';
 
 const createAndConnectStripeAccount = async (
   LoggedUser: JwtPayload

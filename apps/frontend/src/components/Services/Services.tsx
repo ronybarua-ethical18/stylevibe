@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
 import { SegmentedValue } from 'antd/es/segmented';
-import { IoEyeOutline } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { IoEyeOutline } from 'react-icons/io5';
 import { LiaEdit } from 'react-icons/lia';
+import { useDispatch } from 'react-redux';
 
-import SVPagination from '../ui/SVPagination';
 import SVStatusChip from '../SVStatusChip';
-import SVModal from '../ui/SVModal';
 import SVConfirmationModal from '../ui/SVConfirmationModal';
+import SVModal from '../ui/SVModal';
+import SVPagination from '../ui/SVPagination';
 
 import SVServiceTabs from './components/SVServiceTabs';
 
@@ -21,11 +21,11 @@ import {
   useDeleteServiceMutation,
   useGetServicesQuery,
 } from '@/redux/api/services';
-import { getQueryParams } from '@/utils/getQueryParams';
-import { transformingText } from '@/utils/transformingText';
+import { showModal } from '@/redux/slices/globalSlice';
 import { getUserInfo } from '@/services/auth.service';
 import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
-import { showModal } from '@/redux/slices/globalSlice';
+import { getQueryParams } from '@/utils/getQueryParams';
+import { transformingText } from '@/utils/transformingText';
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState<SegmentedValue>('1');

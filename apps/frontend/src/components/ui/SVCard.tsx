@@ -1,13 +1,13 @@
 import { Rate, Skeleton } from 'antd';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { FaRegEye, FaStore } from 'react-icons/fa';
-import Link from 'next/link';
 
 import SVButton from '../SVButton';
 
-import SVSignupConfirmationModal from './SVSignupConfirmationModal';
 import SVBookingConfirmationModal from './SVBookingConfirmationModal';
+import SVSignupConfirmationModal from './SVSignupConfirmationModal';
 
 import { getUserInfo } from '@/services/auth.service';
 

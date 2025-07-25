@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-
 'use client';
 import Image from 'next/image';
 import React from 'react';

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Modal, Result, Typography, List, Button } from 'antd';
 import { CheckCircleFilled, RightCircleOutlined } from '@ant-design/icons';
+import { Modal, Result, Typography, List, Button } from 'antd';
+import React from 'react';
 
 const { Paragraph, Text } = Typography;
 

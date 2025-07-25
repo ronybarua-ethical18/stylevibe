@@ -1,14 +1,14 @@
-import express, { Application, NextFunction, Request, Response } from 'express';
-import logger from 'morgan';
-import cors from 'cors';
-import httpStatus from 'http-status';
-import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
+import httpStatus from 'http-status';
+import logger from 'morgan';
 
+import { initSentry, SentryCaptureMessage } from './config/sentry';
 import globalErrorHandler from './errors/globalErrorHandler';
 import routes from './routes';
-import { initSentry, SentryCaptureMessage } from './config/sentry';
 const app: Application = express();
 
 app.use(

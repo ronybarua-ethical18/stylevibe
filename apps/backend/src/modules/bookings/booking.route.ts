@@ -1,11 +1,11 @@
 import express from 'express';
 
 import auth from '../../middlewares/auth';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import validateRequest from '../../middlewares/validateRequest';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 
-import { BookingValidation } from './booking.validation';
 import { BookingController } from './booking.controller';
+import { BookingValidation } from './booking.validation';
 const router = express.Router();
 
 router.post(

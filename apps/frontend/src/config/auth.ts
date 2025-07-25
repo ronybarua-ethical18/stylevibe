@@ -3,8 +3,8 @@ import NextAuth from 'next-auth';
 import { authConfig } from './authConfig';
 
 import connectToDatabase from '@/server/config/mongoose';
-import User from '@/server/db/models/user';
 import AuditorModel from '@/server/db/models/auditor';
+import User from '@/server/db/models/user';
 
 export const {
   handlers: { GET, POST },

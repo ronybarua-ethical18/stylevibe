@@ -1,11 +1,11 @@
+import { UserOutlined, BellOutlined } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, MenuProps, Space } from 'antd';
 import { useRouter } from 'next/navigation';
-import { UserOutlined, BellOutlined } from '@ant-design/icons';
 import React from 'react';
 
-import { removeUserInfo } from '@/utils/handleLocalStorage';
 import { authKey } from '@/constants/authKey';
 import { getUserInfo } from '@/services/auth.service';
+import { removeUserInfo } from '@/utils/handleLocalStorage';
 
 export default function SVTopbar() {
   const router = useRouter();

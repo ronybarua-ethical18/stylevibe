@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import { InboxOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { message, Upload, Spin } from 'antd';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
 const { Dragger } = Upload;
 

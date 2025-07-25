@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import { JwtPayload } from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
-import tryCatchAsync from '../../shared/tryCatchAsync';
 import sendResponse from '../../shared/sendResponse';
+import tryCatchAsync from '../../shared/tryCatchAsync';
 import { IUser } from '../user/user.interface';
 
 import { UserService } from './user.service';

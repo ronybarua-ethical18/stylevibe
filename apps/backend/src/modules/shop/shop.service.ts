@@ -3,18 +3,18 @@ import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import mongoose, { SortOrder } from 'mongoose';
 
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import ApiError from '../../errors/ApiError';
 import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IGenericResponse,
   IPaginationOptions,
   IShopFilterOptions,
 } from '../../shared/interfaces/common.interface';
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
 
-import ShopModel from './shop.model';
 import { IShopDocument } from './shop.interface';
+import ShopModel from './shop.model';
 
 const createShop = async (
   loggedUser: JwtPayload,

@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Layout } from 'antd';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { isLoggedIn } from '@/services/auth.service';
-import Sidebar from '@/components/ui/Sidebar';
 import Contents from '@/components/ui/Contents';
+import Sidebar from '@/components/ui/Sidebar';
+import { isLoggedIn } from '@/services/auth.service';
 
 export default function DashboardLayout({
   children,

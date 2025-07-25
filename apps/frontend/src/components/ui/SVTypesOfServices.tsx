@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
-import SVSectionTitle from '../SVSectionTitle';
 import HairImage from '../../../public/hair1.png';
 import Makeup from '../../../public/makeup1.png';
 import Skin from '../../../public/skin1.png';
+import SVSectionTitle from '../SVSectionTitle';
 
 import SVCard from './SVCard';
 

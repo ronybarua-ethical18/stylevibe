@@ -2,8 +2,8 @@ import express from 'express';
 
 // import auth from '../../middlewares/auth'
 // import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import validateRequest from '../../middlewares/validateRequest';
 import upload from '../../middlewares/upload';
+import validateRequest from '../../middlewares/validateRequest';
 
 import uploadFile from './upload.controller';
 import { uploadFileZodSchema } from './upload.validation';

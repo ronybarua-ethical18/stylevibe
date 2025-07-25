@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Steps } from 'antd';
+import styled from 'styled-components';
 
 // Styled Steps component
 export const CustomizedSteps = styled(Steps)`

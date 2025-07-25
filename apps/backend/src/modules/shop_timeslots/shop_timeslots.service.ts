@@ -2,9 +2,9 @@ import httpStatus from 'http-status';
 import moment from 'moment';
 import mongoose from 'mongoose';
 
-import { UserModel } from '../user/user.model';
 import ApiError from '../../errors/ApiError';
 import ShopModel from '../shop/shop.model';
+import { UserModel } from '../user/user.model';
 
 import { IShopTimeSlots, ITimeSlot } from './shop_timeslots.interface';
 import ShopTimeSlotsModel from './shop_timeslots.model';

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
 import { Modal } from 'antd';
 import Image from 'next/image';
-import { GrClose } from 'react-icons/gr';
 import Link from 'next/link';
+import React, { ReactNode, useState } from 'react';
+import { GrClose } from 'react-icons/gr';
 
 import ModalImage from '../../../public/modal.jpg';
 import SVButton from '../SVButton';

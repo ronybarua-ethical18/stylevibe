@@ -13,10 +13,12 @@
       ]
     },
     "lint": {
-      "outputs": []
+      "outputs": [],
+      "outputMode": "full"
     },
     "lint:fix": {
-      "outputs": []
+      "outputs": [],
+      "outputMode": "full"
     },
     "check-types": {
       "outputs": []

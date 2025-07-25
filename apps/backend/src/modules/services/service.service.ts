@@ -3,19 +3,19 @@ import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import mongoose, { SortOrder, Types } from 'mongoose';
 
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import ApiError from '../../errors/ApiError';
 import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IFilterOptions,
   IGenericResponse,
   IPaginationOptions,
 } from '../../shared/interfaces/common.interface';
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
 import ShopModel from '../shop/shop.model';
 
-import { ServiceModel } from './service.model';
 import { IService, ServiceStatusList } from './service.interface';
+import { ServiceModel } from './service.model';
 import { getTotals } from './service.utils';
 
 const createService = async (

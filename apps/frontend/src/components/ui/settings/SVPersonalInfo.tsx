@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 
-import SVPersonalInfoEditForm from './SVPersonalInfoEditForm';
 import SVPersonalDetails from './SVPersonalDetails';
+import SVPersonalInfoEditForm from './SVPersonalInfoEditForm';
 
 function SVPersonalInfo({ userProfile }: any) {
   const [isEditMode, setIsEditMode] = useState(false);

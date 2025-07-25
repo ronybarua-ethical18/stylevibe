@@ -1,8 +1,8 @@
-import React from 'react';
 import { Divider } from 'antd';
+import React from 'react';
 import { GoLocation } from 'react-icons/go';
-import { PiTimerLight } from 'react-icons/pi';
 import { IoLockClosedOutline } from 'react-icons/io5';
+import { PiTimerLight } from 'react-icons/pi';
 
 import SVImageGallery from '../SVImageGallery';
 

@@ -1,7 +1,7 @@
 'use client';
-import { FaRegTrashAlt } from 'react-icons/fa';
-import React, { ReactNode, useState } from 'react';
 import { Modal } from 'antd';
+import React, { ReactNode, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { IoTrashOutline } from 'react-icons/io5';
 
 import SVButton from '../SVButton';

@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose from 'mongoose';
 import httpStatus from 'http-status';
+import mongoose from 'mongoose';
 
 import { SentryCaptureMessage, SentrySetContext } from '../../config/sentry';
-import StripeAccount from '../../modules/stripe_accounts/stripe_accounts.model';
+import ApiError from '../../errors/ApiError';
 import {
   BookingStatusList,
   IPaymentDisbursedEssentials,
 } from '../../modules/bookings/booking.interface';
-import { StripeAccountService } from '../../modules/stripe_accounts/stripe_accounts.service';
 import { BookingService } from '../../modules/bookings/booking.service';
-import { TransactionService } from '../../modules/transactions/transactions.service';
+import StripeAccount from '../../modules/stripe_accounts/stripe_accounts.model';
+import { StripeAccountService } from '../../modules/stripe_accounts/stripe_accounts.service';
 import { AmountStatus } from '../../modules/transactions/transactions.interface';
-import ApiError from '../../errors/ApiError';
+import { TransactionService } from '../../modules/transactions/transactions.service';
 import { addJobToEmailDispatchQueue } from '../emails/emailQueue';
 
 import { emailPayloadsByUser } from './email.utils';

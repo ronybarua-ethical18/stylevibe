@@ -1,12 +1,12 @@
-import React from 'react';
 import { Col, Row } from 'antd';
-import Image from 'next/image';
 import moment from 'moment';
+import Image from 'next/image';
+import React from 'react';
 import { FaEdit } from 'react-icons/fa';
 
 import dummyImage from '../../../public/5.jpg';
-import SVSectionTitle from '../SVSectionTitle';
 import SVButton from '../SVButton';
+import SVSectionTitle from '../SVSectionTitle';
 
 import { dummyBlogs } from '@/utils/dummyServices';
 

@@ -1,16 +1,16 @@
-import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
+import httpStatus from 'http-status';
 
-import { UserModel } from '../user/user.model';
+import config from '../../config';
 import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
-import config from '../../config';
-import { IUser } from '../user/user.interface';
 import {
   FORGOT_PASSWORD_TEMPLATE,
   VERIFY_EMAIL_TEMPLATE,
 } from '../../services/mail/constants';
 import { sendMailWithToken } from '../../utils/auth.utils';
+import { IUser } from '../user/user.interface';
+import { UserModel } from '../user/user.model';
 
 import {
   ILoginUser,
