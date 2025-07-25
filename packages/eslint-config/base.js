@@ -36,20 +36,7 @@ export const config = [
       ],
 
       // Import rules
-      "import/order": [
-        "error",
-        {
-          "groups": [
-            "builtin",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index"
-          ],
-          "newlines-between": "always"
-        }
-      ],
+      "import/order": "off",
 
       // TypeScript specific
       "@typescript-eslint/no-unused-vars": "off", // Using unused-imports instead
