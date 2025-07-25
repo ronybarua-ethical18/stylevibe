@@ -1,10 +1,7 @@
-import express from 'express';
-
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
-
 import { TransactionServiceController } from './transactions.controller';
-const router = express.Router();
+import { router } from '@/utils/typedRouter';
 
 router.post(
   '/',

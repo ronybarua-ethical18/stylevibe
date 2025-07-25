@@ -1,12 +1,9 @@
-import express from 'express';
-
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
-
 import { FeedbackController } from './feedback.controller';
 import { FeedbackValidation } from './feedback.validation';
-const router = express.Router();
+import { router } from '@/utils/typedRouter';
 
 router.post(
   '/',

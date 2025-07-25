@@ -1,5 +1,4 @@
-import express, { Router } from 'express';
-
+import { Router } from 'express';
 import { AuthRoutes } from '../modules/auth/auth.route';
 import { BlogRoutes } from '../modules/blogs/blog.route';
 import { BookingRoutes } from '../modules/bookings/booking.route';
@@ -12,8 +11,7 @@ import { StripeAccountRoutes } from '../modules/stripe_accounts/stripe_accounts.
 import { TransactionServiceRoutes } from '../modules/transactions/transactions.route';
 import { uploadRoute } from '../modules/upload/upload.route';
 import { UserRoutes } from '../modules/user/user.route';
-
-const router = express.Router();
+import { router } from '@/utils/typedRouter';
 
 type IRoute = {
   path: string;

@@ -248,21 +248,21 @@ const verifyBooking = async (
     return null;
   }
 
-  const seller = findBooking?.seller || {};
-  const customer = findBooking?.customer || {};
+  const seller: any = findBooking?.seller || {};
+  const customer: any = findBooking?.customer || {};
 
   // Return the required payment disbursement details
   return {
     bookingId,
     paymentIntentId: pendingTransaction.stripePaymentIntentId,
     customerBookingId: findBooking.bookingId,
-    sellerId: seller._id,
-    customerId: customer._id,
-    serviceName: findBooking.serviceId.name,
-    sellerName: `${seller?.firstName} ${seller.lastName}`,
-    sellerEmail: seller.email,
-    customerName: `${customer.firstName} ${customer.lastName}`,
-    customerEmail: customer.email,
+    sellerId: seller?._id,
+    customerId: customer?._id,
+    serviceName: findBooking.serviceId?.name,
+    sellerName: `${seller?.firstName ?? ''} ${seller?.lastName ?? ''}`,
+    sellerEmail: seller?.email,
+    customerName: `${customer?.firstName ?? ''} ${customer?.lastName ?? ''}`,
+    customerEmail: customer?.email,
     shopName: findBooking.shop.shopName,
     totalAmount: findBooking.totalAmount,
   };
