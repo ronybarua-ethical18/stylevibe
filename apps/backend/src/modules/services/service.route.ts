@@ -3,7 +3,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import { SaloonServiceController } from './service.controller';
 import { ServiceValidation } from './service.validation';
-import { router } from '@/utils/typedRouter';
+import { router } from '../../utils/typedRouter';
 
 router.post(
   '/',

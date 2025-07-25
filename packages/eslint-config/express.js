@@ -1,7 +1,7 @@
 import { config as baseConfig } from "./base.js";
 
 /**
- * ESLint configuration for NestJS applications.
+ * ESLint configuration for Express.js applications.
  *
  * @type {import("eslint").Linter.FlatConfig[]}
  */
@@ -12,17 +12,12 @@ export const config = [
         rules: {
             "no-console": "off", // Allow console in backend
 
-            // NestJS specific rules
-            "@typescript-eslint/interface-name-prefix": "off",
-            "@typescript-eslint/explicit-function-return-type": "off",
-            "@typescript-eslint/explicit-module-boundary-types": "off",
+            // TypeScript rules (general, not NestJS-specific)
             "@typescript-eslint/no-explicit-any": "warn",
-
-            // Allow decorators and parameter properties
-            "@typescript-eslint/no-unused-vars": "off", // Using unused-imports instead
             "@typescript-eslint/no-empty-function": "off",
+            "@typescript-eslint/no-unused-vars": "off", // Using unused-imports instead
 
-            // Dependency injection parameters are often not used directly
+            // Unused imports/vars
             "unused-imports/no-unused-vars": [
                 "error",
                 {
@@ -30,27 +25,34 @@ export const config = [
                     "varsIgnorePattern": "^_",
                     "args": "after-used",
                     "argsIgnorePattern": "^_",
-                    "ignoreRestSiblings": false // Changed from true to false
+                    "ignoreRestSiblings": false
                 }
             ],
 
-            // Allow empty constructors for DI
+            // Allow empty constructors (sometimes used in Express classes)
             "no-useless-constructor": "off",
             "@typescript-eslint/no-useless-constructor": "off",
 
-            // NestJS uses parameter decorators extensively
+            // No interface name prefix rule (not needed for Express, but harmless)
+            "@typescript-eslint/interface-name-prefix": "off",
+
+            // No need for explicit return types on functions (optional)
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/explicit-module-boundary-types": "off",
+
+            // No unused vars (handled by unused-imports)
             "no-unused-vars": "off"
         },
         languageOptions: {
             parserOptions: {
                 project: "./tsconfig.json",
                 ecmaFeatures: {
-                    experimentalDecorators: true
+                    experimentalDecorators: false // Not needed for Express
                 }
             }
         },
     },
     {
-        ignores: ["dist/**", "node_modules/**", "test/**", "**/*.spec.ts", "**/*.e2e-spec.ts"],
+        ignores: ["dist/**", "node_modules/**"],
     },
 ];

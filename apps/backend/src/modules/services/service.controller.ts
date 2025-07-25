@@ -33,6 +33,8 @@ const getAllServices = tryCatchAsync(async (req: Request, res: Response) => {
     userId: mongoose.Types.ObjectId;
     role: string;
   };
+
+  console.log('req.user', req.user);
   const filterOptions = pick(req.query, filterableFields);
   const queryOptions = pick(req.query, paginationFields);
 
@@ -74,7 +76,7 @@ const getAllServices = tryCatchAsync(async (req: Request, res: Response) => {
 });
 const getTopServices = tryCatchAsync(async (req: Request, res: Response) => {
   const queryOptions = pick(req.query, paginationFields);
-
+  console.log('req.query options', queryOptions);
   const result = await SaloonService.getTopServices(queryOptions);
 
   sendResponse<IService[]>(res, {
