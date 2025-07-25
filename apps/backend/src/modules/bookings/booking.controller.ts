@@ -10,6 +10,7 @@ import tryCatchAsync from '../../shared/tryCatchAsync';
 import { filterableFields } from './booking.constants';
 import { IBooking } from './booking.interface';
 import { BookingService } from './booking.service';
+import { isValidObjectId } from '../../utils/isValidObjectId';
 
 const createBooking = tryCatchAsync(async (req: Request, res: Response) => {
   const loggedUser = req.user as {
@@ -49,6 +50,13 @@ const getAllBookings = tryCatchAsync(async (req: Request, res: Response) => {
 });
 
 const getBooking = tryCatchAsync(async (req: Request, res: Response) => {
+  if (!isValidObjectId(req.params.bookingId)) {
+    return sendResponse<IBooking>(res, {
+      statusCode: 400,
+      success: false,
+      message: 'Invalid booking ID',
+    });
+  }
   if (typeof req.params.bookingId === 'string') {
     const result = await BookingService.getBooking(
       new mongoose.Types.ObjectId(req.params['bookingId'])

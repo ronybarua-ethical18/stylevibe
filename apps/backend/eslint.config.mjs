@@ -1,3 +1,3 @@
-import { config } from "@repo/eslint-config/nestjs";
+import { config } from "@repo/eslint-config/express";
 
 export default config;

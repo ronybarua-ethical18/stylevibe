@@ -3,7 +3,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import { BlogController } from './blog.controller';
 import { BlogValidation } from './blog.validation';
-import { router } from '@/utils/typedRouter';
+import { router } from '../../utils/typedRouter';
 
 router.post(
   '/',
