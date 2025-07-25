@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import app from './app';
 import config from './config/index';
 import ApiError from './errors/ApiError';
+import { initSocket } from './modules/socket/socket';
 // import { redis } from './config/redis'
 
 let server: http.Server;
@@ -26,6 +27,8 @@ mongoose.connect(url).then(() => {
     console.log(`Listening to port ${config.port}`);
   });
 });
+
+initSocket(server);
 const serverExitHandler = () => {
   if (server) {
     server.close(() => {
