@@ -12,6 +12,7 @@ import { TransactionServiceRoutes } from '../modules/transactions/transactions.r
 import { uploadRoute } from '../modules/upload/upload.route';
 import { UserRoutes } from '../modules/user/user.route';
 import { router } from '../utils/typedRouter';
+import { SocketIORoutes } from '../modules/socket/routes';
 
 type IRoute = {
   path: string;
@@ -34,6 +35,10 @@ const routeList: IRoute[] = [
   {
     path: '/shops',
     route: ShopRoutes,
+  },
+  {
+    path: '/socket',
+    route: SocketIORoutes,
   },
   {
     path: '/bookings',
