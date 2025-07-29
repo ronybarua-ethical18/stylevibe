@@ -4,4 +4,3 @@ import express, { Router } from 'express';
 export const createRouter = (): Router => {
   return express.Router();
 };
-

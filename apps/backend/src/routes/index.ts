@@ -19,7 +19,6 @@ type IRoute = {
   route: Router;
 };
 
-
 const router = createRouter();
 
 const routeList: IRoute[] = [
