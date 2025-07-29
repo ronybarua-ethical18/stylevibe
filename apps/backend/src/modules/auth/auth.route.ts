@@ -1,7 +1,9 @@
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthController } from './auth.controller';
 import { AuthValidation } from './auth.validation';
-import { router } from '../../utils/typedRouter';
+import { createRouter } from '../../utils/typedRouter';
+
+const router = createRouter();
 
 router.post(
   '/login',

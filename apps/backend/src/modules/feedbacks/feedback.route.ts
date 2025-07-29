@@ -3,7 +3,9 @@ import validateRequest from '../../middlewares/validateRequest';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import { FeedbackController } from './feedback.controller';
 import { FeedbackValidation } from './feedback.validation';
-import { router } from '../../utils/typedRouter';
+import { createRouter } from '../../utils/typedRouter';
+
+const router = createRouter();
 
 router.post(
   '/',

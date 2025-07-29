@@ -1,11 +1,13 @@
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
-import { router } from '../../utils/typedRouter';
+import { createRouter } from '../../utils/typedRouter';
 import { ConversationController } from './controllers/conversation.controller';
 import { ConversationZodSchema } from './validations/conversation.validation';
 import { MessageController } from './controllers/message.controller';
 import { MessageZodSchema } from './validations/message.validation';
+
+const router = createRouter();
 
 // Conversation routes
 router.post(

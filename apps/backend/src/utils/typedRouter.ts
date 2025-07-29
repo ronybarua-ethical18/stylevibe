@@ -1,3 +1,7 @@
 import express, { Router } from 'express';
 
-export const router: Router = express.Router();
+// Create a factory function to generate new router instances
+export const createRouter = (): Router => {
+  return express.Router();
+};
+

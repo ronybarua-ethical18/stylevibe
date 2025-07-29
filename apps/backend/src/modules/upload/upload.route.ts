@@ -2,7 +2,9 @@ import upload from '../../middlewares/upload';
 import validateRequest from '../../middlewares/validateRequest';
 import uploadFile from './upload.controller';
 import { uploadFileZodSchema } from './upload.validation';
-import { router } from '../../utils/typedRouter';
+import { createRouter } from '../../utils/typedRouter';
+
+const router = createRouter();
 
 router.post(
   '/',
