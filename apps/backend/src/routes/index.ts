@@ -13,6 +13,7 @@ import { uploadRoute } from '../modules/upload/upload.route';
 import { UserRoutes } from '../modules/user/user.route';
 import { SocketIORoutes } from '../modules/socket/routes';
 import { createRouter } from '../utils/typedRouter';
+import { CustomerRoutes } from '../modules/customers/customer.route';
 
 type IRoute = {
   path: string;
@@ -45,6 +46,10 @@ const routeList: IRoute[] = [
   {
     path: '/bookings',
     route: BookingRoutes,
+  },
+  {
+    path: '/customers',
+    route: CustomerRoutes,
   },
   {
     path: '/transactions',

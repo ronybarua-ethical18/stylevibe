@@ -1,107 +1,135 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import React from 'react';
+import { SegmentedValue } from 'antd/es/segmented';
+import React, { useState } from 'react';
+import { IoEyeOutline } from 'react-icons/io5';
+import SVPagination from '../ui/SVPagination';
+import SVCustomerTabs from './SVCustomerTabs';
 
-import SVBreadCrumb from '../ui/SVBreadCrumb';
-
+import SVPageHeading from '@/components/SVPageHeading';
+import SVStatusChip from '@/components/SVStatusChip';
+import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
+import useDebounce from '@/hooks/useDebounce';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
+import { getQueryParams } from '@/utils/getQueryParams';
 import { transformingText } from '@/utils/transformingText';
+import { useGetCustomersQuery } from '@/redux/api/customers';
 
-const SVDataTableWithUtils = dynamic(
-  () => import('@/components/ui/SVDataTableWithUtils'),
-  {
-    ssr: false,
-  }
-);
-const SVPageHeading = dynamic(() => import('@/components/SVPageHeading'), {
-  ssr: false,
-});
-const SVStatusChip = dynamic(() => import('../SVStatusChip'), {
-  ssr: true,
-});
+export default function Customers() {
+  const [activeTab, setActiveTab] = useState<SegmentedValue>('1');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [limit, setLimit] = useState(10);
 
-// Define the render function outside of the columns array
-function renderStatus(data: any) {
-  const status = transformingText(data);
-  return <SVStatusChip status={status} />;
-}
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPageNumber(page);
+    setLimit(pageSize);
+  };
 
-export default function CustomerPage() {
+  const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 });
+  const { query } = getQueryParams(
+    pageNumber,
+    limit,
+    debouncedSearchTerm,
+    activeTab,
+    'booking'
+  );
+
+  const { data: customers, isLoading: customersLoading } = useGetCustomersQuery(
+    {
+      ...query,
+    }
+  );
+
+  console.log('customers', customers);
+
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
+      title: 'Booking ID',
+      render: function (data: any) {
+        return <>{data?.bookingId || 'SVBA2345-43242342'}</>;
+      },
     },
     {
       title: 'Service name',
-      dataIndex: 'service',
+      //   dataIndex: 'name',
+      render: function (data: any) {
+        return <>{data?.serviceId?.name}</>;
+      },
+    },
+    {
+      title: 'Category',
+      render: function (data: any) {
+        return <>{data?.serviceId?.category}</>;
+      },
     },
     {
       title: 'Price',
-      dataIndex: 'price',
+      render: function (data: any) {
+        return <>{`$${data?.totalAmount}`}</>;
+      },
     },
     {
-      title: 'Service Taken (times)',
-      dataIndex: 'taken',
+      title: 'Customer Name',
+      render: function (data: any) {
+        return (
+          <>{data?.customer?.firstName + ' ' + data?.customer?.lastName}</>
+        );
+      },
+    },
+    {
+      title: 'Customer Email',
+      render: function (data: any) {
+        return <>{data?.customer?.email || 'N/A'}</>;
+      },
     },
     {
       title: 'Status',
       dataIndex: 'status',
-      render: renderStatus, // Use the function here
-    },
-  ];
-
-  const data = [
-    {
-      key: 1,
-      name: 'Name 1',
-      email: 'email1@example.com',
-      phone: '123-456-01',
-      service: 'Service 1',
-      price: Math.random() * 50,
-      taken: Math.floor(Math.random() * 10),
-      status: Math.random() > 0.5 ? 'Active' : 'Inactive',
+      align: 'center',
+      render: function (data: any) {
+        const status = transformingText(data);
+        return <SVStatusChip status={status} />;
+      },
     },
     {
-      key: 2,
-      name: 'Name 2',
-      email: 'email2@example.com',
-      phone: '123-456-02',
-      service: 'Service 2',
-      price: Math.random() * 50,
-      taken: Math.floor(Math.random() * 10),
-      status: Math.random() > 0.5 ? 'Active' : 'Inactive',
+      title: 'Action',
+      align: 'right',
+      render: (record: any) => (
+        <div className="flex justify-end">
+          <div className="flex align-baseline">
+            <IoEyeOutline
+              className="mr-2 text-xl cursor-pointer"
+              // onClick={() => router.push(`/${userDetails?.role}/services/${record?._id}`)}
+            />
+          </div>
+        </div>
+      ),
     },
-    // Add more items as needed
   ];
 
   return (
     <div>
-      <SVBreadCrumb
-        items={[
-          { label: 'seller', link: '/seller' },
-          { label: 'customers', link: '/seller/customers' },
-        ]}
-      />
+      <SVBreadCrumb items={getBreadcrumbItems('customers')} />
       <SVPageHeading
         pageTitle="Customers"
-        pageSubTitle="See your active and inactive customers and make changes"
-        numberOfItems={`${data.length} customers`}
+        pageSubTitle="See your active and inactive customers"
+        numberOfItems={`${customers?.meta?.total} customers`}
       />
-      <div>
-        <SVDataTableWithUtils
-          columns={columns}
-          data={data}
-          totalPages={5}
-          isLoading={false}
+      <SVCustomerTabs
+        columns={columns}
+        activeTab={activeTab}
+        customers={customers}
+        customersLoading={customersLoading}
+        setActiveTab={setActiveTab}
+        setSearchTerm={setSearchTerm}
+      />
+
+      <div className="mt-12">
+        <SVPagination
+          onPageChange={handlePageChange}
+          defaultCurrent={1}
+          total={customers?.meta?.total || 0}
         />
       </div>
     </div>
