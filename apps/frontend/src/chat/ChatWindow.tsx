@@ -7,16 +7,30 @@ interface ChatWindowProps {
   conversationId?: string;
   senderId: string;
   receiverId: string;
+  customerInfo?: {
+    name: string;
+    avatar?: string;
+    isTyping?: boolean;
+  };
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
   conversationId,
   senderId,
   receiverId,
+  customerInfo,
 }) => {
   return (
-    <div className="w-full max-w-lg mx-auto space-y-4">
-      <MessageList conversationId={conversationId} currentUserId={senderId} />
+    <div className="h-full flex flex-col">
+      <div className="flex-1 overflow-hidden">
+        <MessageList
+          conversationId={conversationId}
+          currentUserId={senderId}
+          senderId={senderId}
+          receiverId={receiverId}
+          customerInfo={customerInfo}
+        />
+      </div>
       <MessageInput
         conversationId={conversationId}
         senderId={senderId}

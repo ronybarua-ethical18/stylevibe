@@ -3,13 +3,13 @@
 import { SegmentedValue } from 'antd/es/segmented';
 import moment from 'moment';
 import React, { useCallback, useState } from 'react';
-import { IoEyeOutline } from 'react-icons/io5';
 import { LiaEdit } from 'react-icons/lia';
 import { useDispatch } from 'react-redux';
 
 import SVPagination from '../ui/SVPagination';
-
 import SVBookingsTabs from './SVBookingsTabs';
+import { ChatWindow } from '@/chat/ChatWindow';
+import { SVDrawer } from '@/components/ui/SVDrawer';
 
 import SVPageHeading from '@/components/SVPageHeading';
 import SVStatusChip from '@/components/SVStatusChip';
@@ -59,6 +59,7 @@ export default function Bookings() {
     },
     [dispatch]
   );
+
   const columns = [
     {
       title: 'Booking ID',
@@ -104,7 +105,9 @@ export default function Bookings() {
       title: 'Customer name',
       render: function (data: any) {
         return (
-          <>{data?.customer?.firstName + ' ' + data?.customer?.lastName}</>
+          <div>
+            {data?.customer?.firstName + ' ' + data?.customer?.lastName}
+          </div>
         );
       },
     },
@@ -126,26 +129,61 @@ export default function Bookings() {
     {
       title: 'Action',
       align: 'right',
-      render: (record: any) => (
-        <div className="flex justify-end">
-          <div className="flex align-baseline">
-            <IoEyeOutline
-              className="mr-2 text-xl cursor-pointer"
-              // onClick={() => router.push(`/${userDetails?.role}/services/${record?._id}`)}
-            />
-            <LiaEdit
-              className=" text-xl cursor-pointer"
-              onClick={() => handleEditClick(record)}
-            />
-            {/* <SVConfirmationModal
-              // buttonTitle={isDeleting ? 'Processing...' : 'Confirm'}
-              item={record}
-              // func={() => handleDelete(record._id)}
-              // isLoading={isDeleting}
-            /> */}
+      render: (record: any) => {
+        console.log('Booking record data:', record);
+        console.log('Seller ID:', record?.seller);
+        console.log('Customer ID:', record?.customer?._id);
+
+        // Get the actual seller ID - it might be record.seller._id or record.seller
+        const sellerId =
+          typeof record?.seller === 'object'
+            ? record?.seller?._id
+            : record?.seller;
+        console.log('Extracted sellerId:', sellerId);
+
+        return (
+          <div className="flex justify-end">
+            <div className="flex align-baseline">
+              <SVDrawer
+                title=""
+                placement="right"
+                width={600}
+                trigger={
+                  <div className="mr-2 text-xl cursor-pointer text-blue-500 hover:text-blue-700">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  </div>
+                }
+              >
+                <div className="h-full">
+                  <ChatWindow
+                    senderId={record?.customer?._id}
+                    receiverId={sellerId}
+                    customerInfo={{
+                      name: `${record?.customer?.firstName} ${record?.customer?.lastName}`,
+                      avatar: record?.customer?.img,
+                    }}
+                  />
+                </div>
+              </SVDrawer>
+              <LiaEdit
+                className=" text-xl cursor-pointer"
+                onClick={() => handleEditClick(record)}
+              />
+            </div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
   ];
 

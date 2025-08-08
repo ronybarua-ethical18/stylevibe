@@ -7,7 +7,7 @@ const ConversationSchema = new Schema<IConversation>(
     participants: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true,
       },
     ],

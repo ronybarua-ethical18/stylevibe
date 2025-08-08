@@ -5,10 +5,18 @@ import { IMessage } from '../interfaces/message';
 const getMessages = async (
   conversationId: mongoose.Types.ObjectId
 ): Promise<IMessage[]> => {
-  const messages = await MessageModel.find({ conversationId }).sort({
-    timestamp: 1,
-  });
-  return messages;
+  try {
+    const messages = await MessageModel.find({ conversationId })
+      .populate('senderId', 'firstName lastName email img')
+      .populate('receiverId', 'firstName lastName email img')
+      .sort({
+        timestamp: 1,
+      });
+    return messages;
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    throw error;
+  }
 };
 
 const updateMessageStatus = async (
@@ -33,7 +41,12 @@ const createMessage = async (payload: {
     timestamp: new Date(),
   });
 
-  return newMessage;
+  // Return populated message
+  const populatedMessage = await MessageModel.findById(newMessage._id)
+    .populate('senderId', 'firstName lastName email img')
+    .populate('receiverId', 'firstName lastName email img');
+
+  return populatedMessage;
 };
 
 export const MessageService = {

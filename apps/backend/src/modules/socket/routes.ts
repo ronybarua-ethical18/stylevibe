@@ -20,7 +20,6 @@ router.post(
 router.get(
   '/conversations/:userId',
   auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN),
-  validateRequest(MessageZodSchema.createMessageZodSchema),
   ConversationController.getAllConversations
 );
 
@@ -31,9 +30,17 @@ router.post(
   validateRequest(MessageZodSchema.createMessageZodSchema),
   MessageController.createMessage
 );
+
+router.get(
+  '/messages',
+  auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN),
+  MessageController.getMessagesByParticipants
+);
+
 router.get(
   '/messages/:conversationId',
   auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN),
+  validateRequest(MessageZodSchema.getMessagesZodSchema),
   MessageController.getMessages
 );
 

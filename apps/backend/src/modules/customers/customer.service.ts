@@ -47,7 +47,7 @@ const getAllCustomers = async (
     .populate('customer', 'firstName lastName email')
     .populate('serviceId', 'name category subCategory price')
     .sort(sortCondition)
-    .select('customer serviceId totalAmount bookingId status')
+    .select('customer serviceId totalAmount bookingId status seller')
     .skip(skip)
     .limit(limit);
 

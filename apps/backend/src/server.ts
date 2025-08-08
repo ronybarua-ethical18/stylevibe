@@ -25,10 +25,13 @@ mongoose.connect(url).then(() => {
   console.log('<===== Database Connected Successfully Yahoo! =====>');
   server = app.listen(config.port, () => {
     console.log(`Listening to port ${config.port}`);
+    // Initialize Socket.IO AFTER the server is listening
+    console.log('Initializing Socket.IO...');
+    initSocket(server);
+    console.log('Socket.IO initialization complete');
   });
 });
 
-initSocket(server);
 const serverExitHandler = () => {
   if (server) {
     server.close(() => {

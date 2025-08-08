@@ -15,6 +15,23 @@ const messageApi = baseApi.injectEndpoints({
       ],
     }),
 
+    // 1.5. Get messages by participants (when no conversationId)
+    getMessagesByParticipants: build.query({
+      query: ({
+        senderId,
+        receiverId,
+      }: {
+        senderId: string;
+        receiverId: string;
+      }) => ({
+        url: `/socket/messages?senderId=${senderId}&receiverId=${receiverId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, arg) => [
+        { type: tagTypes.MESSAGE, id: `${arg.senderId}_${arg.receiverId}` },
+      ],
+    }),
+
     // 2. Send a message
     sendMessage: build.mutation({
       query: (data) => ({
@@ -26,7 +43,7 @@ const messageApi = baseApi.injectEndpoints({
         },
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: tagTypes.MESSAGE, id: arg.conversationId },
+        { type: tagTypes.MESSAGE, id: arg.conversationId || 'new' },
       ],
     }),
 
@@ -71,6 +88,7 @@ const messageApi = baseApi.injectEndpoints({
 
 export const {
   useGetMessagesQuery,
+  useGetMessagesByParticipantsQuery,
   useSendMessageMutation,
   useMarkMessagesAsSeenMutation,
   useGetOrCreateConversationMutation,
