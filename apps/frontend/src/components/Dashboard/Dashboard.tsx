@@ -1,12 +1,8 @@
-import moment from 'moment';
 import React from 'react';
 
 import DashboardStats from './DashboardStats';
 
 export default function Dashboard() {
-  const userName = 'Courtney';
-  const today = moment().format('ddd, MMMM D');
-
   return (
     <div>
       {/* <SVBreadCrumb ... /> */}

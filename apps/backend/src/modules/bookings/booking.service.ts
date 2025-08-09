@@ -41,6 +41,7 @@ import {
   generateId,
   isServiceDateTimeAtLeastOneHourInPast,
 } from './booking.utils';
+import { isAdmin } from '../../utils/isAdmin';
 
 interface IBookingPayload {
   serviceDate: string;
@@ -284,12 +285,12 @@ const getAllBookings = async (
   filterOptions: IFilterOptions
 ): Promise<IGenericResponse<IBooking[]>> => {
   let queryPayload = {
-    $or: [{ seller: loggedUser.userId }, { customer: loggedUser.userId }],
+    $or: [
+      { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
+      { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
+    ],
   } as any;
-  if (
-    loggedUser.role === ENUM_USER_ROLE.ADMIN ||
-    loggedUser.role === ENUM_USER_ROLE.SUPER_ADMIN
-  ) {
+  if (isAdmin(loggedUser.role)) {
     queryPayload = {};
   }
   const { searchTerm, ...filterableFields } = filterOptions as any;
@@ -337,18 +338,21 @@ const getAllBookings = async (
       .lean();
   }
 
-  const totals = await getTotals(
-    BookingModel as any,
-    {
-      $or: [
-        { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
-        { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
-      ],
-    },
-    ['BOOKED', 'CANCELLED', 'COMPLETED']
-  );
+  // Create a clean query for totals (without filterable fields)
+  const totalsQuery = isAdmin(loggedUser.role)
+    ? {}
+    : {
+        $or: [
+          { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
+          { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
+        ],
+      };
 
-  console.log('totals', totals);
+  const totals = await getTotals(BookingModel as any, totalsQuery, [
+    'BOOKED',
+    'CANCELLED',
+    'COMPLETED',
+  ]);
 
   return {
     meta: {

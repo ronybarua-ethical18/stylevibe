@@ -63,11 +63,8 @@ export default function Customers() {
     [pageNumber, limit, debouncedSearchTerm, activeTab]
   );
 
-  const { data: customers, isLoading: customersLoading } = useGetCustomersQuery(
-    {
-      ...query,
-    }
-  );
+  const { data: customers, isLoading: customersLoading } =
+    useGetCustomersQuery(query);
 
   // Memoize the columns array to prevent recreation on every render
   const columns = useMemo(
