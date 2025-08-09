@@ -10,6 +10,7 @@ type IApiResponse<T> = {
     total?: number | undefined;
   };
   data?: T | null;
+  loggedUserId?: string;
 };
 
 const sendResponse = <T>(res: Response, data: IApiResponse<T>): void => {
@@ -19,6 +20,7 @@ const sendResponse = <T>(res: Response, data: IApiResponse<T>): void => {
     message: data.message || null,
     meta: data.meta || null || undefined,
     data: data.data || null || undefined,
+    loggedUserId: data.loggedUserId || null || undefined,
   };
   res.status(data.statusCode).send(responseData);
 };

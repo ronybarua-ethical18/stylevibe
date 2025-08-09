@@ -11,13 +11,16 @@ import { StripeAccountRoutes } from '../modules/stripe_accounts/stripe_accounts.
 import { TransactionServiceRoutes } from '../modules/transactions/transactions.route';
 import { uploadRoute } from '../modules/upload/upload.route';
 import { UserRoutes } from '../modules/user/user.route';
-import { router } from '../utils/typedRouter';
 import { SocketIORoutes } from '../modules/socket/routes';
+import { createRouter } from '../utils/typedRouter';
+import { CustomerRoutes } from '../modules/customers/customer.route';
 
 type IRoute = {
   path: string;
   route: Router;
 };
+
+const router = createRouter();
 
 const routeList: IRoute[] = [
   {
@@ -43,6 +46,10 @@ const routeList: IRoute[] = [
   {
     path: '/bookings',
     route: BookingRoutes,
+  },
+  {
+    path: '/customers',
+    route: CustomerRoutes,
   },
   {
     path: '/transactions',

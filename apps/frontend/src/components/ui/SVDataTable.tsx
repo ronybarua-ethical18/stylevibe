@@ -35,16 +35,10 @@ const SVDataTable = ({
       }
     : false;
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
-  };
-
   return (
     <Table
       className=""
-      rowSelection={{
-        ...rowSelection,
-      }}
+      // rowSelection={}
       loading={loading}
       columns={columns}
       dataSource={dataSource}

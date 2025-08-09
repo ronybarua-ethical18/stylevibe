@@ -26,7 +26,7 @@ interface SharedTabsProps {
   onTabChange: (value: SegmentedValue) => void;
   onSearch: (searchTerm: string) => void;
   onDateRangeChange?: (dateRange: [Date, Date]) => void;
-  fromDashboard: boolean;
+  fromDashboard?: boolean;
 }
 
 const SharedTabs: React.FC<SharedTabsProps> = ({
@@ -38,8 +38,7 @@ const SharedTabs: React.FC<SharedTabsProps> = ({
   activeTab,
   onTabChange,
   onSearch,
-  onDateRangeChange,
-  fromDashboard,
+  fromDashboard = false,
 }) => {
   const renderContent = () => {
     return (

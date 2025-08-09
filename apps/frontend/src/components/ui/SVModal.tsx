@@ -98,15 +98,15 @@ const SVModal = ({
         open={isModalOpen}
         footer={null}
         onCancel={() => {
-          setSelectedRecord(null) ?? null;
+          setSelectedRecord(null);
           dispatch(closeModal(false));
         }}
-        onClose={() => {
-          setSelectedRecord(null) ?? null;
-          dispatch(closeModal(false));
-        }}
+        // onClose={() => {
+        //   setSelectedRecord(null);
+        //   dispatch(closeModal(false));
+        // }}
         maskStyle={{ background: 'rgba(0,0,0,0.09)' }}
-        maskAnimation={true}
+        // maskAnimation={true}
       >
         <div
           className="overflow-y-scroll no-scrollbar"

@@ -1,107 +1,137 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import React from 'react';
+import { SegmentedValue } from 'antd/es/segmented';
+import React, { useState, useMemo, useCallback } from 'react';
+import SVPagination from '../ui/SVPagination';
+import SVCustomerTabs from './SVCustomerTabs';
 
-import SVBreadCrumb from '../ui/SVBreadCrumb';
-
+import SVPageHeading from '@/components/SVPageHeading';
+import SVStatusChip from '@/components/SVStatusChip';
+import SVBreadCrumb from '@/components/ui/SVBreadCrumb';
+import useDebounce from '@/hooks/useDebounce';
+import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
+import { getQueryParams } from '@/utils/getQueryParams';
 import { transformingText } from '@/utils/transformingText';
+import { useGetCustomersQuery } from '@/redux/api/customers';
 
-const SVDataTableWithUtils = dynamic(
-  () => import('@/components/ui/SVDataTableWithUtils'),
-  {
-    ssr: false,
-  }
+// Move render functions outside component to prevent recreation
+const renderBookingId = (data: any) => (
+  <>{data?.bookingId || 'SVBA2345-43242342'}</>
 );
-const SVPageHeading = dynamic(() => import('@/components/SVPageHeading'), {
-  ssr: false,
-});
-const SVStatusChip = dynamic(() => import('../SVStatusChip'), {
-  ssr: true,
-});
 
-// Define the render function outside of the columns array
-function renderStatus(data: any) {
+const renderServiceName = (data: any) => <>{data?.serviceId?.name}</>;
+
+const renderCategory = (data: any) => <>{data?.serviceId?.category}</>;
+
+const renderPrice = (data: any) => <>{`$${data?.totalAmount}`}</>;
+
+const renderCustomerName = (data: any) => (
+  <>{data?.customer?.firstName + ' ' + data?.customer?.lastName}</>
+);
+
+const renderCustomerEmail = (data: any) => (
+  <>{data?.customer?.email || 'N/A'}</>
+);
+
+const renderStatus = (data: any) => {
   const status = transformingText(data);
   return <SVStatusChip status={status} />;
-}
+};
 
-export default function CustomerPage() {
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
-    },
-    {
-      title: 'Service name',
-      dataIndex: 'service',
-    },
-    {
-      title: 'Price',
-      dataIndex: 'price',
-    },
-    {
-      title: 'Service Taken (times)',
-      dataIndex: 'taken',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: renderStatus, // Use the function here
-    },
-  ];
+export default function Customers() {
+  const [activeTab, setActiveTab] = useState<SegmentedValue>('1');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [limit, setLimit] = useState(10);
 
-  const data = [
+  const handlePageChange = useCallback((page: number, pageSize: number) => {
+    setPageNumber(page);
+    setLimit(pageSize);
+  }, []);
+
+  const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 });
+
+  const query = useMemo(
+    () =>
+      getQueryParams(
+        pageNumber,
+        limit,
+        debouncedSearchTerm,
+        activeTab,
+        'booking'
+      ),
+    [pageNumber, limit, debouncedSearchTerm, activeTab]
+  );
+
+  const { data: customers, isLoading: customersLoading } = useGetCustomersQuery(
     {
-      key: 1,
-      name: 'Name 1',
-      email: 'email1@example.com',
-      phone: '123-456-01',
-      service: 'Service 1',
-      price: Math.random() * 50,
-      taken: Math.floor(Math.random() * 10),
-      status: Math.random() > 0.5 ? 'Active' : 'Inactive',
-    },
-    {
-      key: 2,
-      name: 'Name 2',
-      email: 'email2@example.com',
-      phone: '123-456-02',
-      service: 'Service 2',
-      price: Math.random() * 50,
-      taken: Math.floor(Math.random() * 10),
-      status: Math.random() > 0.5 ? 'Active' : 'Inactive',
-    },
-    // Add more items as needed
-  ];
+      ...query,
+    }
+  );
+
+  // Memoize the columns array to prevent recreation on every render
+  const columns = useMemo(
+    () => [
+      {
+        title: 'Booking ID',
+        render: renderBookingId,
+      },
+      {
+        title: 'Service name',
+        render: renderServiceName,
+      },
+      {
+        title: 'Category',
+        render: renderCategory,
+      },
+      {
+        title: 'Price',
+        render: renderPrice,
+      },
+      {
+        title: 'Customer Name',
+        render: renderCustomerName,
+      },
+      {
+        title: 'Customer Email',
+        render: renderCustomerEmail,
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        align: 'center',
+        render: renderStatus,
+      },
+      // Remove the Action column entirely since it only contained the chat functionality
+    ],
+    []
+  );
+
+  // Memoize breadcrumb items
+  const breadcrumbItems = useMemo(() => getBreadcrumbItems('customers'), []);
 
   return (
     <div>
-      <SVBreadCrumb
-        items={[
-          { label: 'seller', link: '/seller' },
-          { label: 'customers', link: '/seller/customers' },
-        ]}
-      />
+      <SVBreadCrumb items={breadcrumbItems} />
       <SVPageHeading
         pageTitle="Customers"
-        pageSubTitle="See your active and inactive customers and make changes"
-        numberOfItems={`${data.length} customers`}
+        pageSubTitle="See your active and inactive customers"
+        numberOfItems={`${customers?.meta?.total} customers`}
       />
-      <div>
-        <SVDataTableWithUtils
-          columns={columns}
-          data={data}
-          totalPages={5}
-          isLoading={false}
+      <SVCustomerTabs
+        columns={columns}
+        activeTab={activeTab}
+        customers={customers}
+        customersLoading={customersLoading}
+        setActiveTab={setActiveTab}
+        setSearchTerm={setSearchTerm}
+      />
+
+      <div className="mt-12">
+        <SVPagination
+          onPageChange={handlePageChange}
+          defaultCurrent={1}
+          total={customers?.meta?.total || 0}
         />
       </div>
     </div>

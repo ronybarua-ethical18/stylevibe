@@ -15,6 +15,28 @@ const messageApi = baseApi.injectEndpoints({
       ],
     }),
 
+    // 1.5. Get messages by participants and bookingId
+    getMessagesByParticipants: build.query({
+      query: ({
+        senderId,
+        receiverId,
+        bookingId, // Add bookingId parameter
+      }: {
+        senderId: string;
+        receiverId: string;
+        bookingId: string; // Add bookingId to interface
+      }) => ({
+        url: `/socket/messages?senderId=${senderId}&receiverId=${receiverId}&bookingId=${bookingId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, arg) => [
+        {
+          type: tagTypes.MESSAGE,
+          id: `${arg.senderId}_${arg.receiverId}_${arg.bookingId}`,
+        },
+      ],
+    }),
+
     // 2. Send a message
     sendMessage: build.mutation({
       query: (data) => ({
@@ -26,7 +48,7 @@ const messageApi = baseApi.injectEndpoints({
         },
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: tagTypes.MESSAGE, id: arg.conversationId },
+        { type: tagTypes.MESSAGE, id: arg.conversationId || 'new' },
       ],
     }),
 
@@ -47,10 +69,11 @@ const messageApi = baseApi.injectEndpoints({
 
     // 4. Get or create conversation between two users
     getOrCreateConversation: build.mutation({
-      query: ({ userA, userB }) => ({
+      query: ({ participants, bookingId }) => ({
+        // Update to match backend
         url: `/socket/conversations/find`,
         method: 'POST',
-        data: { userA, userB },
+        data: { participants, bookingId }, // Include bookingId
         headers: {
           'Content-Type': 'application/json',
         },
@@ -71,6 +94,7 @@ const messageApi = baseApi.injectEndpoints({
 
 export const {
   useGetMessagesQuery,
+  useGetMessagesByParticipantsQuery,
   useSendMessageMutation,
   useMarkMessagesAsSeenMutation,
   useGetOrCreateConversationMutation,

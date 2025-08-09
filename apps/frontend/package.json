@@ -19,6 +19,7 @@
     "src/**/*.ts": "yarn lint-prettier"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
     "@ant-design/nextjs-registry": "^1.0.0",
     "@next/bundle-analyzer": "^15.0.2",
     "@reduxjs/toolkit": "^2.0.1",

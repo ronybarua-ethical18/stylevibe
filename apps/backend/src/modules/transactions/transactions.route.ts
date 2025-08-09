@@ -1,7 +1,9 @@
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import { TransactionServiceController } from './transactions.controller';
-import { router } from '../../utils/typedRouter';
+import { createRouter } from '../../utils/typedRouter';
+
+const router = createRouter();
 
 router.post(
   '/',

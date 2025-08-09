@@ -23,6 +23,7 @@ export type IGenericResponse<T> = {
     totalFailed?: number;
   };
   data: T;
+  loggedUserId?: string;
 };
 
 export interface IPaginationOptions {

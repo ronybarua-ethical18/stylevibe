@@ -1,7 +1,8 @@
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import { UserController } from './user.controller';
-import { router } from '../../utils/typedRouter';
+import { createRouter } from '../../utils/typedRouter';
+const router = createRouter();
 
 router.get(
   '/',
