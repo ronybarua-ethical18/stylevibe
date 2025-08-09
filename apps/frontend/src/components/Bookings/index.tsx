@@ -80,9 +80,9 @@ export default function Bookings() {
     [pageNumber, limit, debouncedSearchTerm, activeTab]
   );
 
-  const { data: bookings, isLoading: bookingsLoading } = useGetBookingsQuery({
-    ...query,
-  });
+  const { data: bookings, isLoading: bookingsLoading } = useGetBookingsQuery(
+    query.query
+  );
 
   const handleEditClick = useCallback(
     (record: any) => {

@@ -1,4 +1,3 @@
-import { JwtPayload } from 'jsonwebtoken';
 import { Model, Document } from 'mongoose';
 
 interface StatusCount {
@@ -13,7 +12,7 @@ interface TotalsResult {
 
 export const getTotals = async (
   model: Model<Document>,
-  queryPayload: JwtPayload,
+  queryPayload: any,
   statusList: string[]
 ): Promise<TotalsResult> => {
   const stats: StatusCount[] = await model.aggregate([

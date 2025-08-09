@@ -17,6 +17,7 @@ import ShopModel from '../shop/shop.model';
 import { IService, ServiceStatusList } from './service.interface';
 import { ServiceModel } from './service.model';
 import { getTotals } from './service.utils';
+import { isAdmin } from '../../utils/isAdmin';
 
 const createService = async (
   loggedUser: JwtPayload,
@@ -122,11 +123,10 @@ const getAllServices = async (
   queryOptions: IPaginationOptions,
   filterOptions: IFilterOptions
 ): Promise<IGenericResponse<IService[]>> => {
-  let queryPayload = { seller: loggedUser.userId } as any;
-  if (
-    loggedUser.role === ENUM_USER_ROLE.ADMIN ||
-    loggedUser.role === ENUM_USER_ROLE.SUPER_ADMIN
-  ) {
+  let queryPayload = {
+    seller: new mongoose.Types.ObjectId(loggedUser.userId),
+  } as any;
+  if (isAdmin(loggedUser.role)) {
     queryPayload = {};
   }
   const { searchTerm, ...filterableFields } = filterOptions;
@@ -156,7 +156,7 @@ const getAllServices = async (
     .limit(limit);
   const totals = await getTotals(
     ServiceModel as any,
-    { seller: new Types.ObjectId(loggedUser.userId) },
+    isAdmin(loggedUser.role) ? {} : queryPayload,
     ['APPROVED', 'PENDING', 'REJECTED']
   );
 

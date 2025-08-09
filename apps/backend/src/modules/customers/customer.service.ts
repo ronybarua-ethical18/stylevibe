@@ -10,6 +10,7 @@ import {
 import { JwtPayload } from 'jsonwebtoken';
 import { SortOrder } from 'mongoose';
 import { getTotals } from '../services/service.utils';
+import { isAdmin } from '../../utils/isAdmin';
 
 const getAllCustomers = async (
   loggedUser: JwtPayload,
@@ -17,10 +18,7 @@ const getAllCustomers = async (
   filterOptions: IFilterOptions
 ): Promise<IGenericResponse<any[]>> => {
   let queryPayload = { seller: loggedUser.userId } as any;
-  if (
-    loggedUser.role === ENUM_USER_ROLE.ADMIN ||
-    loggedUser.role === ENUM_USER_ROLE.SUPER_ADMIN
-  ) {
+  if (isAdmin(loggedUser.role)) {
     queryPayload = {};
   }
   const { searchTerm, ...filterableFields } = filterOptions;
@@ -53,7 +51,7 @@ const getAllCustomers = async (
 
   const totals = await getTotals(
     BookingModel as any,
-    { seller: loggedUser.userId },
+    isAdmin(loggedUser.role) ? {} : queryPayload,
     ['BOOKED', 'CANCELLED', 'COMPLETED']
   );
 
