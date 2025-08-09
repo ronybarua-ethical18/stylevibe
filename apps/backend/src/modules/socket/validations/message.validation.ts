@@ -12,6 +12,7 @@ const createMessageZodSchema = z.object({
     message: z
       .string({ required_error: 'message is required' })
       .min(1, 'message cannot be empty'),
+    bookingId: z.string({ required_error: 'bookingId is required' }), // Add bookingId validation
     // Optional fields
     seen: z.boolean().optional(),
     timestamp: z.date().optional(), // client can send or backend can generate

@@ -1,17 +1,16 @@
 // conversation.validation.ts
 import { z } from 'zod';
 
-const createConversationZodSchema = z.object({
+export const createConversationValidation = z.object({
   body: z.object({
-    userA: z
-      .string({ required_error: 'userA is required' })
-      .min(1, 'userA must be a non-empty string'),
-    userB: z
-      .string({ required_error: 'userB is required' })
-      .min(1, 'userB must be a non-empty string'),
+    participants: z.array(z.string()).min(2).max(2),
+    bookingId: z.string().min(1, 'Booking ID is required'), // Make bookingId required
   }),
 });
 
-export const ConversationZodSchema = {
-  createConversationZodSchema,
-};
+export const getConversationValidation = z.object({
+  query: z.object({
+    participants: z.string().min(1, 'Participants are required'),
+    bookingId: z.string().min(1, 'Booking ID is required'), // Make bookingId required
+  }),
+});

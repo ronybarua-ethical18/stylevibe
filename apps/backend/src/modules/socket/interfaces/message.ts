@@ -7,4 +7,5 @@ export interface IMessage extends Document {
   message: string;
   seen: boolean;
   timestamp: Date;
+  bookingId: Types.ObjectId; // Add bookingId field
 }

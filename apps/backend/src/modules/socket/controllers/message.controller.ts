@@ -23,31 +23,34 @@ const getMessages = tryCatchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// Get messages by sender and receiver IDs
+// Get messages by sender, receiver IDs and bookingId
 const getMessagesByParticipants = tryCatchAsync(
   async (req: Request, res: Response) => {
-    const { senderId, receiverId } = req.query;
+    const { senderId, receiverId, bookingId } = req.query;
 
     if (
       !senderId ||
       !receiverId ||
+      !bookingId ||
       typeof senderId !== 'string' ||
-      typeof receiverId !== 'string'
+      typeof receiverId !== 'string' ||
+      typeof bookingId !== 'string'
     ) {
-      throw new Error('senderId and receiverId are required');
+      throw new Error('senderId, receiverId, and bookingId are required');
     }
 
-    // Find conversation between these participants
+    // Find conversation between these participants for this specific booking
     const conversation = await ConversationModel.findOne({
       participants: { $all: [senderId, receiverId] },
+      bookingId: bookingId,
     });
 
     if (!conversation) {
-      // No conversation exists, return empty array
+      // No conversation exists for this booking, return empty array
       sendResponse<IMessage[]>(res, {
         statusCode: 200,
         success: true,
-        message: 'No messages found',
+        message: 'No messages found for this booking',
         data: [],
       });
       return;
@@ -88,7 +91,11 @@ const updateMessageStatus = tryCatchAsync(
 
 // Create a new message
 const createMessage = tryCatchAsync(async (req: Request, res: Response) => {
-  const { conversationId, senderId, receiverId, message } = req.body;
+  const { conversationId, senderId, receiverId, message, bookingId } = req.body;
+
+  if (!bookingId) {
+    throw new Error('bookingId is required');
+  }
 
   let conversation;
 
@@ -98,16 +105,23 @@ const createMessage = tryCatchAsync(async (req: Request, res: Response) => {
     if (!conversation) {
       throw new Error('Conversation not found');
     }
+
+    // Verify the conversation belongs to the specified booking
+    if (conversation.bookingId.toString() !== bookingId) {
+      throw new Error('Conversation does not match the specified booking');
+    }
   } else {
-    // First try to find existing conversation
+    // First try to find existing conversation for this booking
     conversation = await ConversationModel.findOne({
       participants: { $all: [senderId, receiverId] },
+      bookingId: bookingId,
     });
 
     // If no conversation exists, create a new one
     if (!conversation) {
       conversation = await ConversationModel.create({
         participants: [senderId, receiverId],
+        bookingId: bookingId,
       });
     }
   }
@@ -117,38 +131,11 @@ const createMessage = tryCatchAsync(async (req: Request, res: Response) => {
     senderId: new mongoose.Types.ObjectId(senderId),
     receiverId: new mongoose.Types.ObjectId(receiverId),
     message,
+    bookingId: new mongoose.Types.ObjectId(bookingId), // Include bookingId
   });
 
-  // Emit socket event for real-time updates
-  if (io) {
-    // Emit to the conversation room
-    io.to(conversation._id.toString()).emit('receive_message', result);
-
-    // If this is a new conversation, also emit to the generated room ID
-    if (!conversationId) {
-      const generatedRoomId = `conv_${[senderId, receiverId].sort().join('_')}`;
-      io.to(generatedRoomId).emit('receive_message', result);
-
-      // Emit conversation_created event
-      io.to(generatedRoomId).emit('conversation_created', {
-        conversationId: conversation._id.toString(),
-        senderId,
-        receiverId,
-      });
-
-      // Also emit to both user IDs to ensure they receive it
-      io.to(senderId).emit('conversation_created', {
-        conversationId: conversation._id.toString(),
-        senderId,
-        receiverId,
-      });
-      io.to(receiverId).emit('conversation_created', {
-        conversationId: conversation._id.toString(),
-        senderId,
-        receiverId,
-      });
-    }
-  }
+  // Emit real-time message to the booking room
+  io.to(`booking_${bookingId}`).emit('receive_message', result);
 
   sendResponse<IMessage>(res, {
     statusCode: 201,

@@ -1,11 +1,9 @@
 'use client';
 
 import { SegmentedValue } from 'antd/es/segmented';
-import React, { useState } from 'react';
-import { IoEyeOutline } from 'react-icons/io5';
+import React, { useState, useMemo, useCallback } from 'react';
 import SVPagination from '../ui/SVPagination';
 import SVCustomerTabs from './SVCustomerTabs';
-import { SVDrawer } from '@/components/ui/SVDrawer';
 
 import SVPageHeading from '@/components/SVPageHeading';
 import SVStatusChip from '@/components/SVStatusChip';
@@ -15,33 +13,54 @@ import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
 import { getQueryParams } from '@/utils/getQueryParams';
 import { transformingText } from '@/utils/transformingText';
 import { useGetCustomersQuery } from '@/redux/api/customers';
-import { useGetOrCreateConversationMutation } from '@/redux/api/chat';
-import { ChatWindow } from '@/chat/ChatWindow';
+
+// Move render functions outside component to prevent recreation
+const renderBookingId = (data: any) => (
+  <>{data?.bookingId || 'SVBA2345-43242342'}</>
+);
+
+const renderServiceName = (data: any) => <>{data?.serviceId?.name}</>;
+
+const renderCategory = (data: any) => <>{data?.serviceId?.category}</>;
+
+const renderPrice = (data: any) => <>{`$${data?.totalAmount}`}</>;
+
+const renderCustomerName = (data: any) => (
+  <>{data?.customer?.firstName + ' ' + data?.customer?.lastName}</>
+);
+
+const renderCustomerEmail = (data: any) => (
+  <>{data?.customer?.email || 'N/A'}</>
+);
+
+const renderStatus = (data: any) => {
+  const status = transformingText(data);
+  return <SVStatusChip status={status} />;
+};
 
 export default function Customers() {
   const [activeTab, setActiveTab] = useState<SegmentedValue>('1');
   const [searchTerm, setSearchTerm] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
-  const [customerConversations, setCustomerConversations] = useState<{
-    [key: string]: string;
-  }>({});
 
-  const [getOrCreateConversation] = useGetOrCreateConversationMutation();
-
-  const handlePageChange = (page: number, pageSize: number) => {
+  const handlePageChange = useCallback((page: number, pageSize: number) => {
     setPageNumber(page);
     setLimit(pageSize);
-  };
+  }, []);
 
   const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 });
-  const { query } = getQueryParams(
-    pageNumber,
-    limit,
-    debouncedSearchTerm,
-    activeTab,
-    'booking'
+
+  const query = useMemo(
+    () =>
+      getQueryParams(
+        pageNumber,
+        limit,
+        debouncedSearchTerm,
+        activeTab,
+        'booking'
+      ),
+    [pageNumber, limit, debouncedSearchTerm, activeTab]
   );
 
   const { data: customers, isLoading: customersLoading } = useGetCustomersQuery(
@@ -50,143 +69,50 @@ export default function Customers() {
     }
   );
 
-  const handleCustomerClick = async (customer: any) => {
-    setSelectedCustomer(customer);
-
-    // Extract the actual seller ID - it might be customer.seller._id or customer.seller
-    const sellerId =
-      typeof customer?.seller === 'object'
-        ? customer?.seller?._id
-        : customer?.seller;
-
-    // Generate a unique key for this customer-seller pair
-    const conversationKey = `${sellerId}_${customer?.customer?._id || customer?.customerId}`;
-
-    // Check if we already have the conversation ID for this customer
-    if (customerConversations[conversationKey]) {
-      return;
-    }
-
-    try {
-      // Get or create conversation between seller and customer
-      const conversationResponse = await getOrCreateConversation({
-        userA: sellerId,
-        userB: customer?.customer?._id || customer?.customerId,
-      }).unwrap();
-
-      // Store the conversation ID for this customer
-      setCustomerConversations((prev) => ({
-        ...prev,
-        [conversationKey]: conversationResponse.data._id,
-      }));
-    } catch (error) {
-      console.error('Failed to get conversation:', error);
-    }
-  };
-
-  console.log('selectedCustomer', selectedCustomer);
-
-  const columns = [
-    {
-      title: 'Booking ID',
-      render: function (data: any) {
-        return <>{data?.bookingId || 'SVBA2345-43242342'}</>;
+  // Memoize the columns array to prevent recreation on every render
+  const columns = useMemo(
+    () => [
+      {
+        title: 'Booking ID',
+        render: renderBookingId,
       },
-    },
-    {
-      title: 'Service name',
-      //   dataIndex: 'name',
-      render: function (data: any) {
-        return <>{data?.serviceId?.name}</>;
+      {
+        title: 'Service name',
+        render: renderServiceName,
       },
-    },
-    {
-      title: 'Category',
-      render: function (data: any) {
-        return <>{data?.serviceId?.category}</>;
+      {
+        title: 'Category',
+        render: renderCategory,
       },
-    },
-    {
-      title: 'Price',
-      render: function (data: any) {
-        return <>{`$${data?.totalAmount}`}</>;
+      {
+        title: 'Price',
+        render: renderPrice,
       },
-    },
-    {
-      title: 'Customer Name',
-      render: function (data: any) {
-        return (
-          <>{data?.customer?.firstName + ' ' + data?.customer?.lastName}</>
-        );
+      {
+        title: 'Customer Name',
+        render: renderCustomerName,
       },
-    },
-    {
-      title: 'Customer Email',
-      render: function (data: any) {
-        return <>{data?.customer?.email || 'N/A'}</>;
+      {
+        title: 'Customer Email',
+        render: renderCustomerEmail,
       },
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      align: 'center',
-      render: function (data: any) {
-        const status = transformingText(data);
-        return <SVStatusChip status={status} />;
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        align: 'center',
+        render: renderStatus,
       },
-    },
-    {
-      title: 'Action',
-      align: 'right',
-      render: (record: any) => {
-        // Extract the actual seller ID - it might be record.seller._id or record.seller
-        const sellerId =
-          typeof record?.seller === 'object'
-            ? record?.seller?._id
-            : record?.seller;
+      // Remove the Action column entirely since it only contained the chat functionality
+    ],
+    []
+  );
 
-        // Generate the conversation key for this customer
-        const conversationKey = `${sellerId}_${record?.customer?._id || record?.customerId}`;
-        const conversationId = customerConversations[conversationKey];
-
-        return (
-          <div className="flex justify-end">
-            <div className="flex align-baseline">
-              <SVDrawer
-                title=""
-                placement="right"
-                width={800}
-                trigger={
-                  <IoEyeOutline
-                    className="mr-2 text-xl cursor-pointer text-blue-500 hover:text-blue-700"
-                    title="Chat with customer"
-                  />
-                }
-                onOpen={() => handleCustomerClick(record)}
-              >
-                <div className="h-full">
-                  <ChatWindow
-                    conversationId={conversationId}
-                    senderId={sellerId}
-                    receiverId={record?.customer?._id || record?.customerId}
-                    customerInfo={{
-                      name: `${record?.customer?.firstName} ${record?.customer?.lastName}`,
-                      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${record?.customer?.firstName}`,
-                      isTyping: false,
-                    }}
-                  />
-                </div>
-              </SVDrawer>
-            </div>
-          </div>
-        );
-      },
-    },
-  ];
+  // Memoize breadcrumb items
+  const breadcrumbItems = useMemo(() => getBreadcrumbItems('customers'), []);
 
   return (
     <div>
-      <SVBreadCrumb items={getBreadcrumbItems('customers')} />
+      <SVBreadCrumb items={breadcrumbItems} />
       <SVPageHeading
         pageTitle="Customers"
         pageSubTitle="See your active and inactive customers"

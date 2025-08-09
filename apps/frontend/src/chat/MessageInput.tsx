@@ -14,13 +14,13 @@ const { TextArea } = Input;
 interface MessageInputProps {
   senderId: string;
   receiverId: string;
-  conversationId?: string;
+  bookingId: string; // Add bookingId prop
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
   senderId,
   receiverId,
-  conversationId,
+  bookingId, // Use bookingId
 }) => {
   const [messageText, setMessageText] = useState('');
   const [sendMessage, { isLoading }] = useSendMessageMutation();
@@ -29,40 +29,19 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     if (!messageText.trim()) return;
 
     const textToSend = messageText.trim();
-    setMessageText(''); // Clear input immediately for better UX
+    setMessageText('');
 
     try {
-      console.log('Sending message with data:', {
-        conversationId: conversationId || undefined,
+      await sendMessage({
         senderId,
         receiverId,
         message: textToSend,
-      });
-
-      // Send via API only - the backend will handle socket emission
-      const apiResponse = await sendMessage({
-        conversationId: conversationId || undefined,
-        senderId,
-        receiverId,
-        message: textToSend,
+        bookingId, // Include bookingId when sending message
       }).unwrap();
-
-      console.log('Message sent successfully:', apiResponse);
-
-      // Don't emit via socket here - the backend socket handler will do it
-      // This prevents duplicate messages
     } catch (error: any) {
-      console.error('Failed to send message:', error);
-      console.error('Error details:', {
-        status: error?.status,
-        data: error?.data,
-        message: error?.message,
-      });
-
       message.error(
         `Failed to send message: ${error?.data?.message || error?.message || 'Unknown error'}`
       );
-      // Restore the message text if sending failed
       setMessageText(textToSend);
     }
   };
@@ -74,39 +53,31 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
-  const canSendMessage = Boolean(senderId && receiverId && !isLoading);
+  const canSendMessage = Boolean(
+    senderId && receiverId && bookingId && !isLoading
+  );
 
-  // Typing indicator effect
+  // Typing indicator effect - now based on bookingId
   useEffect(() => {
-    if (!senderId || !receiverId) return; // Don't emit typing if no sender/receiver
+    if (!senderId || !receiverId || !bookingId) return;
 
     let typingTimer: NodeJS.Timeout | undefined;
-
-    // Use conversationId if available, otherwise generate a room ID
-    // Use a consistent room ID that doesn't depend on sender/receiver order
-    const roomId =
-      conversationId || `conv_${[senderId, receiverId].sort().join('_')}`;
-
-    const emitTyping = () => {
-      socket.emit('typing_start', { conversationId: roomId });
-    };
-
-    const emitStopTyping = () => {
-      socket.emit('typing_stop', { conversationId: roomId });
-    };
+    const roomId = `booking_${bookingId}`; // Use booking-based room
 
     if (messageText.length > 0) {
-      emitTyping();
+      socket.emit('typing_start', { conversationId: roomId });
       if (typingTimer) clearTimeout(typingTimer);
-      typingTimer = setTimeout(emitStopTyping, 1000);
+      typingTimer = setTimeout(() => {
+        socket.emit('typing_stop', { conversationId: roomId });
+      }, 1000);
     } else {
-      emitStopTyping();
+      socket.emit('typing_stop', { conversationId: roomId });
     }
 
     return () => {
       if (typingTimer) clearTimeout(typingTimer);
     };
-  }, [messageText, conversationId, senderId, receiverId]);
+  }, [messageText, senderId, receiverId, bookingId]);
 
   return (
     <div className="bg-white p-4">

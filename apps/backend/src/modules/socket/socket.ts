@@ -33,36 +33,52 @@ export const initSocket = (server: http.Server) => {
 
     socket.join(userId);
 
-    // Add this handler
-    socket.on('joinRoom', (conversationId: string) => {
-      socket.join(conversationId);
-      console.log(`User ${userId} joined room: ${conversationId}`);
+    // Handle joining rooms (now supports both conversation and booking rooms)
+    socket.on('joinRoom', (roomId: string) => {
+      socket.join(roomId);
+      console.log(`User ${userId} joined room: ${roomId}`);
     });
 
     socket.on(
       'send_message',
-      async ({ senderId, receiverId, message, conversationId }) => {
+      async ({ senderId, receiverId, message, conversationId, bookingId }) => {
         try {
-          // Don't create messages here - they should be created via API
-          // This handler is just for real-time updates
+          if (!bookingId) {
+            throw new Error('bookingId is required');
+          }
 
-          // Find or create conversation for room management
+          // Find or create conversation for this specific booking
           let conversation;
 
           if (conversationId && conversationId !== 'undefined') {
             conversation = await ConversationModel.findById(conversationId);
+            // Verify the conversation belongs to the specified booking
+            if (
+              conversation &&
+              conversation.bookingId.toString() !== bookingId
+            ) {
+              throw new Error(
+                'Conversation does not match the specified booking'
+              );
+            }
           }
 
           if (!conversation) {
-            // Create new conversation or find existing one for room management
+            // Create new conversation or find existing one for this booking
             conversation = await ConversationModel.findOneAndUpdate(
-              { participants: { $all: [senderId, receiverId] } },
+              {
+                participants: { $all: [senderId, receiverId] },
+                bookingId: bookingId,
+              },
               {
                 $set: {
                   lastMessage: message,
                   lastMessageTime: new Date(),
                 },
-                $setOnInsert: { participants: [senderId, receiverId] },
+                $setOnInsert: {
+                  participants: [senderId, receiverId],
+                  bookingId: bookingId,
+                },
               },
               { new: true, upsert: true }
             );
@@ -73,13 +89,13 @@ export const initSocket = (server: http.Server) => {
             await conversation.save();
           }
 
-          // Emit to the conversation room for real-time updates
-          // The actual message will be created via API and then emitted
-          io.to(conversation._id.toString()).emit('message_created', {
+          // Emit to the booking room for real-time updates
+          io.to(`booking_${bookingId}`).emit('message_created', {
             conversationId: conversation._id,
             senderId,
             receiverId,
             message,
+            bookingId,
           });
         } catch (error) {
           console.error('Socket message error:', error);

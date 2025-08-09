@@ -12,6 +12,7 @@ const MessageSchema = new Schema<IMessage>({
   message: { type: String, required: true },
   seen: { type: Boolean, default: false },
   timestamp: { type: Date, default: Date.now },
+  bookingId: { type: Schema.Types.ObjectId, ref: 'booking', required: true }, // Add bookingId field
 });
 const MessageModel = mongoose.model<IMessage>('Message', MessageSchema);
 export default MessageModel;

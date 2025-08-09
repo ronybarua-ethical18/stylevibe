@@ -8,17 +8,27 @@ import sendResponse from '../../../shared/sendResponse';
 // Create or get a conversation between two users
 const createConversation = tryCatchAsync(
   async (req: Request, res: Response) => {
-    const { userA, userB } = req.body;
+    const { participants, bookingId } = req.body;
 
-    const result = await ConversationService.createConversation([
-      new mongoose.Types.ObjectId(userA),
-      new mongoose.Types.ObjectId(userB),
-    ]);
+    // Validate that bookingId is provided
+    if (!bookingId) {
+      return sendResponse<IConversation>(res, {
+        statusCode: 400,
+        success: false,
+        message: 'Booking ID is required to start a conversation',
+        data: null,
+      });
+    }
+
+    const result = await ConversationService.createConversation(
+      participants,
+      bookingId
+    );
 
     sendResponse<IConversation>(res, {
-      statusCode: 200,
+      statusCode: 201,
       success: true,
-      message: 'Conversation created or fetched successfully',
+      message: 'Conversation created successfully',
       data: result,
     });
   }
