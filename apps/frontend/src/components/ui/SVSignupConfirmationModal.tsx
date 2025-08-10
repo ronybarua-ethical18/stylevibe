@@ -37,7 +37,7 @@ const SVSignupConfirmationModal = ({
         open={open}
         footer={null}
         onCancel={handleClose}
-        onClose={handleClose}
+        afterClose={handleClose}
         closeIcon={
           <div
             style={{
@@ -56,7 +56,6 @@ const SVSignupConfirmationModal = ({
           </div>
         }
         // maskStyle={{ background: 'rgba(0,0,0,0.09)' }}
-        maskAnimation={true}
         wrapClassName="custom-modal-wrap"
       >
         <div className="text-center">

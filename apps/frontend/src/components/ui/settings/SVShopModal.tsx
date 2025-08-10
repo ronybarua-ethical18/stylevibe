@@ -149,11 +149,10 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
           dispatch(closeModal(false));
           setIsChecked(false);
         }}
-        onClose={() => {
+        afterClose={() => {
           dispatch(closeModal(false));
           setIsChecked(false);
         }}
-        maskAnimation={true}
         style={{ height: '90vh', overflowY: 'auto' }}
         className="no-scrollbar "
       >
