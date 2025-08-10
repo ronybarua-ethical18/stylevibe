@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "build": "turbo run build",
+    "build:frontend": "next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -49,6 +49,7 @@
     "sharp": "^0.33.1",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.8.1",
+    "styled-components": "^5.3.11",
     "tailwindcss": "^3.4.1",
     "use-count-up": "^3.0.1"
   },
@@ -59,6 +60,8 @@
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.13",
     "@types/socket.io-client": "^3.0.0",
+    "@types/styled-components": "^5.1.34",
+    "babel-plugin-styled-components": "^2.1.4",
     "eslint": "^9.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "husky": "^8.0.3",

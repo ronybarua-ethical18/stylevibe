@@ -16,7 +16,7 @@ export default function Loading() {
         visible={true}
         height="80"
         width="80"
-        color="#6a9cff"
+        // color="#6a9cff"
         ariaLabel="progress-bar-loading"
         borderColor="#6a9cff"
         wrapperClass=""
