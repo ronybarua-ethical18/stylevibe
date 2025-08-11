@@ -5,6 +5,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:frontend": "next build",
+    "dev": "next dev",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

@@ -2,11 +2,13 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Add build dependencies for native modules like bcrypt
+RUN apk add --no-cache python3 make g++ curl
+
 COPY apps/backend/package*.json ./
 COPY pnpm-lock.yaml ./
 
-RUN apk add --no-cache curl \
-  && npm install -g pnpm \
+RUN npm install -g pnpm \
   && pnpm install --no-frozen-lockfile
 
 COPY apps/backend/ ./

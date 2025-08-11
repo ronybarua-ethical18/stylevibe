@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ronypersonal22/stylevibe-backend:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=mongodb://admin:password@mongodb:27017/saloon-service?authSource=admin
+    depends_on:
+      - mongodb
+      - redis
+
+  frontend:
+    image: ronypersonal22/stylevibe-frontend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+    volumes:
+      - redis_data:/data
+
+  mongodb:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  redis_data:
+  mongodb_data:

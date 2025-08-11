@@ -77,7 +77,15 @@ const options: ApexOptions = {
   },
   tooltip: {
     enabled: true,
-    custom: ({ series, seriesIndex, dataPointIndex }: { series: number[][]; seriesIndex: number; dataPointIndex: number }) => {
+    custom: ({
+      series,
+      seriesIndex,
+      dataPointIndex,
+    }: {
+      series: number[][];
+      seriesIndex: number;
+      dataPointIndex: number;
+    }) => {
       // Example: Replace with your real date logic if you have dates
       // For demo, we'll just use a static date string
       // You can map categories to dates if needed
