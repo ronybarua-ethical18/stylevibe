@@ -55,6 +55,23 @@ const updateUser = tryCatchAsync(async (req: Request, res: Response) => {
   }
 });
 
+const updateUserRole = tryCatchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.user as { userId: mongoose.Types.ObjectId };
+  const { role } = req.body;
+
+  console.log('userId', userId);
+  console.log('role', role);
+
+  const result = await UserService.updateUserRole(userId, role);
+
+  sendResponse<IUser>(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User role updated successfully',
+    data: result,
+  });
+});
+
 const deleteUser = tryCatchAsync(async (req: Request, res: Response) => {
   const { userId } = req.params as JwtPayload;
   await UserService.deleteUser(userId);
@@ -70,5 +87,6 @@ export const UserController = {
   getAllUsers,
   getUser,
   updateUser,
+  updateUserRole,
   deleteUser,
 };

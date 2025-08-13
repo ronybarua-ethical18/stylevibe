@@ -9,7 +9,7 @@ import SVButton from '../SVButton';
 import SVBookingConfirmationModal from './SVBookingConfirmationModal';
 import SVSignupConfirmationModal from './SVSignupConfirmationModal';
 
-import { getUserInfo } from '@/services/auth.service';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 interface ICard {
   images: { img: string }[];
@@ -30,7 +30,8 @@ export default function SVCard({
   service: ICard;
   loading: boolean;
 }): JSX.Element {
-  const userInfo: any = getUserInfo();
+  const { hasRole } = useUserInfo();
+
   return (
     <div className="shadow-custom-shadow h-full flex flex-col relative mt-5 rounded-xl">
       <div className="p-4 mb-5 flex-1">
@@ -87,7 +88,7 @@ export default function SVCard({
           <Skeleton.Button active block className="!w-full" />
         ) : (
           <>
-            {userInfo?.role ? (
+            {hasRole ? (
               <div className="flex space-x-4 justify-center">
                 <div style={{ width: '80%' }}>
                   <SVBookingConfirmationModal width="65%" service={service} />

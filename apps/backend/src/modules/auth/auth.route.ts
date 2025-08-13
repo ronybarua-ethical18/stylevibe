@@ -34,4 +34,6 @@ router.put(
   AuthController.resetPassword
 );
 
+router.post('/oauth-login', AuthController.oauthLogin);
+
 export const AuthRoutes = router;

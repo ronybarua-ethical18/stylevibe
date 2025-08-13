@@ -10,6 +10,21 @@ export type ILoginUserResponse = {
   refreshToken?: string;
 };
 
+export type IOAuthLoginResponse = {
+  accessToken: string;
+  refreshToken?: string;
+  user: {
+    _id: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    role: string;
+    img?: string;
+    isOAuthUser: boolean;
+    provider: string;
+  };
+};
+
 export type ISignUpUserResponse = {
   firstName: string;
   lastName: string;

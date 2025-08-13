@@ -7,6 +7,7 @@ import { IUser } from '../user/user.interface';
 
 import {
   ILoginUserResponse,
+  IOAuthLoginResponse,
   IRefreshTokenResponse,
   ISignUpUserResponse,
 } from './auth.interface';
@@ -96,6 +97,17 @@ const refreshToken = tryCatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const oauthLogin = tryCatchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.oauthLogin(req.body);
+
+  sendResponse<IOAuthLoginResponse>(res, {
+    statusCode: 200,
+    success: true,
+    message: 'OAuth login successful',
+    data: result,
+  });
+});
+
 export const AuthController = {
   loginUser,
   signUpUser,
@@ -103,4 +115,5 @@ export const AuthController = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  oauthLogin,
 };

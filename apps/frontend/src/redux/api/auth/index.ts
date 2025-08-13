@@ -12,7 +12,15 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.USER],
     }),
+    oauthLogin: build.mutation({
+      query: (oauthData) => ({
+        url: '/auth/oauth-login',
+        method: 'POST',
+        data: oauthData,
+      }),
+      invalidatesTags: [tagTypes.USER],
+    }),
   }),
 });
 
-export const { useUserLoginMutation } = authApi;
+export const { useUserLoginMutation, useOauthLoginMutation } = authApi;

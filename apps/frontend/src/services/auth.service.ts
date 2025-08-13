@@ -16,7 +16,7 @@ export const getUserInfo = () => {
     const decodeJWTToken = decodeToken(authToken);
     return decodeJWTToken;
   }
-  return '';
+  return null;
 };
 
 export const isLoggedIn = () => {

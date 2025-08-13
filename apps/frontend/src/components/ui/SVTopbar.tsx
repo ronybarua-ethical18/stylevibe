@@ -1,17 +1,24 @@
 import { UserOutlined, BellOutlined } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, MenuProps, Space } from 'antd';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import React from 'react';
-
-import { authKey } from '@/constants/authKey';
 import { getUserInfo } from '@/services/auth.service';
-import { removeUserInfo } from '@/utils/handleLocalStorage';
+import { clearLocalStorage } from '@/utils/handleLocalStorage';
 
 export default function SVTopbar() {
   const router = useRouter();
   const userDetails: any = getUserInfo();
-  const logOut = () => {
-    removeUserInfo(authKey);
+  const logOut = async () => {
+    // Clear all localStorage data
+    clearLocalStorage();
+
+    // Sign out from NextAuth (this clears the session)
+    await signOut({
+      redirect: false, // Prevent automatic redirect so we can handle it manually
+    });
+
+    // Redirect to login page
     router.push('/login');
   };
   const items: MenuProps['items'] = [
@@ -42,14 +49,12 @@ export default function SVTopbar() {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <BellOutlined style={{ fontSize: '25px' }} />
         <Dropdown menu={{ items }}>
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              <Avatar
-                style={{ backgroundColor: '#87d068', margin: '0px 10px' }}
-                icon={<UserOutlined />}
-              />
-            </Space>
-          </a>
+          <Space>
+            <Avatar
+              style={{ backgroundColor: '#87d068', margin: '0px 10px' }}
+              icon={<UserOutlined />}
+            />
+          </Space>
         </Dropdown>
 
         <div>

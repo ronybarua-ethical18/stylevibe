@@ -15,4 +15,5 @@ export const tagTypesList = [
   tagTypes.MESSAGE,
   tagTypes.CONVERSATION,
   tagTypes.CUSTOMERS,
+  tagTypes.USER,
 ];

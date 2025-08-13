@@ -8,8 +8,6 @@ import SVCard from './SVCard';
 import { dummyServices } from '@/utils/dummyServices';
 
 export default function SVServiceCard({ services, loading }: any) {
-  console.log('top services', services);
-
   const topServices = loading ? dummyServices : services;
   return (
     <div className="w-3/4 m-auto">
