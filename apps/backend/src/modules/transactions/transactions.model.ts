@@ -1,16 +1,16 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose';
 
 import {
   AmountStatus,
   ITransactions,
   PaymentMethod,
   TransactionType,
-} from './transactions.interface'
+} from './transactions.interface';
 
 // Helper function to format numbers with two decimal places
 const formatNumber = (value: number): number => {
-  return Math.round(value * 100) / 100
-}
+  return Math.round(value * 100) / 100;
+};
 
 // Create the Mongoose Schema
 const TransactionsSchema = new mongoose.Schema<ITransactions>(
@@ -81,30 +81,30 @@ const TransactionsSchema = new mongoose.Schema<ITransactions>(
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 // Pre-save hook to format all number fields
 TransactionsSchema.pre('save', function (next) {
-  const transaction = this as ITransactions
+  const transaction = this as ITransactions;
 
   // Format the number fields with two decimal places
-  transaction.amount = formatNumber(transaction.amount)
+  transaction.amount = formatNumber(transaction.amount);
   transaction.stripeProcessingFee = formatNumber(
-    transaction.stripeProcessingFee,
-  )
-  transaction.sellerAmount = formatNumber(transaction.sellerAmount)
-  transaction.applicationFee = formatNumber(transaction.applicationFee)
+    transaction.stripeProcessingFee
+  );
+  transaction.sellerAmount = formatNumber(transaction.sellerAmount);
+  transaction.applicationFee = formatNumber(transaction.applicationFee);
 
-  next()
-})
+  next();
+});
 
-TransactionsSchema.index({ stripePaymentIntentId: 1 }, { unique: true })
+TransactionsSchema.index({ stripePaymentIntentId: 1 }, { unique: true });
 
 // Create the Mongoose Model
 const Transaction = mongoose.model<ITransactions>(
   'transactions',
-  TransactionsSchema,
-)
+  TransactionsSchema
+);
 
-export default Transaction
+export default Transaction;

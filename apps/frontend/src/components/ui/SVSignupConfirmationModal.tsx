@@ -1,21 +1,22 @@
-'use client'
+'use client';
 
-import React, { ReactNode, useState } from 'react'
-import { Modal } from 'antd'
-import SVButton from '../SVButton'
-import Image from 'next/image'
-import ModalImage from '../../../public/modal.jpg'
-import { GrClose } from 'react-icons/gr'
-import Link from 'next/link'
+import { Modal } from 'antd';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { ReactNode, useState } from 'react';
+import { GrClose } from 'react-icons/gr';
+
+import ModalImage from '../../../public/modal.jpg';
+import SVButton from '../SVButton';
 
 const SVSignupConfirmationModal = ({
   width,
 }: {
-  width: string | number
+  width: string | number;
 }): ReactNode => {
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(!open)
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <div>
@@ -36,7 +37,7 @@ const SVSignupConfirmationModal = ({
         open={open}
         footer={null}
         onCancel={handleClose}
-        onClose={handleClose}
+        afterClose={handleClose}
         closeIcon={
           <div
             style={{
@@ -49,13 +50,12 @@ const SVSignupConfirmationModal = ({
           >
             <GrClose
               style={{
-                fontSize:"14px"
+                fontSize: '14px',
               }}
             />
           </div>
         }
         // maskStyle={{ background: 'rgba(0,0,0,0.09)' }}
-        maskAnimation={true}
         wrapClassName="custom-modal-wrap"
       >
         <div className="text-center">
@@ -71,17 +71,17 @@ const SVSignupConfirmationModal = ({
             Let is get started
           </h1>
           <Link href="/login">
-          <SVButton
-            type="primary"
-            title="Sign up now"
-            className="mt-10"
-            style={{ background: '#4d3ca3', width: '100%' }}
-          />
+            <SVButton
+              type="primary"
+              title="Sign up now"
+              className="mt-10"
+              style={{ background: '#4d3ca3', width: '100%' }}
+            />
           </Link>
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default SVSignupConfirmationModal
+export default SVSignupConfirmationModal;

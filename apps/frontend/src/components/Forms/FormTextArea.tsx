@@ -1,26 +1,26 @@
-'use client'
+'use client';
 
-import TextArea from 'antd/es/input/TextArea'
-import { useFormContext, Controller } from 'react-hook-form'
+import TextArea from 'antd/es/input/TextArea';
+import { useFormContext, Controller } from 'react-hook-form';
 
 interface ITextInput {
-    name: string;
-    type?: string;
-    variant?:any;
-    size?: "large" | "small";
-    value?: string | string[] | undefined;
-    id?: string;
-    placeholder?: string;
-    validation?: object;
-    label?: string;
-    required?: boolean;
-    prefix?:React.ReactNode;
-    style?:object
-    maxLength?:number,
-    rows?:number,
-    handleChange?: (el: string) => void,
-    defaultValue?:string
-  }
+  name: string;
+  type?: string;
+  variant?: any;
+  size?: 'large' | 'small';
+  value?: string | string[] | undefined;
+  id?: string;
+  placeholder?: string;
+  validation?: object;
+  label?: string;
+  required?: boolean;
+  prefix?: React.ReactNode;
+  style?: object;
+  maxLength?: number;
+  rows?: number;
+  handleChange?: (el: string) => void;
+  defaultValue?: string;
+}
 
 const FormTextArea = ({
   name,
@@ -28,11 +28,11 @@ const FormTextArea = ({
   placeholder = 'Description',
   label,
   handleChange,
-  maxLength=1000,
-  rows=4,
-  defaultValue
+  maxLength = 1000,
+  rows = 4,
+  defaultValue,
 }: ITextInput) => {
-  const { control } = useFormContext()
+  const { control } = useFormContext();
 
   return (
     <>
@@ -52,7 +52,7 @@ const FormTextArea = ({
         )}
       />
     </>
-  )
-}
+  );
+};
 
-export default FormTextArea
+export default FormTextArea;

@@ -1,11 +1,10 @@
-import express from 'express'
-// import auth from '../../middlewares/auth'
-// import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import validateRequest from '../../middlewares/validateRequest'
-import uploadFile from './upload.controller'
-import { uploadFileZodSchema } from './upload.validation'
-import upload from '../../middlewares/upload'
-const router = express.Router()
+import upload from '../../middlewares/upload';
+import validateRequest from '../../middlewares/validateRequest';
+import uploadFile from './upload.controller';
+import { uploadFileZodSchema } from './upload.validation';
+import { createRouter } from '../../utils/typedRouter';
+
+const router = createRouter();
 
 router.post(
   '/',
@@ -17,7 +16,7 @@ router.post(
   //   ),
   validateRequest(uploadFileZodSchema.uploadFileSchema),
   upload.single('img'),
-  uploadFile,
-)
+  uploadFile
+);
 
-export const uploadRoute = router
+export const uploadRoute = router;

@@ -1,16 +1,17 @@
-import { Response } from 'express'
+import { Response } from 'express';
 
 type IApiResponse<T> = {
-  statusCode: number
-  success: boolean
-  message: string | null
+  statusCode: number;
+  success: boolean;
+  message: string | null;
   meta?: {
-    page?: number | undefined
-    limit?: number | undefined
-    total?: number | undefined
-  }
-  data?: T | null
-}
+    page?: number | undefined;
+    limit?: number | undefined;
+    total?: number | undefined;
+  };
+  data?: T | null;
+  loggedUserId?: string;
+};
 
 const sendResponse = <T>(res: Response, data: IApiResponse<T>): void => {
   const responseData: IApiResponse<T> = {
@@ -19,8 +20,9 @@ const sendResponse = <T>(res: Response, data: IApiResponse<T>): void => {
     message: data.message || null,
     meta: data.meta || null || undefined,
     data: data.data || null || undefined,
-  }
-  res.status(data.statusCode).send(responseData)
-}
+    loggedUserId: data.loggedUserId || null || undefined,
+  };
+  res.status(data.statusCode).send(responseData);
+};
 
-export default sendResponse
+export default sendResponse;

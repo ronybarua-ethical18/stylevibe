@@ -1,23 +1,26 @@
-import express, { Router } from 'express'
-import { AuthRoutes } from '../modules/auth/auth.route'
-import { UserRoutes } from '../modules/user/user.route'
-import { SaloonServiceRoutes } from '../modules/services/service.route'
-import { ShopRoutes } from '../modules/shop/shop.route'
-import { BookingRoutes } from '../modules/bookings/booking.route'
-import { FeedbackRoutes } from '../modules/feedbacks/feedback.route'
-import { FAQRoutes } from '../modules/faq/faq.route'
-import { BlogRoutes } from '../modules/blogs/blog.route'
-import { uploadRoute } from '../modules/upload/upload.route'
-import { StripeAccountRoutes } from '../modules/stripe_accounts/stripe_accounts.route'
-import { ShopTimeSlotRoutes } from '../modules/shop_timeslots/shop_timeslots.route'
-import { TransactionServiceRoutes } from '../modules/transactions/transactions.route'
-
-const router = express.Router()
+import { Router } from 'express';
+import { AuthRoutes } from '../modules/auth/auth.route';
+import { BlogRoutes } from '../modules/blogs/blog.route';
+import { BookingRoutes } from '../modules/bookings/booking.route';
+import { FAQRoutes } from '../modules/faq/faq.route';
+import { FeedbackRoutes } from '../modules/feedbacks/feedback.route';
+import { SaloonServiceRoutes } from '../modules/services/service.route';
+import { ShopRoutes } from '../modules/shop/shop.route';
+import { ShopTimeSlotRoutes } from '../modules/shop_timeslots/shop_timeslots.route';
+import { StripeAccountRoutes } from '../modules/stripe_accounts/stripe_accounts.route';
+import { TransactionServiceRoutes } from '../modules/transactions/transactions.route';
+import { uploadRoute } from '../modules/upload/upload.route';
+import { UserRoutes } from '../modules/user/user.route';
+import { SocketIORoutes } from '../modules/socket/routes';
+import { createRouter } from '../utils/typedRouter';
+import { CustomerRoutes } from '../modules/customers/customer.route';
 
 type IRoute = {
-  path: string
-  route: Router
-}
+  path: string;
+  route: Router;
+};
+
+const router = createRouter();
 
 const routeList: IRoute[] = [
   {
@@ -37,8 +40,16 @@ const routeList: IRoute[] = [
     route: ShopRoutes,
   },
   {
+    path: '/socket',
+    route: SocketIORoutes,
+  },
+  {
     path: '/bookings',
     route: BookingRoutes,
+  },
+  {
+    path: '/customers',
+    route: CustomerRoutes,
   },
   {
     path: '/transactions',
@@ -68,10 +79,10 @@ const routeList: IRoute[] = [
     path: '/shop-timeslots',
     route: ShopTimeSlotRoutes,
   },
-]
+];
 
-routeList.forEach(route => {
-  router.use(route.path, route.route)
-})
+routeList.forEach((route) => {
+  router.use(route.path, route.route);
+});
 
-export default router
+export default router;

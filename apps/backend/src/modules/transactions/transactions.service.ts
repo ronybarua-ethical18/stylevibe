@@ -1,74 +1,75 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import httpStatus from 'http-status'
-import ApiError from '../../errors/ApiError'
-import { JwtPayload } from 'jsonwebtoken'
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import mongoose, { SortOrder } from 'mongoose'
-import { paginationHelpers } from '../../helpers/pagination'
+import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
+import mongoose, { SortOrder } from 'mongoose';
+
+import ApiError from '../../errors/ApiError';
+import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IFilterOptions,
   IGenericResponse,
   IPaginationOptions,
-} from '../../shared/interfaces/common.interface'
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation'
-import { ITransactions } from './transactions.interface'
-import Transaction from './transactions.model'
-import { getTotals } from '../services/service.utils'
+} from '../../shared/interfaces/common.interface';
+import { getTotals } from '../services/service.utils';
+
+import { ITransactions } from './transactions.interface';
+import Transaction from './transactions.model';
 
 const createTransaction = async (
-  payload: ITransactions,
+  payload: ITransactions
 ): Promise<ITransactions> => {
-  const transaction = await Transaction.create(payload)
-  return transaction
-}
+  const transaction = await Transaction.create(payload);
+  return transaction;
+};
 
 const updateTransaction = async (
   paymentIntentId: string,
-  updatePayload: object,
+  updatePayload: object
 ): Promise<ITransactions | null> => {
-
-  console.log("update transaction payload from queue", updatePayload)
+  console.log('update transaction payload from queue', updatePayload);
   const updateTransaction = await Transaction.findOneAndUpdate(
-    { stripePaymentIntentId:paymentIntentId },
+    { stripePaymentIntentId: paymentIntentId },
     { ...updatePayload },
-    { new: true },
-  )
+    { new: true }
+  );
 
-  return updateTransaction
-}
+  return updateTransaction;
+};
 
 const deleteTransaction = async (
-  transactionId: mongoose.Types.ObjectId,
+  transactionId: mongoose.Types.ObjectId
 ): Promise<void> => {
-  const transaction = await Transaction.findOneAndDelete(transactionId)
+  const transaction = await Transaction.findOneAndDelete(transactionId);
 
   if (!transaction) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Transaction not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Transaction not found');
   }
-}
+};
 
 const getAllTransactions = async (
   loggedUser: JwtPayload,
   queryOptions: IPaginationOptions,
-  filterOptions: IFilterOptions,
+  filterOptions: IFilterOptions
 ): Promise<IGenericResponse<ITransactions[]>> => {
   let queryPayload = {
     $or: [{ seller: loggedUser.userId }, { customer: loggedUser.userId }],
-  } as any
+  } as any;
   if (
     loggedUser.role === ENUM_USER_ROLE.ADMIN ||
     loggedUser.role === ENUM_USER_ROLE.SUPER_ADMIN
   ) {
-    queryPayload = {}
+    queryPayload = {};
   }
-  const { searchTerm, ...filterableFields } = filterOptions
+  const { searchTerm, ...filterableFields } = filterOptions;
   const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(queryOptions)
+    paginationHelpers.calculatePagination(queryOptions);
 
-  const sortCondition: { [key: string]: SortOrder } = {}
+  const sortCondition: { [key: string]: SortOrder } = {};
 
   if (sortBy && sortOrder) {
-    sortCondition[sortBy] = sortOrder
+    sortCondition[sortBy] = sortOrder;
   }
 
   const queriesWithFilterableFields = queryFieldsManipulation(
@@ -80,11 +81,11 @@ const getAllTransactions = async (
       'status',
       'transactionType',
     ],
-    filterableFields,
-  )
+    filterableFields
+  );
 
   if (queriesWithFilterableFields.length > 0) {
-    queryPayload.$and = queriesWithFilterableFields
+    queryPayload.$and = queriesWithFilterableFields;
   }
 
   const transactions = await Transaction.find(queryPayload)
@@ -99,9 +100,9 @@ const getAllTransactions = async (
     ])
     .sort(sortCondition)
     .skip(skip)
-    .limit(limit)
+    .limit(limit);
 
-  console.log('queryPayload', queryPayload)
+  console.log('queryPayload', queryPayload);
   const totals = await getTotals(
     Transaction as any,
     loggedUser?.role === 'seller'
@@ -109,8 +110,8 @@ const getAllTransactions = async (
       : loggedUser?.role === 'customer'
         ? { customer: new mongoose.Types.ObjectId(loggedUser.userId) }
         : { status: { $in: ['pending', 'completed', 'refunded', 'failed'] } },
-    ['pending', 'completed', 'refunded', 'failed'],
-  )
+    ['pending', 'completed', 'refunded', 'failed']
+  );
 
   return {
     meta: {
@@ -123,12 +124,12 @@ const getAllTransactions = async (
       totalFailed: totals['failed'],
     },
     data: transactions,
-  }
-}
+  };
+};
 
 export const TransactionService = {
   createTransaction,
   updateTransaction,
   getAllTransactions,
   deleteTransaction,
-}
+};

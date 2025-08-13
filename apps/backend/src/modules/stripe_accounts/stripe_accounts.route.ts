@@ -1,43 +1,44 @@
-import express from 'express'
-import auth from '../../middlewares/auth'
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import { StripeAccountController } from './stripe_accounts.controller'
-const router = express.Router()
+import auth from '../../middlewares/auth';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
+import { StripeAccountController } from './stripe_accounts.controller';
+import { createRouter } from '../../utils/typedRouter';
+
+const router = createRouter();
 
 router.post(
   '/connect',
   auth(ENUM_USER_ROLE.SELLER),
-  StripeAccountController.createAndConnectStripeAccount,
-)
+  StripeAccountController.createAndConnectStripeAccount
+);
 router.post(
   '/payment-intent',
   auth(ENUM_USER_ROLE.CUSTOMER),
-  StripeAccountController.createPaymentIntentForHold,
-)
+  StripeAccountController.createPaymentIntentForHold
+);
 router.post(
   '/capture-payment',
   auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN),
-  StripeAccountController.captureHeldPayment,
-)
+  StripeAccountController.captureHeldPayment
+);
 router.get(
   '/account-details/:accountId',
-  StripeAccountController.getStripeAccountDetails,
-)
+  StripeAccountController.getStripeAccountDetails
+);
 router.get(
   '/owner-account-details/:accountId',
-  StripeAccountController.getOwnStripeAccountDetails,
-)
-router.post('/charge', StripeAccountController.createTestChargeToStripeAccount)
-router.post('/payment-checkout', StripeAccountController.stripePaymentCheckout)
+  StripeAccountController.getOwnStripeAccountDetails
+);
+router.post('/charge', StripeAccountController.createTestChargeToStripeAccount);
+router.post('/payment-checkout', StripeAccountController.stripePaymentCheckout);
 router.post(
   '/transfer-amount',
-  StripeAccountController.transferAmountToConnectedStripeAccount,
-)
-router.post('/connect/webhook', StripeAccountController.stripeConnectWebhook)
+  StripeAccountController.transferAmountToConnectedStripeAccount
+);
+router.post('/connect/webhook', StripeAccountController.stripeConnectWebhook);
 router.get(
   '/details/:accountId',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  StripeAccountController.getStripeAccountDetails,
-)
+  StripeAccountController.getStripeAccountDetails
+);
 
-export const StripeAccountRoutes = router
+export const StripeAccountRoutes = router;

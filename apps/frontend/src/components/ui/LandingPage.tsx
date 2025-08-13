@@ -1,34 +1,35 @@
-/* eslint-disable jsx-a11y/alt-text */
-'use client'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import SVServiceCard from './SVServiceCard'
-import SVTypesOfServices from './SVTypesOfServices'
-import SVHowItWorks from './SVHowItWorks'
-import SVTotalClients from './SVTotalClients'
-import SVClientReview from './SVClientReview'
-import SVLatestBlogs from './SVLatestBlogs'
-import SVFAQ from './SVFAQ'
-import SVNewsLetter from './SVNewsLetter'
-import SVFooter from './SVFooter'
-import SVHeroSection from './SVHeroSection'
-import SVNavMenus from './SVNavMenus'
-import SVHeaderCarousel from './SVHeaderCarousel'
-import AuthButton from '@/app/components/AuthButton'
-import { getUserInfo } from '@/services/auth.service'
-import { BiLogOut } from 'react-icons/bi'
-import { removeUserInfo } from '@/utils/handleLocalStorage'
-import { authKey } from '@/constants/authKey'
-import { useGetTopServicesQuery } from '@/redux/api/services'
+'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { BiLogOut } from 'react-icons/bi';
+
+import SVClientReview from './SVClientReview';
+import SVFAQ from './SVFAQ';
+import SVFooter from './SVFooter';
+import SVHeaderCarousel from './SVHeaderCarousel';
+import SVHeroSection from './SVHeroSection';
+import SVHowItWorks from './SVHowItWorks';
+import SVLatestBlogs from './SVLatestBlogs';
+import SVNavMenus from './SVNavMenus';
+import SVNewsLetter from './SVNewsLetter';
+import SVServiceCard from './SVServiceCard';
+import SVTotalClients from './SVTotalClients';
+import SVTypesOfServices from './SVTypesOfServices';
+
+import AuthButton from '@/app/components/AuthButton';
+import { authKey } from '@/constants/authKey';
+import { useGetTopServicesQuery } from '@/redux/api/services';
+import { getUserInfo } from '@/services/auth.service';
+import { removeUserInfo } from '@/utils/handleLocalStorage';
 
 export default function LandingPage() {
-  const userInfo: any = getUserInfo()
-  const role = userInfo?.role
-  const router = useRouter()
-  const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery({})
-
-  console.log("top services from layout", services?.data)
+  const userInfo: any = getUserInfo();
+  const role = userInfo?.role;
+  const router = useRouter();
+  const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery(
+    {}
+  );
 
   return (
     <div>
@@ -48,10 +49,6 @@ export default function LandingPage() {
           >
             {/* Place your logo here */}
             <div className="flex justify-end items-center">
-              {/* <div className="mr-5 rounded-3xl py-2 px-4 border border-customPrimary-800 text-customPrimary-800 flex items-center">
-                <FaUser className="text-customPrimary-800 mr-2" />
-                Login
-              </div> */}
               <h1 className="mr-5">
                 <strong className="text-customPrimary-800 text-3xl font-semibold">
                   Style
@@ -62,13 +59,19 @@ export default function LandingPage() {
               </h1>
               {role ? (
                 <div className="flex items-center">
-                  <Link className="text-customPrimary-800" href={`/${role}`}>
+                  <Link
+                    className="text-customPrimary-800"
+                    href={`/${role}/dashboard`}
+                  >
                     Dashboard
                   </Link>{' '}
-                  <BiLogOut className="ml-5 text-xl cursor-pointer text-customPrimary-800" onClick={() => {
-                    removeUserInfo(authKey)
-                    router.push('/login')
-                  }} />
+                  <BiLogOut
+                    className="ml-5 text-xl cursor-pointer text-customPrimary-800"
+                    onClick={() => {
+                      removeUserInfo(authKey);
+                      router.push('/login');
+                    }}
+                  />
                 </div>
               ) : (
                 <AuthButton />
@@ -82,7 +85,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      <SVServiceCard services={services?.data} loading={servicesLoading}/>
+      <SVServiceCard services={services?.data} loading={servicesLoading} />
       <SVHowItWorks />
       <SVTypesOfServices />
       <SVTotalClients />
@@ -92,5 +95,5 @@ export default function LandingPage() {
       <SVNewsLetter />
       <SVFooter />
     </div>
-  )
+  );
 }

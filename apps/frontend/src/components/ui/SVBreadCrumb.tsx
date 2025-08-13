@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { Breadcrumb } from "antd";
-import Link from "next/link";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined } from '@ant-design/icons';
+import { Breadcrumb } from 'antd';
+import Link from 'next/link';
 
 const SVBreadCrumb = ({
   items,
@@ -12,7 +12,6 @@ const SVBreadCrumb = ({
     link: string;
   }[];
 }) => {
-
   const breadCrumbItems = [
     {
       title: (

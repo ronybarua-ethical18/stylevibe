@@ -1,34 +1,37 @@
-import { Rate, Skeleton } from 'antd'
-import Image from 'next/image'
-import React from 'react'
-import { FaEye, FaRegEye, FaStore } from 'react-icons/fa'
-import SVButton from '../SVButton'
-import { getUserInfo } from '@/services/auth.service'
-import SVSignupConfirmationModal from './SVSignupConfirmationModal'
-import { IoEye } from 'react-icons/io5'
-import Link from 'next/link'
-import SVBookingConfirmationModal from './SVBookingConfirmationModal'
+import { Rate, Skeleton } from 'antd';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+import { FaRegEye, FaStore } from 'react-icons/fa';
+
+import SVButton from '../SVButton';
+
+import SVBookingConfirmationModal from './SVBookingConfirmationModal';
+import SVSignupConfirmationModal from './SVSignupConfirmationModal';
+
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 interface ICard {
-  images: { img: string }[]
-  name: string
-  subCategory: string
-  price: number
-  description: string
+  images: { img: string }[];
+  name: string;
+  subCategory: string;
+  price: number;
+  description: string;
   shop: {
-    shopName: string
-  }
-  _id: any
+    shopName: string;
+  };
+  _id: any;
 }
 
 export default function SVCard({
   service,
   loading,
 }: {
-  service: ICard
-  loading: boolean
-}): React.ReactNode {
-  const userInfo: any = getUserInfo()
+  service: ICard;
+  loading: boolean;
+}): JSX.Element {
+  const { hasRole } = useUserInfo();
+
   return (
     <div className="shadow-custom-shadow h-full flex flex-col relative mt-5 rounded-xl">
       <div className="p-4 mb-5 flex-1">
@@ -85,10 +88,10 @@ export default function SVCard({
           <Skeleton.Button active block className="!w-full" />
         ) : (
           <>
-            {userInfo?.role ? (
+            {hasRole ? (
               <div className="flex space-x-4 justify-center">
                 <div style={{ width: '80%' }}>
-                  <SVBookingConfirmationModal width="65%" service={service}/>
+                  <SVBookingConfirmationModal width="65%" service={service} />
                 </div>
                 <Link
                   href={`/product-details/${service?._id}`}
@@ -132,5 +135,5 @@ export default function SVCard({
         )}
       </div>
     </div>
-  )
+  );
 }

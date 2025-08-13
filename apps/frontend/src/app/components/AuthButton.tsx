@@ -1,13 +1,14 @@
-import Link from 'next/link'
-import { useSession, signOut, signIn } from 'next-auth/react'
-import { FaUser } from 'react-icons/fa'
-import { getFromLocalStorage } from '@/utils/handleLocalStorage'
-import { authKey } from '@/constants/authKey'
+import Link from 'next/link';
+import { useSession, signOut, signIn } from 'next-auth/react';
+import { FaUser } from 'react-icons/fa';
+
+import { authKey } from '@/constants/authKey';
+import { getFromLocalStorage } from '@/utils/handleLocalStorage';
 
 export default function AuthButton() {
-  const { data: session } = useSession()
-  const userInfo:any = getFromLocalStorage(authKey)
-  console.log("userInfo",  userInfo)
+  const { data: session } = useSession();
+  const userInfo: any = getFromLocalStorage(authKey);
+  console.log('userInfo', userInfo);
 
   if (session || userInfo?.role) {
     return (
@@ -21,7 +22,7 @@ export default function AuthButton() {
         </div>
         {/* <Button onClick={() => signOut()}>Sign out</Button> */}
       </>
-    )
+    );
   }
   return (
     <>
@@ -34,5 +35,5 @@ export default function AuthButton() {
         Sign In
       </Link>
     </>
-  )
+  );
 }

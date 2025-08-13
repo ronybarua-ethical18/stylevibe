@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-import bcrypt from 'bcrypt'
-import { Schema, model } from 'mongoose'
-import config from '../../config'
-import { IUser, IUserModel } from './user.interface'
+import bcrypt from 'bcryptjs';
+import { Schema, model } from 'mongoose';
+
+import config from '../../config';
+
+import { IUser, IUserModel } from './user.interface';
 
 const UserSchema = new Schema<IUser, IUserModel>(
   {
@@ -22,8 +24,9 @@ const UserSchema = new Schema<IUser, IUserModel>(
     },
     phone: {
       type: String,
-      required: true,
+      required: false, // Changed to false for OAuth users
       unique: true,
+      sparse: true, // Allow multiple null values
     },
     address: {
       type: String,
@@ -33,8 +36,7 @@ const UserSchema = new Schema<IUser, IUserModel>(
     },
     password: {
       type: String,
-      required: true,
-      //   select: false
+      required: false, // Changed to false for OAuth users
     },
     isVerified: {
       type: Boolean,
@@ -43,35 +45,55 @@ const UserSchema = new Schema<IUser, IUserModel>(
     img: {
       type: String,
     },
+    // New OAuth fields
+    provider: {
+      type: String,
+      enum: ['credentials', 'google'],
+      default: 'credentials',
+    },
+    providerId: {
+      type: String,
+      sparse: true,
+    },
+    isOAuthUser: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 UserSchema.statics.isEmailTaken = async function (
-  email: string,
+  email: string
 ): Promise<IUser | null> {
-  return await this.findOne({ email: email })
-}
+  return await this.findOne({ email: email });
+};
 
 UserSchema.statics.isPasswordMatched = async function (
   givenPassword: string,
-  savedPassword: string,
+  savedPassword: string
 ): Promise<boolean> {
-  return await bcrypt.compare(givenPassword, savedPassword)
-}
+  return await bcrypt.compare(givenPassword, savedPassword);
+};
 
 UserSchema.pre('save', async function (next) {
   // hashing user password
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const user: any = this // Added type assertion
+  const user: any = this; // Added type assertion
+
+  // Skip password hashing for OAuth users or if password is not provided
+  if (!user.password || user.isOAuthUser) {
+    return next();
+  }
+
   user.password = await bcrypt.hash(
     user.password,
-    Number(config.bcrypt_salt_rounds),
-  )
+    Number(config.bcrypt_salt_rounds)
+  );
 
-  next()
-})
+  next();
+});
 
-export const UserModel = model<IUser, IUserModel>('user', UserSchema)
+export const UserModel = model<IUser, IUserModel>('user', UserSchema);

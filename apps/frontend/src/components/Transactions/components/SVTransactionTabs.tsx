@@ -1,6 +1,7 @@
-import React from 'react'
-import { SegmentedValue } from 'antd/es/segmented'
-import SharedTabs from '@/components/ui/SVSharedTabs'
+import { SegmentedValue } from 'antd/es/segmented';
+import React from 'react';
+
+import SharedTabs from '@/components/ui/SVSharedTabs';
 
 const SVTransactionTabs = ({
   columns,
@@ -9,13 +10,15 @@ const SVTransactionTabs = ({
   setActiveTab,
   setSearchTerm,
   transactionsLoading,
+  fromDashboard,
 }: {
-  columns: any
-  transactions:any
-  activeTab: any
-  setActiveTab: any
-  setSearchTerm: any
-  transactionsLoading: any
+  columns: any;
+  transactions: any;
+  activeTab: any;
+  setActiveTab: any;
+  setSearchTerm: any;
+  transactionsLoading: any;
+  fromDashboard: boolean;
 }) => {
   const items = [
     {
@@ -53,15 +56,15 @@ const SVTransactionTabs = ({
     //   chipValue: services?.meta?.totalRejected || 0,
     //   activeColor: '#ff5c33',
     // },
-  ]
+  ];
 
   const handleTabChange = (value: SegmentedValue) => {
-    setActiveTab(value)
-  }
+    setActiveTab(value);
+  };
 
   const handleSearch = (term: string) => {
-    setSearchTerm(term)
-  }
+    setSearchTerm(term);
+  };
 
   return (
     <SharedTabs
@@ -73,8 +76,9 @@ const SVTransactionTabs = ({
       activeTab={activeTab}
       onTabChange={handleTabChange}
       onSearch={handleSearch}
+      fromDashboard={fromDashboard}
     />
-  )
-}
+  );
+};
 
-export default SVTransactionTabs
+export default SVTransactionTabs;

@@ -1,12 +1,16 @@
-import React from 'react'
-import SVSectionTitle from '../SVSectionTitle'
-import Slider from 'react-slick'
-import { dummyClientReviews } from '@/utils/dummyServices'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import Image from 'next/image'
-import ClientImage from '../../../public/cli.png'
-import { Rate } from 'antd'
+import React from 'react';
+import Slider from 'react-slick';
+
+import SVSectionTitle from '../SVSectionTitle';
+
+import { dummyClientReviews } from '@/utils/dummyServices';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Image from 'next/image';
+import { Rate } from 'antd';
+
+import ClientImage from '../../../public/cli.png';
 
 export default function SVClientReview() {
   const settings = {
@@ -19,7 +23,7 @@ export default function SVClientReview() {
     slidesToScroll: 1,
     prevArrow: <></>, // Use empty fragment to hide previous button
     nextArrow: <></>,
-  }
+  };
   return (
     <div className="">
       <SVSectionTitle title1="WHAT PEOPLE THINKS " title2="ABOUT US" />
@@ -46,5 +50,5 @@ export default function SVClientReview() {
         </Slider>
       </div>
     </div>
-  )
+  );
 }

@@ -1,23 +1,25 @@
-'use client'
+'use client';
 
-import React, { ReactNode, useState } from 'react'
-import { Button, Col, Modal, Row, Switch, message } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
+import { Button, Col, Modal, Row, Switch, message } from 'antd';
+import React, { ReactNode, useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { GrAdd } from 'react-icons/gr';
+import { useDispatch, useSelector } from 'react-redux';
+
+import SVUplaod from '../SVUpload';
+
+import Form from '@/components/Forms/Form';
+import FormInput from '@/components/Forms/FormInput';
+import FormSelectField from '@/components/Forms/FormSelectField';
+import FormTextArea from '@/components/Forms/FormTextArea';
+import { useCreateShopMutation, useUpdateShopMutation } from '@/redux/api/shop';
+import { useGetUserProfileQuery } from '@/redux/api/users';
 import {
   closeModal,
   globalSelector,
   showModal,
-} from '@/redux/slices/globalSlice'
-import { GrAdd } from 'react-icons/gr'
-import Form from '@/components/Forms/Form'
-import FormInput from '@/components/Forms/FormInput'
-import FormSelectField from '@/components/Forms/FormSelectField'
-import FormTextArea from '@/components/Forms/FormTextArea'
-import SVUplaod from '../SVUpload'
-import { SubmitHandler } from 'react-hook-form'
-import { useCreateShopMutation, useUpdateShopMutation } from '@/redux/api/shop'
-import { useGetUserProfileQuery } from '@/redux/api/users'
-import { getUserInfo } from '@/services/auth.service'
+} from '@/redux/slices/globalSlice';
+import { getUserInfo } from '@/services/auth.service';
 
 export const SERVICE_TIME_SLOTS = [
   { value: '9:00 AM', label: '9:00 AM' },
@@ -34,7 +36,7 @@ export const SERVICE_TIME_SLOTS = [
   { value: '8:00 PM', label: '8:00 PM' },
   { value: '9:00 PM', label: '9:00 PM' },
   { value: '10:00 PM', label: '10:00 PM' },
-]
+];
 
 export const SERVICE_OFF_DAYS = [
   { value: 'SUNDAY', label: 'Sunday' },
@@ -44,35 +46,35 @@ export const SERVICE_OFF_DAYS = [
   { value: 'THURSDAY', label: 'Thursday' },
   { value: 'FRIDAY', label: 'Friday' },
   { value: 'SATURDAY', label: 'Saturday' },
-]
+];
 
 type FormValues = {
-  shopName: string
-  location: string
-  shopDescription: string
-  gallery: string[]
-  maxResourcePerHour: number
+  shopName: string;
+  location: string;
+  shopDescription: string;
+  gallery: string[];
+  maxResourcePerHour: number;
   serviceTime: {
-    openingHour: string
-    closingHour: string
-    offDays: string[]
-  }
-}
+    openingHour: string;
+    closingHour: string;
+    offDays: string[];
+  };
+};
 
 type Props = {
-  edit: boolean
-  shopData?: any
-}
+  edit: boolean;
+  shopData?: any;
+};
 
 const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
-  const { isModalOpen } = useSelector(globalSelector)
-  const dispatch = useDispatch()
-  const [images, setImages] = useState(shopData?.shop?.gallery || [])
-  const [createShop, { isLoading }] = useCreateShopMutation()
-  const [updateShop, { isLoading: isUpdateLoading }] = useUpdateShopMutation()
-  const loggedUser = getUserInfo() as any
-  const { refetch } = useGetUserProfileQuery(loggedUser?.userId)
-  const [isChecked, setIsChecked] = useState(false)
+  const { isModalOpen } = useSelector(globalSelector);
+  const dispatch = useDispatch();
+  const [images, setImages] = useState(shopData?.shop?.gallery || []);
+  const [createShop, { isLoading }] = useCreateShopMutation();
+  const [updateShop, { isLoading: isUpdateLoading }] = useUpdateShopMutation();
+  const loggedUser = getUserInfo() as any;
+  const { refetch } = useGetUserProfileQuery(loggedUser?.userId);
+  const [isChecked, setIsChecked] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
@@ -88,35 +90,36 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
         maxResourcePerHour:
           Number(data?.maxResourcePerHour) ||
           shopData?.shop?.maxResourcePerHour,
-        gallery: images?.map((image:any) =>{
-          return typeof image === 'string' ? { img: image } : image
+        gallery: images?.map((image: any) => {
+          return typeof image === 'string' ? { img: image } : image;
         }),
         location: data?.location || shopData?.shop?.location,
         shopName: data?.shopName || shopData?.shop?.shopName,
-        shopDescription: data?.shopDescription || shopData?.shop?.shopDescription,
-      }
+        shopDescription:
+          data?.shopDescription || shopData?.shop?.shopDescription,
+      };
       if (edit) {
-        console.log("manipulatedObj", manipulatedObj)
+        console.log('manipulatedObj', manipulatedObj);
         await updateShop({
           id: shopData?.shop?._id,
           data: manipulatedObj,
-        }).unwrap()
+        }).unwrap();
       } else {
-        await createShop(manipulatedObj).unwrap()
+        await createShop(manipulatedObj).unwrap();
       }
-      refetch()
-      setIsChecked(false)
-      dispatch(closeModal(false))
-      message.success('Shop created successfully!')
+      refetch();
+      setIsChecked(false);
+      dispatch(closeModal(false));
+      message.success('Shop created successfully!');
     } catch (err: any) {
-      message.error(err?.data?.message)
+      message.error(err?.data?.message);
     }
-  }
+  };
 
   const handleChange = (checked: any) => {
-    setIsChecked(checked)
-    dispatch(showModal(checked))
-  }
+    setIsChecked(checked);
+    dispatch(showModal(checked));
+  };
 
   return (
     <div>
@@ -143,15 +146,14 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
         open={isModalOpen}
         footer={null}
         onCancel={() => {
-          dispatch(closeModal(false))
-          setIsChecked(false)
+          dispatch(closeModal(false));
+          setIsChecked(false);
         }}
-        onClose={() => {
-          dispatch(closeModal(false))
-          setIsChecked(false)
+        afterClose={() => {
+          dispatch(closeModal(false));
+          setIsChecked(false);
         }}
-        maskAnimation={true}
-        bodyStyle={{ height: '90vh', overflowY: 'auto' }}
+        style={{ height: '90vh', overflowY: 'auto' }}
         className="no-scrollbar "
       >
         <div className="overflow-y-scroll no-scrollbar w-full p-6 ">
@@ -235,7 +237,12 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
             </Row>
             <div className="flex justify-end mt-7">
               {!isLoading ? (
-                <Button htmlType="submit" type="primary" className="text-right" disabled={isUpdateLoading || isLoading }>
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  className="text-right"
+                  disabled={isUpdateLoading || isLoading}
+                >
                   {edit ? 'Update' : 'Submit'}
                 </Button>
               ) : (
@@ -248,7 +255,7 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default SVShopModal
+export default SVShopModal;

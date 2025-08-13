@@ -1,135 +1,137 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import httpStatus from 'http-status'
-import ApiError from '../../errors/ApiError'
-import { IShopDocument } from './shop.interface'
-import ShopModel from './shop.model'
-import { JwtPayload } from 'jsonwebtoken'
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum'
-import mongoose, { SortOrder } from 'mongoose'
-import { paginationHelpers } from '../../helpers/pagination'
+import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
+import mongoose, { SortOrder } from 'mongoose';
+
+import ApiError from '../../errors/ApiError';
+import { paginationHelpers } from '../../helpers/pagination';
+import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IGenericResponse,
   IPaginationOptions,
   IShopFilterOptions,
-} from '../../shared/interfaces/common.interface'
-import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation'
+} from '../../shared/interfaces/common.interface';
+
+import { IShopDocument } from './shop.interface';
+import ShopModel from './shop.model';
 
 const createShop = async (
   loggedUser: JwtPayload,
-  shopPayload: IShopDocument,
+  shopPayload: IShopDocument
 ): Promise<IShopDocument> => {
-  console.log('shop payload', shopPayload)
+  console.log('shop payload', shopPayload);
   if (loggedUser.role === ENUM_USER_ROLE.SELLER) {
     const shop = await ShopModel.findOneAndUpdate(
       { seller: loggedUser.userId },
       { ...shopPayload },
-      { upsert: true, new: true, setDefaultsOnInsert: true },
-    )
-    return shop
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    return shop;
   } else {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'You are not a seller')
+    throw new ApiError(httpStatus.BAD_REQUEST, 'You are not a seller');
   }
-}
+};
 
 const getShop = async (
-  shopId: mongoose.Types.ObjectId,
+  shopId: mongoose.Types.ObjectId
 ): Promise<IShopDocument> => {
-  const shop = await ShopModel.findById({ _id: shopId })
+  const shop = await ShopModel.findById({ _id: shopId });
 
   if (!shop) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Shop not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Shop not found');
   }
 
-  return shop
-}
+  return shop;
+};
 const updateShop = async (
   loggedUser: JwtPayload,
   shopId: mongoose.Types.ObjectId,
-  updatePayload: object,
+  updatePayload: object
 ): Promise<IShopDocument | null> => {
-  console.log('update payload from shop', updatePayload)
+  console.log('update payload from shop', updatePayload);
   const queryPayload = {
     _id: shopId,
   } as {
-    _id: mongoose.Types.ObjectId
-    seller: mongoose.Types.ObjectId
-  }
+    _id: mongoose.Types.ObjectId;
+    seller: mongoose.Types.ObjectId;
+  };
   if (loggedUser.role === ENUM_USER_ROLE.SELLER) {
-    queryPayload.seller = loggedUser.userId
+    queryPayload.seller = loggedUser.userId;
   }
-  const shop = await ShopModel.findOne(queryPayload)
+  const shop = await ShopModel.findOne(queryPayload);
 
   if (!shop) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
   }
   const updateShop = await ShopModel.findByIdAndUpdate(
     { _id: shopId },
     { ...updatePayload },
-    { new: true },
-  )
+    { new: true }
+  );
 
-  return updateShop
-}
+  return updateShop;
+};
 
 const deleteShop = async (
   loggedUser: JwtPayload,
-  shopId: mongoose.Types.ObjectId,
+  shopId: mongoose.Types.ObjectId
 ): Promise<void> => {
   const queryPayload: {
-    _id: mongoose.Types.ObjectId
-    seller?: mongoose.Types.ObjectId
+    _id: mongoose.Types.ObjectId;
+    seller?: mongoose.Types.ObjectId;
   } = {
     _id: shopId,
-  }
+  };
 
   if (loggedUser.role === ENUM_USER_ROLE.SELLER) {
-    queryPayload.seller = loggedUser.userId
+    queryPayload.seller = loggedUser.userId;
   }
 
-  const shop = await ShopModel.findOneAndDelete(queryPayload)
+  const shop = await ShopModel.findOneAndDelete(queryPayload);
 
   if (!shop) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Shop not found')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Shop not found');
   }
-}
+};
 
 const getAllShop = async (
   loggedUser: JwtPayload,
   queryOptions: IPaginationOptions,
-  filterOptions: IShopFilterOptions,
+  filterOptions: IShopFilterOptions
 ): Promise<IGenericResponse<IShopDocument[]>> => {
   if (
     loggedUser.role === ENUM_USER_ROLE.ADMIN ||
     loggedUser.role === ENUM_USER_ROLE.SUPER_ADMIN
   ) {
-    const queryPayload = {} as any
+    const queryPayload = {} as any;
 
-    const { searchTerm, ...filterableFields } = filterOptions
+    const { searchTerm, ...filterableFields } = filterOptions;
     const { page, limit, skip, sortBy, sortOrder } =
-      paginationHelpers.calculatePagination(queryOptions)
+      paginationHelpers.calculatePagination(queryOptions);
 
-    const sortCondition: { [key: string]: SortOrder } = {}
+    const sortCondition: { [key: string]: SortOrder } = {};
 
     if (sortBy && sortOrder) {
-      sortCondition[sortBy] = sortOrder
+      sortCondition[sortBy] = sortOrder;
     }
 
     const queriesWithFilterableFields = queryFieldsManipulation(
       searchTerm,
       ['shopName', 'location'],
-      filterableFields,
-    )
+      filterableFields
+    );
 
     if (queriesWithFilterableFields.length) {
-      queryPayload.$and = queriesWithFilterableFields
+      queryPayload.$and = queriesWithFilterableFields;
     }
 
     const shopList = await ShopModel.find(queryPayload)
       .sort(sortCondition)
       .skip(skip)
-      .limit(limit)
+      .limit(limit);
 
-    const total = await ShopModel.countDocuments()
+    const total = await ShopModel.countDocuments();
     return {
       meta: {
         page,
@@ -137,11 +139,11 @@ const getAllShop = async (
         total,
       },
       data: shopList,
-    }
+    };
   } else {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'You are not authorized')
+    throw new ApiError(httpStatus.BAD_REQUEST, 'You are not authorized');
   }
-}
+};
 
 export const ShopService = {
   createShop,
@@ -149,4 +151,4 @@ export const ShopService = {
   getAllShop,
   updateShop,
   deleteShop,
-}
+};

@@ -1,10 +1,11 @@
-import { tagTypes } from '@/utils/tagTypes'
-import { baseApi } from '../baseApi'
+import { baseApi } from '../baseApi';
 
-const serviceApi = baseApi.injectEndpoints({
-  endpoints: build => ({
+import { tagTypes } from '@/utils/tagTypes';
+
+const userApi = baseApi.injectEndpoints({
+  endpoints: (build) => ({
     getUserProfile: build.query({
-      query: userId => ({
+      query: (userId) => ({
         url: `/users/${userId}`, // Corrected the URL format
         method: 'GET',
       }),
@@ -21,8 +22,19 @@ const serviceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.USER],
     }),
-  }),
-})
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation } =
-  serviceApi
+    updateUserRole: build.mutation({
+      query: ({ data }) => ({
+        url: `/users/update-role`,
+        method: 'PATCH',
+        data: data,
+      }),
+    }),
+  }),
+});
+
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useUpdateUserRoleMutation,
+} = userApi;

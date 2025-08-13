@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { Table } from 'antd'
+import { Table } from 'antd';
 
 type UMTableProps = {
-  loading?: boolean
-  columns: any
-  dataSource: any
-  pageSize?: number
-  totalPages?: number
-  showSizeChanger?: boolean
-  onPaginationChange?: (page: number, pageSize: number) => void
-  onTableChange?: (pagination: any, filter: any, sorter: any) => void
-  showPagination?: boolean
-}
+  loading?: boolean;
+  columns: any;
+  dataSource: any;
+  pageSize?: number;
+  totalPages?: number;
+  showSizeChanger?: boolean;
+  onPaginationChange?: (page: number, pageSize: number) => void;
+  onTableChange?: (pagination: any, filter: any, sorter: any) => void;
+  showPagination?: boolean;
+};
 
 const SVDataTable = ({
   loading = false,
@@ -33,33 +33,20 @@ const SVDataTable = ({
         showSizeChanger: showSizeChanger,
         onChange: onPaginationChange,
       }
-    : false
-
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows,
-      )
-    },
-
-  }
+    : false;
 
   return (
     <Table
-      rowSelection={{
-        ...rowSelection,
-      }}
+      className=""
+      // rowSelection={}
       loading={loading}
       columns={columns}
       dataSource={dataSource}
       pagination={paginationConfig}
       onChange={onTableChange}
       rowKey={(record) => record?._id}
-      
     />
-  )
-}
+  );
+};
 
-export default SVDataTable
+export default SVDataTable;

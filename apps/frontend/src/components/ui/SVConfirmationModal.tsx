@@ -1,18 +1,18 @@
-'use client'
-import { FaRegTrashAlt } from 'react-icons/fa'
-import React, { ReactElement, ReactNode, useState } from 'react'
-import { Modal } from 'antd'
-import SVButton from '../SVButton'
+'use client';
+import { Modal } from 'antd';
+import React, { ReactNode, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
+import { IoTrashOutline } from 'react-icons/io5';
 
-import { IoTrashOutline } from 'react-icons/io5'
+import SVButton from '../SVButton';
 
 interface IModal {
-  modalTitle?: string
-  buttonTitle?: string
-  width?: string | number
-  func?: () => Promise<void> // Changed to a function type
-  item: any
-  isLoading?: boolean
+  modalTitle?: string;
+  buttonTitle?: string;
+  width?: string | number;
+  func?: () => Promise<void>; // Changed to a function type
+  item: any;
+  isLoading?: boolean;
 }
 
 const SVConfirmationModal = ({
@@ -20,14 +20,14 @@ const SVConfirmationModal = ({
   buttonTitle = 'Confirm',
   isLoading,
 }: IModal): ReactNode => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleOpenModal = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
   const handleCloseModal = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <>
@@ -40,7 +40,6 @@ const SVConfirmationModal = ({
         centered
         footer={null}
         onCancel={handleCloseModal}
-        maskAnimation={true}
         // maskStyle={{background:"rgba(0,0,0,0.09)"}}
       >
         <div className="pt-6 pb-0 px-2">
@@ -72,9 +71,9 @@ const SVConfirmationModal = ({
               type="primary"
               style={{ background: '#f0424c', borderRadius: '10px' }}
               onClick={() => {
-                func!()
+                func!();
                 if (!isLoading) {
-                  handleCloseModal()
+                  handleCloseModal();
                 }
               }}
             />
@@ -82,7 +81,7 @@ const SVConfirmationModal = ({
         </div>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default SVConfirmationModal
+export default SVConfirmationModal;

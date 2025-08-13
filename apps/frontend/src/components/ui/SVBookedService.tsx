@@ -1,7 +1,7 @@
-import { Rate } from 'antd'
-import Image from 'next/image'
-import React from 'react'
-import { FaStore } from 'react-icons/fa'
+import { Rate } from 'antd';
+import Image from 'next/image';
+import React from 'react';
+import { FaStore } from 'react-icons/fa';
 
 export default function SVBookedService({ service }: any) {
   return (
@@ -15,7 +15,6 @@ export default function SVBookedService({ service }: any) {
             style={{
               objectFit: 'cover',
               borderRadius: '10px',
-              
             }}
           />
         </div>
@@ -48,5 +47,5 @@ export default function SVBookedService({ service }: any) {
         </div>
       </div>
     </div>
-  )
+  );
 }

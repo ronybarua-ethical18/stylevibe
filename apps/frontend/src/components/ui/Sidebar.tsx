@@ -1,26 +1,29 @@
-'use client'
-import React from 'react'
-import { Layout, Menu } from 'antd'
-import { sidebarItems } from '@/constants/sidebarItems'
-import { MdOutlineAdminPanelSettings } from 'react-icons/md'
-import { getUserInfo } from '@/services/auth.service'
+'use client';
+import { Layout, Menu } from 'antd';
+import { usePathname } from 'next/navigation';
+import React from 'react';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
-const { Sider } = Layout
+import { sidebarItems } from '@/constants/sidebarItems';
+import { useUserInfo } from '@/hooks/useUserInfo';
+
+const { Sider } = Layout;
 
 export default function Sidebar(): React.ReactNode {
-  const userInfo:any = getUserInfo()
-  const role = userInfo?.role
+  const { userInfo } = useUserInfo();
+  const role = userInfo?.role;
+  const pathname = usePathname();
 
   return (
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
-      width={280}
-      onBreakpoint={broken => {
-        console.log(broken)
+      width={250}
+      onBreakpoint={(broken) => {
+        console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
-        console.log(collapsed, type)
+        console.log(collapsed, type);
       }}
       style={{
         overflow: 'auto',
@@ -31,7 +34,7 @@ export default function Sidebar(): React.ReactNode {
         top: 0,
         bottom: 0,
         left: 0,
-        zIndex: 999,
+        zIndex: 3,
       }}
     >
       <div
@@ -55,9 +58,9 @@ export default function Sidebar(): React.ReactNode {
         style={{ background: 'white', color: '#151b20' }}
         theme="light"
         mode="inline"
-        defaultSelectedKeys={['2']}
+        selectedKeys={[pathname]}
         items={sidebarItems(role)}
       />
     </Sider>
-  )
+  );
 }

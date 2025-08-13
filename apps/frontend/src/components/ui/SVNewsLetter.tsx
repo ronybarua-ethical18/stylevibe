@@ -1,11 +1,12 @@
-import React from 'react'
-import FormInput from '../Forms/FormInput'
-import Form from '../Forms/Form'
+import React from 'react';
+
+import Form from '../Forms/Form';
+import FormInput from '../Forms/FormInput';
 
 export default function SVNewsLetter() {
   const onSubmit = () => {
-    console.log('the newsletter')
-  }
+    console.log('the newsletter');
+  };
   return (
     <div className="mt-20 py-16 bg-gray-200">
       <div className="w-3/4 m-auto flex justify-between items-center">
@@ -31,5 +32,5 @@ export default function SVNewsLetter() {
         </div>
       </div>
     </div>
-  )
+  );
 }

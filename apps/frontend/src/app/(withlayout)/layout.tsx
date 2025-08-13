@@ -1,42 +1,25 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import dynamic from 'next/dynamic'
-import { Layout } from 'antd'
-import React from 'react'
-import { isLoggedIn } from '@/services/auth.service'
+import { Layout } from 'antd';
+import React from 'react';
 
-// Dynamically import Sidebar and Contents with loading fallbacks
-const Sidebar = dynamic(() => import('@/components/ui/Sidebar'), {
-  ssr: false,
-  loading: () => <div>Loading Sidebar...</div>,
-})
-
-const Contents = dynamic(() => import('@/components/ui/Contents'), {
-  ssr: false,
-  loading: () => <div>Loading Content...</div>,
-})
+import { RoleSelectionGuard } from '@/components/auth/RoleSelectionGuard';
+import Contents from '@/components/ui/Contents';
+import Sidebar from '@/components/ui/Sidebar';
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const router = useRouter()
-  const userLoggedIn = isLoggedIn()
-
-  // Redirect to login page if the user is not logged in
-  if (!userLoggedIn) {
-    if (typeof window !== 'undefined') {
-      router.push('/login')
-    }
-    return null // Avoid rendering layout if redirecting
-  }
+  const AntdLayout = Layout as any;
 
   return (
-    <Layout>
-      <Sidebar />
-      <Contents>{children}</Contents>
-    </Layout>
-  )
+    <RoleSelectionGuard>
+      <AntdLayout>
+        <Sidebar />
+        <Contents>{children}</Contents>
+      </AntdLayout>
+    </RoleSelectionGuard>
+  );
 }

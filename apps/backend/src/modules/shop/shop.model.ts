@@ -1,13 +1,15 @@
-import mongoose, { Schema } from 'mongoose'
-import { IShopDocument } from './shop.interface'
-import { DayOfWeeks } from '../bookings/booking.interface'
+import mongoose, { Schema } from 'mongoose';
+
+import { DayOfWeeks } from '../bookings/booking.interface';
+
+import { IShopDocument } from './shop.interface';
 
 const GallerySchema = new mongoose.Schema({
   img: {
     type: String,
     required: true,
   },
-})
+});
 
 const ShopSchema = new mongoose.Schema(
   {
@@ -35,10 +37,10 @@ const ShopSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
-)
+  { timestamps: true }
+);
 
 // Create and export the mongoose model
-const ShopModel = mongoose.model<IShopDocument>('shop', ShopSchema)
+const ShopModel = mongoose.model<IShopDocument>('shop', ShopSchema);
 
-export default ShopModel
+export default ShopModel;

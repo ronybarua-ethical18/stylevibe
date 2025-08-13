@@ -1,10 +1,12 @@
-import React from 'react'
-import SVImageGallery from '../SVImageGallery'
-import { Divider, Switch } from 'antd'
-import { GoLocation } from 'react-icons/go'
-import { PiTimerLight } from 'react-icons/pi'
-import { IoLockClosedOutline } from 'react-icons/io5'
-import SVShopModal from './SVShopModal'
+import { Divider } from 'antd';
+import React from 'react';
+import { GoLocation } from 'react-icons/go';
+import { IoLockClosedOutline } from 'react-icons/io5';
+import { PiTimerLight } from 'react-icons/pi';
+
+import SVImageGallery from '../SVImageGallery';
+
+import SVShopModal from './SVShopModal';
 
 function SVShopInfo({ shopData }: any) {
   const images = [
@@ -20,15 +22,15 @@ function SVShopInfo({ shopData }: any) {
       original: 'https://picsum.photos/id/1019/1000/600/',
       thumbnail: 'https://picsum.photos/id/1019/250/150/',
     },
-  ]
+  ];
   return (
     <>
       {shopData?.shop ? (
         <div className="h-full">
           <div className="flex justify-between items-center">
             <h1 className="text-xl font-normal">Shop Information</h1>
-           
-             <SVShopModal edit={true} shopData={shopData}/>
+
+            <SVShopModal edit={true} shopData={shopData} />
           </div>
           <div
             className="bg-white rounded-md p-5"
@@ -71,7 +73,7 @@ function SVShopInfo({ shopData }: any) {
                       ? shopData?.shop?.serviceTime?.offDays
                           ?.map(
                             (day: string) =>
-                              day.charAt(0) + day.slice(1).toLowerCase(),
+                              day.charAt(0) + day.slice(1).toLowerCase()
                           )
                           .join(', ')
                       : 'Friday, Saturday'}
@@ -92,7 +94,7 @@ function SVShopInfo({ shopData }: any) {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default SVShopInfo
+export default SVShopInfo;

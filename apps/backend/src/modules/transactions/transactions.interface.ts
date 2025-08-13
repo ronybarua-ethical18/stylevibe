@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose'
+import { Document, Schema } from 'mongoose';
 
 export enum AmountStatus {
   PENDING = 'pending',
@@ -21,18 +21,18 @@ export enum TransactionType {
 
 // Interface for the stripe account document
 export interface ITransactions extends Document {
-  customer: Schema.Types.ObjectId
-  seller: Schema.Types.ObjectId
-  service: Schema.Types.ObjectId
-  booking: Schema.Types.ObjectId
-  amount: number
-  status: AmountStatus
-  stripePaymentIntentId: string
-  paymentMethod: PaymentMethod
-  sellerAmount: number
-  applicationFee: number
-  stripeProcessingFee: number
-  isPaymentDisbursed: boolean
-  transactionId: string
-  transactionType: TransactionType
+  customer: Schema.Types.ObjectId;
+  seller: Schema.Types.ObjectId;
+  service: Schema.Types.ObjectId;
+  booking: Schema.Types.ObjectId;
+  amount: number;
+  status: AmountStatus;
+  stripePaymentIntentId: string;
+  paymentMethod: PaymentMethod;
+  sellerAmount: number;
+  applicationFee: number;
+  stripeProcessingFee: number;
+  isPaymentDisbursed: boolean;
+  transactionId: string;
+  transactionType: TransactionType;
 }

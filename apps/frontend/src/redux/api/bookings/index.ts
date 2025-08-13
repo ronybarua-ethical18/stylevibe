@@ -1,10 +1,11 @@
-import { tagTypes } from '@/utils/tagTypes'
-import { baseApi } from '../baseApi'
+import { baseApi } from '../baseApi';
+
+import { tagTypes } from '@/utils/tagTypes';
 
 const bookingApi = baseApi.injectEndpoints({
-  endpoints: build => ({
+  endpoints: (build) => ({
     createBooking: build.mutation({
-      query: data => ({
+      query: (data) => ({
         url: '/bookings',
         method: 'POST',
         data: data,
@@ -12,7 +13,7 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.BOOKINGS],
     }),
     getBookings: build.query({
-      query: params => ({
+      query: (params) => ({
         url: '/bookings',
         method: 'GET',
         params: params,
@@ -21,7 +22,7 @@ const bookingApi = baseApi.injectEndpoints({
       keepUnusedDataFor: 10,
     }),
     getBooking: build.query({
-      query: params => ({
+      query: (params) => ({
         url: `/bookings/${params}`,
         method: 'GET',
       }),
@@ -37,14 +38,14 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.BOOKINGS],
     }),
     deleteBooking: build.mutation({
-      query: id => ({
+      query: (id) => ({
         url: `/bookings/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: [tagTypes.SERVICES],
     }),
   }),
-})
+});
 
 export const {
   useCreateBookingMutation,
@@ -52,4 +53,4 @@ export const {
   useGetBookingQuery,
   useDeleteBookingMutation,
   useUpdateBookingMutation,
-} = bookingApi
+} = bookingApi;

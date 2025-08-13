@@ -1,10 +1,11 @@
-import { tagTypes } from '@/utils/tagTypes'
-import { baseApi } from '../baseApi'
+import { baseApi } from '../baseApi';
+
+import { tagTypes } from '@/utils/tagTypes';
 
 const transactionApi = baseApi.injectEndpoints({
-  endpoints: build => ({
+  endpoints: (build) => ({
     getTransactions: build.query({
-      query: params => ({
+      query: (params) => ({
         url: '/transactions',
         method: 'GET',
         params: params,
@@ -21,17 +22,17 @@ const transactionApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.TRANSACTIONS],
     }),
     deleteTransaction: build.mutation({
-      query: id => ({
+      query: (id) => ({
         url: `/transactions/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: [tagTypes.TRANSACTIONS],
     }),
   }),
-})
+});
 
 export const {
   useGetTransactionsQuery,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
-} = transactionApi
+} = transactionApi;

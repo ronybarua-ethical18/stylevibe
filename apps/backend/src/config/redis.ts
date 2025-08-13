@@ -1,17 +1,21 @@
 // config/redis.ts
 import { Redis } from 'ioredis';
 
+// Get Redis configuration from environment variables
+const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
+const REDIS_PORT_NUM = parseInt(process.env.REDIS_PORT || '6379');
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
+
 // Create a Redis instance
 export const redisClient = new Redis({
-  host: '127.0.0.1', // REDIS_URI can be used here if needed
-  port: 6379,        // REDIS_PORT can be used here if needed
-  // password: 'your-redis-password', // Use this if Redis is password-protected
+  host: REDIS_HOST,
+  port: REDIS_PORT_NUM,
+  password: REDIS_PASSWORD, // Will be undefined if not set, which is fine
 });
-
 
 // Listen for Redis connection events
 redisClient.on('connect', () => {
-  console.log('Redis client connected');
+  console.log(`Redis client connected to ${REDIS_HOST}:${REDIS_PORT_NUM}`);
 });
 
 redisClient.on('ready', () => {
@@ -26,8 +30,8 @@ redisClient.on('close', () => {
   console.log('Redis connection closed');
 });
 
-export const REDIS_URI = '127.0.0.1';
-export const REDIS_PORT = 6379;
+export const REDIS_URI = REDIS_HOST;
+export const REDIS_PORT = REDIS_PORT_NUM;
 
 export default {
   REDIS_URI,

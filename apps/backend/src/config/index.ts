@@ -1,7 +1,8 @@
-import dotenv from 'dotenv'
-import path from 'path'
+import path from 'path';
 
-dotenv.config({ path: path.join(process.cwd(), '.env') })
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export default {
   port: process.env.PORT,
@@ -41,4 +42,4 @@ export default {
     stripe_payment_success_url: process.env.STRIPE_PAYMENT_SUCCESS_URL,
     stripe_payment_failed_url: process.env.STRIPE_PAYMENT_FAILED_URL,
   },
-}
+};
