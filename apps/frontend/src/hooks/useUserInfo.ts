@@ -1,6 +1,6 @@
 import { useSession, signOut as nextAuthSignOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { authKey } from '@/constants/authKey';
 import {
@@ -13,6 +13,17 @@ import {
   getFromLocalStorage,
 } from '@/utils/handleLocalStorage';
 
+interface LoggedUser {
+  accessToken?: string;
+  role?: string;
+  provider?: string;
+  [key: string]: any; // Allow additional properties for credential users
+}
+
+interface ExtendedSession {
+  loggedUser?: LoggedUser;
+}
+
 export const useUserInfo = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -20,17 +31,17 @@ export const useUserInfo = () => {
   // Handle OAuth token storage when session is available
   useEffect(() => {
     if (
-      (session as any)?.loggedUser?.accessToken &&
+      (session as ExtendedSession)?.loggedUser?.accessToken &&
       status === 'authenticated'
     ) {
-      storeUserInfo((session as any).loggedUser.accessToken);
+      storeUserInfo((session as ExtendedSession).loggedUser!.accessToken!);
     }
   }, [session, status]);
 
-  const userInfo = useMemo(() => {
+  const userInfo = (): LoggedUser | null => {
     // For OAuth users, get info from session.loggedUser
-    if ((session as any)?.loggedUser) {
-      return (session as any).loggedUser;
+    if ((session as ExtendedSession)?.loggedUser) {
+      return (session as ExtendedSession).loggedUser || null;
     }
 
     // For credential users, get info from localStorage
@@ -44,14 +55,14 @@ export const useUserInfo = () => {
     }
 
     return null;
-  }, [session]);
+  };
 
   const isCredentialAuth = () => {
     return isLoggedIn() && !session;
   };
 
   const isOAuthAuth = () => {
-    return !!(session as any)?.loggedUser?.accessToken;
+    return !!(session as ExtendedSession)?.loggedUser?.accessToken;
   };
 
   const isAuthenticated = () => {
@@ -60,7 +71,7 @@ export const useUserInfo = () => {
 
   const getAccessToken = () => {
     if (isOAuthAuth()) {
-      return (session as any)?.loggedUser?.accessToken;
+      return (session as ExtendedSession)?.loggedUser?.accessToken;
     }
     return getFromLocalStorage(authKey) || null;
   };
@@ -75,19 +86,20 @@ export const useUserInfo = () => {
     router.push('/login');
   };
 
+  const loggedUser = userInfo();
   return {
-    userInfo,
+    userInfo: loggedUser,
     isLoading: status === 'loading',
     isAuthenticated: isAuthenticated(),
-    isOAuthUser: userInfo?.provider === 'google',
-    hasRole: !!userInfo?.role,
+    isOAuthUser: loggedUser?.provider === 'google',
+    hasRole: !!loggedUser?.role,
     needsRoleSelection:
-      userInfo?.provider === 'google' && userInfo?.role === 'guest',
+      loggedUser?.provider === 'google' && loggedUser?.role === 'guest',
     isCredentialAuth: isCredentialAuth(),
     isOAuthAuth: isOAuthAuth(),
     accessToken: getAccessToken(),
     user: session?.user,
-    provider: userInfo?.provider,
+    provider: loggedUser?.provider,
     signOut,
     status,
     session,

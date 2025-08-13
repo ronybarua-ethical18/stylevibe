@@ -33,8 +33,15 @@ const LoginPage = () => {
     if (!isLoading) {
       // Remove the !isAuthenticated redirect that's causing issues
       setTimeout(() => {
-        if (userInfo?.role) {
-          router.push(`/${userInfo.role.toLowerCase()}/dashboard`);
+        if (isAuthenticated) {
+          console.log('isAuthenticated', isAuthenticated);
+          console.log('needsRoleSelection', needsRoleSelection);
+          console.log('userInfo', userInfo);
+          if (needsRoleSelection) {
+            router.push(`/select-role`);
+          } else if (userInfo?.role) {
+            router.push(`/${userInfo.role.toLowerCase()}/dashboard`);
+          }
         }
       }, 500);
     }
