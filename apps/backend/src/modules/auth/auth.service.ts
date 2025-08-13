@@ -15,9 +15,11 @@ import { UserModel } from '../user/user.model';
 import {
   ILoginUser,
   ILoginUserResponse,
+  IOAuthLoginResponse,
   IRefreshTokenResponse,
   ISignUpUserResponse,
 } from './auth.interface';
+import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 
 const signUpUser = async (
   payload: ILoginUser
@@ -50,12 +52,22 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
+
+  // Check if user is OAuth user trying to login with credentials
+  if (user.isOAuthUser) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `This account was created with ${user.provider}. Please sign in with ${user.provider}.`
+    );
+  }
+
   if (!user.isVerified) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User is not verified yet');
   }
+
   const isPasswordMatched = await UserModel.isPasswordMatched(
     password,
-    user.password
+    user.password!
   );
 
   if (!isPasswordMatched) {
@@ -115,7 +127,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
     return {
       accessToken: newAccessToken,
     };
-  } catch (err) {
+  } catch {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 };
@@ -150,7 +162,7 @@ const forgotPassword = async (email: string): Promise<IUser> => {
   return user;
 };
 
-export const resetPassword = async (payload: {
+const resetPassword = async (payload: {
   token: string;
   newPassword: string;
 }): Promise<void> => {
@@ -172,6 +184,98 @@ export const resetPassword = async (payload: {
   });
 };
 
+// New method for OAuth login/registration
+const oauthLogin = async (payload: {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  provider: 'google';
+  providerId: string;
+  img?: string;
+}): Promise<IOAuthLoginResponse> => {
+  const { email, firstName, lastName, provider, providerId, img } = payload;
+
+  // Check if user already exists
+  let user = await UserModel.findOne({
+    $or: [{ email: email }, { providerId: providerId, provider: provider }],
+  });
+
+  if (user) {
+    // User exists, update their info if needed
+    if (!user.isOAuthUser || user.provider !== provider) {
+      user = await UserModel.findByIdAndUpdate(
+        user._id,
+        {
+          provider: provider,
+          providerId: providerId,
+          isOAuthUser: true,
+          isVerified: true, // OAuth users are automatically verified
+          firstName: firstName || user.firstName,
+          lastName: lastName || user.lastName,
+          img: img || user.img,
+        },
+        { new: true }
+      );
+    }
+  } else {
+    // Create new OAuth user
+    user = await UserModel.create({
+      email,
+      firstName,
+      lastName,
+      provider,
+      providerId,
+      isOAuthUser: true,
+      isVerified: true,
+      role: ENUM_USER_ROLE.GUEST, // Default role
+      img,
+      // No password needed for OAuth users
+    });
+  }
+
+  if (!user) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Failed to create/update user'
+    );
+  }
+
+  // Generate tokens
+  const tokenPayload = {
+    userId: user._id,
+    role: user.role,
+    firstName: user.firstName,
+    lastName: user.lastName,
+  };
+
+  const accessToken = jwtHelpers.createToken(
+    tokenPayload,
+    config.jwt.secret as string,
+    Number(config.jwt.expires_in)
+  );
+
+  const refreshToken = jwtHelpers.createToken(
+    tokenPayload,
+    config.jwt.refresh_secret as string,
+    Number(config.jwt.refresh_expires_in)
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+    user: {
+      _id: user._id.toString(),
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      img: user.img,
+      isOAuthUser: user.isOAuthUser,
+      provider: user.provider,
+    },
+  };
+};
+
 export const AuthService = {
   loginUser,
   refreshToken,
@@ -179,4 +283,5 @@ export const AuthService = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  oauthLogin, // Add new method
 };

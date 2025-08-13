@@ -2,7 +2,7 @@ import { baseApi } from '../baseApi';
 
 import { tagTypes } from '@/utils/tagTypes';
 
-const serviceApi = baseApi.injectEndpoints({
+const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUserProfile: build.query({
       query: (userId) => ({
@@ -22,8 +22,19 @@ const serviceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.USER],
     }),
+
+    updateUserRole: build.mutation({
+      query: ({ data }) => ({
+        url: `/users/update-role`,
+        method: 'PATCH',
+        data: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation } =
-  serviceApi;
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useUpdateUserRoleMutation,
+} = userApi;

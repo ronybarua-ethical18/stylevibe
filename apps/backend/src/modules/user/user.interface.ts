@@ -11,6 +11,10 @@ export type IUser = {
   isVerified?: boolean;
   img?: string;
   bio?: string;
+  // New OAuth fields
+  provider: 'credentials' | 'google';
+  providerId?: string;
+  isOAuthUser: boolean;
 };
 
 export interface IUserModel extends Model<IUser> {

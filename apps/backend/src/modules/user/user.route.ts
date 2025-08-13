@@ -9,6 +9,13 @@ router.get(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.getAllUsers
 );
+
+// Add route for updating user role (for OAuth users)
+router.patch(
+  '/update-role',
+  auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.GUEST),
+  UserController.updateUserRole
+);
 router.get(
   '/:userId',
   auth(

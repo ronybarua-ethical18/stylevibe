@@ -90,6 +90,26 @@ const updateUser = async (
   return updatedUser;
 };
 
+const updateUserRole = async (
+  userId: mongoose.Types.ObjectId,
+  role: string
+): Promise<IUser | null> => {
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    userId,
+    { role },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!updatedUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  return updatedUser;
+};
+
 const deleteUser = async (userId: mongoose.Types.ObjectId): Promise<void> => {
   const user = await UserModel.findById({ _id: userId });
 
@@ -117,5 +137,6 @@ export const UserService = {
   getUser,
   getAllUsers,
   updateUser,
+  updateUserRole,
   deleteUser,
 };

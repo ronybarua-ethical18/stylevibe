@@ -5,16 +5,14 @@ import React from 'react';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
 import { sidebarItems } from '@/constants/sidebarItems';
-import { getUserInfo } from '@/services/auth.service';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 const { Sider } = Layout;
 
 export default function Sidebar(): React.ReactNode {
-  const userInfo: any = getUserInfo();
+  const { userInfo } = useUserInfo();
   const role = userInfo?.role;
   const pathname = usePathname();
-  const val = 5;
-  const test = 5;
 
   return (
     <Sider

@@ -4,6 +4,7 @@ import { Button, Col, Row, message } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -14,7 +15,8 @@ import Form from '@/components/Forms/Form';
 import FormInput from '@/components/Forms/FormInput';
 import SVCarousel from '@/components/ui/SVCarousel';
 import { useUserLoginMutation } from '@/redux/api/auth';
-import { isLoggedIn, storeUserInfo } from '@/services/auth.service';
+import { storeUserInfo } from '@/services/auth.service';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 type FormValues = {
   id: string;
@@ -24,24 +26,67 @@ type FormValues = {
 const LoginPage = () => {
   const router = useRouter();
   const [userLogin] = useUserLoginMutation();
+  const { isAuthenticated, userInfo, isLoading, needsRoleSelection } =
+    useUserInfo();
+
+  useEffect(() => {
+    if (!isLoading) {
+      // Remove the !isAuthenticated redirect that's causing issues
+      setTimeout(() => {
+        if (userInfo?.role) {
+          router.push(`/${userInfo.role.toLowerCase()}/dashboard`);
+        }
+      }, 500);
+    }
+  }, [isAuthenticated, needsRoleSelection, isLoading, userInfo?.role, router]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
       const res = await userLogin(data).unwrap();
       if (res?.data?.accessToken) {
-        router.push('/');
+        storeUserInfo(res?.data?.accessToken);
+        message.success('Login successful!');
+
+        // Force immediate redirect
+        const role = res?.data?.user?.role;
+        if (role) {
+          router.push(`/${role.toLowerCase()}/dashboard`);
+        }
       }
-      storeUserInfo(res?.data?.accessToken);
     } catch (err: any) {
       message.error(err?.data?.message);
     }
   };
 
-  useEffect(() => {
-    if (isLoggedIn()) {
-      router.push('/');
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signIn('google', {
+        redirect: false, // Let NextAuth handle the redirect
+      });
+
+      if (result?.error) {
+        message.error(`Google login failed: ${result.error}`);
+      }
+    } catch {
+      message.error('Google login failed');
     }
-  }, [router]);
+  };
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div>Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <Row
@@ -93,7 +138,6 @@ const LoginPage = () => {
                   <FormInput
                     name="email"
                     type="text"
-                    // prefix={<UserOutlined />}
                     size="large"
                     placeholder="Enter your email"
                   />
@@ -104,7 +148,6 @@ const LoginPage = () => {
                     name="password"
                     type="password"
                     size="large"
-                    // prefix={<UserOutlined />}
                     placeholder="Enter your password"
                   />
                 </Col>
@@ -117,16 +160,22 @@ const LoginPage = () => {
                 >
                   Login
                 </Button>
-                <div className="shadow-sm border rounded-md p-3 cursor-pointer flex items-center justify-center w-full">
+
+                <div
+                  className="shadow-sm border rounded-md p-3 cursor-pointer flex items-center justify-center w-full hover:bg-gray-50 transition-colors"
+                  onClick={handleGoogleLogin}
+                  style={{ marginBottom: '20px' }}
+                >
                   <Image
                     src={GoogleIcon}
                     width={20}
                     height={20}
-                    alt="welcome message"
+                    alt="Google icon"
                     className="mr-5 text-lg"
                   />{' '}
                   Login with Google
                 </div>
+
                 <div style={{ textAlign: 'center', width: '100%' }}>
                   <h5 style={{ fontWeight: 400 }}>
                     Don't have an account? <Link href="/signup">Sign up</Link>
