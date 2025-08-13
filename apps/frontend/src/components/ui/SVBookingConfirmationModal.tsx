@@ -106,9 +106,7 @@ const SVBookingConfirmationModal = ({
         open={open}
         footer={null}
         onCancel={handleClose}
-        onClose={handleClose}
-        // maskStyle={{ background: 'rgba(0,0,0,0.09)' }}
-        maskAnimation={true}
+        afterClose={handleClose}
       >
         <div className="text-center px-6 py-2 relative h-[90vh] max-h-[800px] overflow-y-auto overflow-x-hidden scrollbar-hide">
           {current > 0 && (

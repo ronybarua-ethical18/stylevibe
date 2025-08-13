@@ -64,9 +64,6 @@ const SVCalendar = ({
       5
     );
 
-  console.log('selectedTimeSlots', selectedTimeSlots);
-  console.log('selected date', selectedDate);
-
   return (
     <div
       style={{

@@ -1,12 +1,13 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
+import type { ApexOptions } from 'apexcharts';
 
 const data = [200, 800, 600, 1200, 1000, 1700, 1200];
 const categories = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const maxValue = Math.max(...data);
 const maxIndex = data.indexOf(maxValue);
 
-const options = {
+const options: ApexOptions = {
   chart: {
     type: 'line',
     toolbar: { show: false },
@@ -76,7 +77,15 @@ const options = {
   },
   tooltip: {
     enabled: true,
-    custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+    custom: ({
+      series,
+      seriesIndex,
+      dataPointIndex,
+    }: {
+      series: number[][];
+      seriesIndex: number;
+      dataPointIndex: number;
+    }) => {
       // Example: Replace with your real date logic if you have dates
       // For demo, we'll just use a static date string
       // You can map categories to dates if needed
@@ -110,7 +119,7 @@ const options = {
   },
 };
 
-const series = [
+const series: ApexOptions['series'] = [
   {
     name: 'Income',
     data,

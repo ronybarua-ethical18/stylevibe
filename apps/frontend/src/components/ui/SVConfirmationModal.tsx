@@ -40,7 +40,6 @@ const SVConfirmationModal = ({
         centered
         footer={null}
         onCancel={handleCloseModal}
-        maskAnimation={true}
         // maskStyle={{background:"rgba(0,0,0,0.09)"}}
       >
         <div className="pt-6 pb-0 px-2">
