@@ -133,8 +133,6 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 };
 
 const verifyEmail = async (token: string): Promise<void> => {
-  console.log('token', token);
-
   const { userId } = jwtHelpers.verifyToken(token, config.jwt.secret as string);
 
   const user = await UserModel.findById({ _id: userId });
