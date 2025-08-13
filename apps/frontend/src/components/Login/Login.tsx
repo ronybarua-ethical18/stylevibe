@@ -38,7 +38,9 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    isLoggedIn() && router.push('/');
+    if (isLoggedIn()) {
+      router.push('/');
+    }
   }, [router]);
 
   return (
@@ -110,7 +112,7 @@ const LoginPage = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  style={{ width: '100%', margin: '20px 0px' }}
+                  style={{ width: '100%', margin: '20px 0px 0px 0px' }}
                   size="large"
                 >
                   Login
