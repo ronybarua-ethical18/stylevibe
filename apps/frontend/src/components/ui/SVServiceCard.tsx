@@ -1,10 +1,7 @@
 import { Col, Row } from 'antd';
 import React from 'react';
-
 import SVSectionTitle from '../SVSectionTitle';
-
 import SVCard from './SVCard';
-
 import { dummyServices } from '@/utils/dummyServices';
 
 export default function SVServiceCard({ services, loading }: any) {
@@ -17,9 +14,10 @@ export default function SVServiceCard({ services, loading }: any) {
           <Col
             xs={24}
             sm={12}
-            md={6}
-            lg={6}
-            xl={6}
+            md={8}
+            lg={8}
+            xl={8}
+            xxl={6}
             key={service._id || index}
             className="mb-8"
           >

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import GoogleIcon from '../../../public/google.png';
@@ -17,65 +17,99 @@ import SVCarousel from '@/components/ui/SVCarousel';
 import { useUserLoginMutation } from '@/redux/api/auth';
 import { storeUserInfo } from '@/services/auth.service';
 import { useUserInfo } from '@/hooks/useUserInfo';
+import SuccessLoader from '@/components/ui/SuccessLoader';
 
 type FormValues = {
-  id: string;
+  email: string; // Fixed: was 'id' but form uses 'email'
   password: string;
 };
+
+type LoginState = 'idle' | 'submitting' | 'success' | 'redirecting';
 
 const LoginPage = () => {
   const router = useRouter();
   const [userLogin] = useUserLoginMutation();
+  const [loginState, setLoginState] = useState<LoginState>('idle');
   const { isAuthenticated, userInfo, isLoading, needsRoleSelection } =
     useUserInfo();
 
-  useEffect(() => {
-    if (!isLoading) {
-      // Remove the !isAuthenticated redirect that's causing issues
+  // Helper function to handle successful login redirects
+  const handleSuccessfulLogin = (userData: any) => {
+    const role = userData?.role;
+    if (role) {
+      setLoginState('redirecting');
+
+      // Industry standard: preload route + redirect with feedback
+      const dashboardPath = `/${role.toLowerCase()}/dashboard`;
+      router.prefetch(dashboardPath);
+
+      // Small delay for better UX (industry standard: 200-500ms)
       setTimeout(() => {
-        if (isAuthenticated) {
-          console.log('isAuthenticated', isAuthenticated);
-          console.log('needsRoleSelection', needsRoleSelection);
-          console.log('userInfo', userInfo);
-          if (needsRoleSelection) {
-            router.push(`/select-role`);
-          } else if (userInfo?.role) {
-            router.push(`/${userInfo.role.toLowerCase()}/dashboard`);
-          }
+        router.push(dashboardPath);
+      }, 300);
+    }
+  };
+
+  // Helper function to handle role selection redirect
+  const handleRoleSelectionRedirect = () => {
+    setLoginState('redirecting');
+    router.prefetch('/select-role');
+    setTimeout(() => {
+      router.push('/select-role');
+    }, 300);
+  };
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      setTimeout(() => {
+        if (needsRoleSelection) {
+          handleRoleSelectionRedirect();
+        } else if (userInfo?.role) {
+          handleSuccessfulLogin(userInfo);
         }
       }, 500);
     }
-  }, [isAuthenticated, needsRoleSelection, isLoading, userInfo?.role, router]);
+  }, [isAuthenticated, needsRoleSelection, isLoading, userInfo?.role]);
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     try {
+      setLoginState('submitting');
       const res = await userLogin(data).unwrap();
+
       if (res?.data?.accessToken) {
         storeUserInfo(res?.data?.accessToken);
+        setLoginState('success');
         message.success('Login successful!');
 
-        // Force immediate redirect
-        const role = res?.data?.user?.role;
-        if (role) {
-          router.push(`/${role.toLowerCase()}/dashboard`);
-        }
+        // Use the helper function for consistent redirect handling
+        handleSuccessfulLogin(res?.data?.user);
       }
     } catch (err: any) {
-      message.error(err?.data?.message);
+      setLoginState('idle');
+      message.error(err?.data?.message || 'Login failed. Please try again.');
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
+      setLoginState('submitting');
+
       const result = await signIn('google', {
-        redirect: false, // Let NextAuth handle the redirect
+        redirect: false,
       });
 
       if (result?.error) {
+        setLoginState('idle');
         message.error(`Google login failed: ${result.error}`);
+      } else if (result?.ok) {
+        // Google login successful - NextAuth will handle the session
+        // The useEffect above will handle the redirect logic
+        setLoginState('success');
+        message.success('Google login successful!');
       }
-    } catch {
-      message.error('Google login failed');
+    } catch (error: any) {
+      setLoginState('idle');
+      message.error(`Google login failed: ${error?.message}`);
     }
   };
 
@@ -92,6 +126,26 @@ const LoginPage = () => {
       >
         <div>Loading...</div>
       </div>
+    );
+  }
+
+  // Show success state after login
+  if (loginState === 'success') {
+    return (
+      <SuccessLoader
+        title="Login Successful!"
+        message="Preparing your dashboard..."
+      />
+    );
+  }
+
+  // Show redirecting state
+  if (loginState === 'redirecting') {
+    return (
+      <SuccessLoader
+        title="Redirecting..."
+        message="Taking you to your dashboard..."
+      />
     );
   }
 
@@ -144,7 +198,7 @@ const LoginPage = () => {
                   <h4 style={{ marginBottom: '10px' }}>Email</h4>
                   <FormInput
                     name="email"
-                    type="text"
+                    type="email" // Changed to email type for better UX
                     size="large"
                     placeholder="Enter your email"
                   />
@@ -164,14 +218,21 @@ const LoginPage = () => {
                   htmlType="submit"
                   style={{ width: '100%', margin: '20px 0px 0px 0px' }}
                   size="large"
+                  loading={loginState === 'submitting'}
+                  disabled={loginState === 'submitting'}
                 >
-                  Login
+                  {loginState === 'submitting' ? 'Logging in...' : 'Login'}
                 </Button>
 
                 <div
                   className="shadow-sm border rounded-md p-3 cursor-pointer flex items-center justify-center w-full hover:bg-gray-50 transition-colors"
                   onClick={handleGoogleLogin}
-                  style={{ marginBottom: '20px' }}
+                  style={{
+                    marginBottom: '20px',
+                    opacity: loginState === 'submitting' ? 0.6 : 1,
+                    pointerEvents:
+                      loginState === 'submitting' ? 'none' : 'auto',
+                  }}
                 >
                   <Image
                     src={GoogleIcon}
@@ -179,8 +240,10 @@ const LoginPage = () => {
                     height={20}
                     alt="Google icon"
                     className="mr-5 text-lg"
-                  />{' '}
-                  Login with Google
+                  />
+                  {loginState === 'submitting'
+                    ? 'Signing in...'
+                    : 'Login with Google'}
                 </div>
 
                 <div style={{ textAlign: 'center', width: '100%' }}>
