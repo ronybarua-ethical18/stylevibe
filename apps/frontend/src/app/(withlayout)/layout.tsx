@@ -6,6 +6,7 @@ import React from 'react';
 import { RoleSelectionGuard } from '@/components/auth/RoleSelectionGuard';
 import Contents from '@/components/ui/Contents';
 import Sidebar from '@/components/ui/Sidebar';
+import { NotificationProvider } from '@/contexts/NotificationContext';
 
 export default function DashboardLayout({
   children,
@@ -15,11 +16,13 @@ export default function DashboardLayout({
   const AntdLayout = Layout as any;
 
   return (
-    <RoleSelectionGuard>
-      <AntdLayout>
-        <Sidebar />
-        <Contents>{children}</Contents>
-      </AntdLayout>
-    </RoleSelectionGuard>
+    <NotificationProvider>
+      <RoleSelectionGuard>
+        <AntdLayout>
+          <Sidebar />
+          <Contents>{children}</Contents>
+        </AntdLayout>
+      </RoleSelectionGuard>
+    </NotificationProvider>
   );
 }

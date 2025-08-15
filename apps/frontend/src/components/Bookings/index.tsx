@@ -203,10 +203,12 @@ export default function Bookings() {
                     />
                   </div>
                 </SVDrawer>
-                <LiaEdit
-                  className="text-xl cursor-pointer"
-                  onClick={() => handleEditClick(record)}
-                />
+                {loggedInUser?.role === 'seller' && (
+                  <LiaEdit
+                    className="text-xl cursor-pointer"
+                    onClick={() => handleEditClick(record)}
+                  />
+                )}
               </div>
             </div>
           );

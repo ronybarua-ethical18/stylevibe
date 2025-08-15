@@ -72,17 +72,21 @@ const getBooking = tryCatchAsync(async (req: Request, res: Response) => {
 });
 
 const updateBooking = tryCatchAsync(async (req: Request, res: Response) => {
-  const result = await BookingService.updateBooking(
-    new mongoose.Types.ObjectId(req.params['bookingId']),
-    req.body
-  );
+  console.log('req.params.bookingId', req.params.bookingId);
+  console.log('req.body', req.body);
+  if (typeof req.params.bookingId === 'string') {
+    const result = await BookingService.updateBooking(
+      new mongoose.Types.ObjectId(req.params['bookingId']),
+      req.body
+    );
 
-  sendResponse<IBooking>(res, {
-    statusCode: 200,
-    success: true,
-    message: 'Booking updated successfully',
-    data: result,
-  });
+    sendResponse<IBooking>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Booking updated successfully',
+      data: result,
+    });
+  }
 });
 
 const updateBookings = tryCatchAsync(async (req: Request, res: Response) => {

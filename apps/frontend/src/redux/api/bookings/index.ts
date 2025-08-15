@@ -32,8 +32,11 @@ const bookingApi = baseApi.injectEndpoints({
     updateBooking: build.mutation({
       query: ({ id, data }) => ({
         url: `/bookings/${id}`,
-        method: 'PUT',
+        method: 'PATCH',
         data: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: [tagTypes.BOOKINGS],
     }),

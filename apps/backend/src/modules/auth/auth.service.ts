@@ -79,6 +79,8 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     role: user?.role,
     firstName: user?.firstName,
     lastName: user?.lastName,
+    name: user?.firstName + ' ' + user?.lastName,
+    email: user?.email,
   };
 
   const accessToken = jwtHelpers.createToken(

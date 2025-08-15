@@ -1,6 +1,6 @@
 // features/chat/chatSocket.ts
 import { getFromLocalStorage } from '../utils/handleLocalStorage';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 const getSocketUrl = () => {
   const baseUrl =
@@ -8,57 +8,92 @@ const getSocketUrl = () => {
   return baseUrl.replace('/api/v1', '');
 };
 
-export const socket = io(getSocketUrl(), {
-  auth: {
-    token:
-      typeof window !== 'undefined' ? getFromLocalStorage('accessToken') : '',
-  },
-  transports: ['websocket'],
-  reconnection: true,
-  reconnectionAttempts: 5,
-  reconnectionDelay: 1000,
-  timeout: 20000,
-});
+let socket: Socket | null = null;
 
-socket.on('connect', () => {
-  console.log('Socket connected successfully');
-});
+export const initializeSocket = () => {
+  const token = getFromLocalStorage('accessToken');
 
-socket.on('connect_error', (error) => {
-  console.error('Socket connection error:', error);
-  if (error.message === 'Unauthorized') {
-    console.error('Authentication failed. Please login again.');
+  if (!token) {
+    return null;
   }
-});
 
-socket.on('disconnect', (reason) => {
-  if (reason === 'io server disconnect') {
-    socket.connect();
+  if (socket && socket.connected) {
+    return socket;
   }
-});
 
-socket.on('reconnect', (attemptNumber) => {
-  console.log('Socket reconnected after', attemptNumber, 'attempts');
-});
+  socket = io(getSocketUrl(), {
+    auth: { token },
+    transports: ['websocket'],
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000,
+    timeout: 20000,
+  });
 
-socket.on('reconnect_error', (error) => {
-  console.error('Socket reconnection error:', error);
-});
+  socket.on('connect', () => {
+    console.log('✅ Frontend: Socket connected successfully');
+  });
 
-socket.on('message_error', (data) => {
-  console.error('Message error:', data.error);
-});
+  socket.on('connect_error', (error) => {
+    console.error('❌ Frontend: Socket connection error:', error);
+    if (error.message === 'Unauthorized') {
+      socket = null;
+    }
+  });
 
-socket.on('message_sent', (data) => {
-  console.log('Message sent successfully:', data);
-});
+  socket.on('disconnect', (reason) => {
+    console.log('❌ Frontend: Socket disconnected:', reason);
+  });
 
-socket.on('conversation_created', (data) => {
-  console.log('Global conversation_created received:', data);
-});
+  // Chat events
+  socket.on('message_error', (data) => {
+    console.error('❌ Frontend: Message error:', data.error);
+  });
 
-socket.onAny((eventName, ...args) => {
-  console.log('Global socket event received:', eventName, args);
-});
+  socket.on('message_sent', (data) => {
+    console.log('✅ Frontend: Message sent successfully:', data);
+  });
 
-export default socket;
+  socket.on('conversation_created', (data) => {
+    console.log('✅ Frontend: Conversation created:', data);
+  });
+
+  // Notification events
+  socket.on('notification', (notification) => {
+    console.log('🔔 Frontend: New notification received:', notification);
+  });
+
+  socket.on('notification_updated', (data) => {
+    console.log('✅ Frontend: Notification updated:', data);
+  });
+
+  socket.on('notification_marked_read', (data) => {
+    console.log('✅ Frontend: Notification marked as read:', data);
+  });
+
+  socket.on('notification_error', (data) => {
+    console.error('❌ Frontend: Notification error:', data.error);
+  });
+
+  socket.on('notifications_list', (notifications) => {
+    console.log('📋 Frontend: Notifications list received:', notifications);
+  });
+
+  return socket;
+};
+
+export const getSocket = () => {
+  if (!socket || !socket.connected) {
+    return initializeSocket();
+  }
+  return socket;
+};
+
+export const disconnectSocket = () => {
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
+};
+
+export { socket };

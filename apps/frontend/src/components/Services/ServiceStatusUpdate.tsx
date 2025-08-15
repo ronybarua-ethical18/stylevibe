@@ -1,6 +1,6 @@
 'use client';
 
-import { message, Input } from 'antd';
+import { message } from 'antd';
 import React from 'react';
 import { MdMiscellaneousServices } from 'react-icons/md'; // Import the new icon
 
@@ -10,8 +10,6 @@ import FormTextArea from '../Forms/FormTextArea';
 import SVButton from '../SVButton';
 
 import { useUpdateServiceMutation } from '@/redux/api/services';
-
-const { TextArea } = Input;
 
 interface ServiceStatusUpdateProps {
   serviceId: string;
@@ -34,7 +32,8 @@ const ServiceStatusUpdate: React.FC<ServiceStatusUpdateProps> = ({
       }).unwrap();
       message.success('Service status updated successfully');
       onClose();
-    } catch (error) {
+    } catch (error: any) {
+      console.log('error from service status update', error);
       message.error('Failed to update service status');
     }
   };

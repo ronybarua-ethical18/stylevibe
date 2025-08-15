@@ -42,6 +42,8 @@ import {
   isServiceDateTimeAtLeastOneHourInPast,
 } from './booking.utils';
 import { isAdmin } from '../../utils/isAdmin';
+import { triggerNotification } from '../../services/notification/notification.trigger';
+import { AppEvent } from '../../services/notification/notification.events.map';
 
 interface IBookingPayload {
   serviceDate: string;
@@ -142,6 +144,22 @@ const createBooking = async (
     );
 
     await session.commitTransaction();
+
+    // Trigger notification after successful booking creation
+    try {
+      await triggerNotification(AppEvent.BOOKING_CREATED, {
+        bookingId: booking[0]._id.toString(),
+        serviceName: 'Service', // You'll need to populate this from service
+        serviceDate: bookingPayload.serviceDate,
+        sellerId: bookingPayload.sellerId,
+        customerId: loggedUser.userId,
+        amount: bookingPayload.totalAmount,
+      });
+    } catch (notificationError) {
+      console.error('Failed to send booking notification:', notificationError);
+      // Don't fail the booking creation if notification fails
+    }
+
     return booking[0];
   } catch (error) {
     await session.abortTransaction();
@@ -166,15 +184,88 @@ const updateBooking = async (
   bookingId: mongoose.Types.ObjectId,
   updatePayload: object
 ): Promise<IBooking | null> => {
-  console.log('update booking payload from queue', updatePayload);
+  const oldBooking = await BookingModel.findOne({ _id: bookingId });
   const updateBooking = await BookingModel.findByIdAndUpdate(
     { _id: bookingId },
     { ...updatePayload },
     { new: true }
-  );
+  ).populate('customer seller serviceId');
+
+  if (updateBooking && oldBooking) {
+    // Determine what changed and trigger appropriate notifications
+    const changes = getBookingChanges(oldBooking, updateBooking);
+
+    if (changes.length > 0) {
+      try {
+        await triggerNotification(AppEvent.BOOKING_UPDATED, {
+          bookingId: bookingId.toString(),
+          serviceName: (updateBooking.serviceId as any)?.name || 'Service',
+          sellerId: updateBooking.seller._id.toString(),
+          customerId: updateBooking.customer._id.toString(),
+          changes: changes,
+        });
+      } catch (notificationError) {
+        console.error('Failed to send update notification:', notificationError);
+      }
+    }
+  }
 
   return updateBooking;
 };
+
+// Helper function to detect booking changes
+function getBookingChanges(oldBooking: any, newBooking: any): string[] {
+  const changes: string[] = [];
+
+  if (oldBooking.status !== newBooking.status) {
+    changes.push(
+      `Status changed from ${oldBooking.status} to ${newBooking.status}`
+    );
+  }
+
+  if (oldBooking.serviceStartTime !== newBooking.serviceStartTime) {
+    changes.push('Service time updated');
+  }
+
+  if (oldBooking.totalAmount !== newBooking.totalAmount) {
+    changes.push('Amount updated');
+  }
+
+  return changes;
+}
+
+// Example: Seller marks booking as completed
+const markBookingAsCompleted = async (
+  bookingId: string,
+  updatePayload: any
+) => {
+  console.log('updateBooking', updatePayload);
+  const updateBooking = await BookingModel.findByIdAndUpdate(
+    { _id: bookingId },
+    { ...updatePayload },
+    { new: true }
+  ).populate('customer seller serviceId');
+
+  if (updateBooking) {
+    // Trigger completion notification
+    try {
+      await triggerNotification(AppEvent.BOOKING_COMPLETED, {
+        bookingId: bookingId,
+        serviceName: (updateBooking.serviceId as any)?.name || 'Service',
+        sellerId: updateBooking.seller._id.toString(),
+        customerId: updateBooking.customer._id.toString(),
+      });
+    } catch (notificationError) {
+      console.error(
+        'Failed to send completion notification:',
+        notificationError
+      );
+    }
+  }
+
+  return updateBooking;
+};
+
 const verifyBooking = async (
   loggedUser: JwtPayload,
   bookingId: mongoose.Types.ObjectId
@@ -374,4 +465,5 @@ export const BookingService = {
   updateBooking,
   deleteBooking,
   verifyBooking,
+  markBookingAsCompleted,
 };

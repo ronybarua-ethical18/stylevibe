@@ -14,6 +14,7 @@ import { UserRoutes } from '../modules/user/user.route';
 import { SocketIORoutes } from '../modules/socket/routes';
 import { createRouter } from '../utils/typedRouter';
 import { CustomerRoutes } from '../modules/customers/customer.route';
+import { NotificationRoutes } from '../modules/notifications/notification.route';
 
 type IRoute = {
   path: string;
@@ -78,6 +79,10 @@ const routeList: IRoute[] = [
   {
     path: '/shop-timeslots',
     route: ShopTimeSlotRoutes,
+  },
+  {
+    path: '/notifications',
+    route: NotificationRoutes,
   },
 ];
 

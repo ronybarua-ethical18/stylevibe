@@ -1,10 +1,10 @@
-import { BellOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import React from 'react';
 import { clearLocalStorage } from '@/utils/handleLocalStorage';
 import { useUserInfo } from '@/hooks/useUserInfo';
 import ProfileDropmenu from './ProfileDropmenu';
+import { NotificationBell } from '../NotificationBell';
 
 export default function SVTopbar() {
   const router = useRouter();
@@ -70,7 +70,8 @@ export default function SVTopbar() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <BellOutlined style={{ fontSize: '25px', marginRight: '10px' }} />
+        {/* <BellOutlined style={{ fontSize: '25px', marginRight: '10px' }} /> */}
+        <NotificationBell />
         <ProfileDropmenu
           user={{
             name: userInfo?.name || 'User',
