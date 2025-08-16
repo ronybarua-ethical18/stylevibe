@@ -5,6 +5,8 @@ import { Badge, Tooltip } from 'antd';
 import { SVDrawer } from '@/components/ui/SVDrawer';
 import { ChatWindow } from '@/chat/ChatWindow';
 import { useChatLogic } from '../hooks/useChatLogic';
+import { useBookingUnreadCount } from '../hooks/useBookingUnreadCount';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 interface ActionColumnProps {
   record: any;
@@ -18,6 +20,19 @@ export const ActionColumn = memo(
       record,
       loggedInUser
     );
+
+    // Get logged-in user info using the hook
+    const { userInfo, isLoading: userInfoLoading } = useUserInfo();
+    const loggedUserId = userInfo?.userId || userInfo?.id || userInfo?._id;
+
+    // Get unread count for this booking for the logged-in user
+    const { unreadCount } = useBookingUnreadCount({
+      bookingId: record?._id,
+      currentUserId: loggedUserId || '', // Provide empty string as fallback
+    });
+
+    // Don't show badge if user info is still loading
+    const shouldShowBadge = !userInfoLoading && loggedUserId;
 
     return (
       <div className="flex justify-end">
@@ -33,7 +48,7 @@ export const ActionColumn = memo(
                 arrow={true}
               >
                 <Badge
-                  count={1}
+                  count={shouldShowBadge ? unreadCount : 0}
                   size="small"
                   color="blue"
                   className="cursor-pointer mr-3"

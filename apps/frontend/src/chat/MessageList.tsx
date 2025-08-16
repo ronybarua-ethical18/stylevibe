@@ -7,6 +7,7 @@ import { TypingIndicator } from './components/TypingIndicator';
 import { ChatStates } from './components/ChatStates';
 import { useChatSocket } from './hooks/useChatSocket';
 import { useChatData } from './hooks/useChatData';
+import { getSocket } from './chatSocket';
 
 interface MessageListProps {
   conversationId?: string;
@@ -76,13 +77,23 @@ export const MessageList: React.FC<MessageListProps> = ({
       const messageConversationId = firstMessage?.conversationId;
 
       if (messageConversationId) {
+        // Mark messages as seen via API
         markMessagesAsSeen({
           conversationId: messageConversationId,
           userId: currentUserId,
         });
+
+        // Emit socket event for real-time unread count updates
+        const socket = getSocket();
+        if (socket && bookingId) {
+          socket.emit('mark_seen', {
+            conversationId: messageConversationId,
+            bookingId: bookingId,
+          });
+        }
       }
     }
-  }, [currentUserId, markMessagesAsSeen, localMessages.length]);
+  }, [currentUserId, markMessagesAsSeen, localMessages.length, bookingId]);
 
   // Early returns for different states
   if (!senderId || !receiverId || !bookingId) {

@@ -97,10 +97,29 @@ const createMessage = async (payload: {
   return populatedMessage;
 };
 
+// Add new method to get unread message count for a booking
+const getUnreadCountByBooking = async (
+  bookingId: mongoose.Types.ObjectId,
+  userId: mongoose.Types.ObjectId
+): Promise<number> => {
+  try {
+    const count = await MessageModel.countDocuments({
+      bookingId,
+      receiverId: userId,
+      seen: false,
+    });
+    return count;
+  } catch (error) {
+    console.error('Error fetching unread count by booking:', error);
+    throw error;
+  }
+};
+
 export const MessageService = {
   getMessages,
   getMessagesByBooking,
   getMessagesByParticipantsAndBooking,
   updateMessageStatus,
   createMessage,
+  getUnreadCountByBooking,
 };
