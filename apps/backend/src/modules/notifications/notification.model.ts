@@ -8,8 +8,7 @@ import { INotification } from './notification.interface';
 const notificationSchema = new Schema<INotification>(
   {
     recipient: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
+      type: Schema.Types.Mixed, // This would allow both string and ObjectId
       required: true,
       index: true,
     },

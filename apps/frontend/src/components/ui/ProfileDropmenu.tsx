@@ -58,7 +58,7 @@ const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
       key: 'subscription',
       icon: <CreditCardOutlined />,
       label: 'Subscription',
-      shortcut: '⌘ + ⌥ + D',
+      shortcut: '⌘ + D',
       group: 1,
     },
 
@@ -67,14 +67,14 @@ const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
       key: 'support',
       icon: <CustomerServiceOutlined />,
       label: 'Support',
-      shortcut: '⌥ + R',
+      shortcut: '⌘ + R',
       group: 3,
     },
     {
       key: 'community',
       icon: <MessageOutlined />,
       label: 'Community',
-      shortcut: '⌘ + ⌥ + P',
+      shortcut: '⌘ + P',
       group: 3,
     },
     {
@@ -164,7 +164,7 @@ const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
         background: `linear-gradient(135deg, ${token.colorBgContainer} 0%, ${token.colorBgElevated} 100%)`,
         borderRadius: '12px',
         padding: '10px',
-        minWidth: '250px',
+        minWidth: '270px',
         boxShadow: token.boxShadowSecondary,
         border: `1px solid ${token.colorBorderSecondary}`,
       }}

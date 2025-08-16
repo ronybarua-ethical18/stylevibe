@@ -6,3 +6,5 @@ export const PAYMENT_DISBURSEMENT_SELLER: string =
   'payment_disbursement_seller';
 export const SERVICE_COMPLETION_CUSTOMER: string =
   'service_completion_customer';
+
+export const VERIFY_EMAIL_PATH: string = 'verify-email';

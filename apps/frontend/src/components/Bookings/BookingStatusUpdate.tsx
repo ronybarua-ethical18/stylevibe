@@ -23,6 +23,7 @@ const BookingStatusUpdate: React.FC<BookingStatusUpdateProps> = ({
   onClose,
 }) => {
   const [updateBooking, { isLoading }] = useUpdateBookingMutation();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = async (values: any) => {
     try {
@@ -30,10 +31,10 @@ const BookingStatusUpdate: React.FC<BookingStatusUpdateProps> = ({
         id: bookingId,
         data: { status: values.status, notes: values.notes },
       }).unwrap();
-      message.success('Booking status updated successfully');
+      messageApi.success('Booking status updated successfully');
       onClose();
-    } catch (error) {
-      message.error('Failed to update booking status');
+    } catch {
+      messageApi.error('Failed to update booking status');
     }
   };
 
@@ -43,41 +44,44 @@ const BookingStatusUpdate: React.FC<BookingStatusUpdateProps> = ({
   ];
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md">
-      <h2 className="text-3xl font-normal text-gray-800 mb-2 text-center">
-        Update Booking Status
-      </h2>
-      <div className="flex items-center justify-center mb-6">
-        <MdMiscellaneousServices className="text-2xl mr-2 text-gray-400" />{' '}
-        {/* Updated icon */}
-        <h3 className="text-sm font-light text-gray-600">{serviceName}</h3>
-      </div>
-      <Form submitHandler={onFinish}>
-        <FormSelectField
-          name="status"
-          options={statusOptions}
-          placeholder="Select status"
-          size="large"
-          label="Select Status"
-          required
-        />
+    <>
+      {contextHolder}
+      <div className="p-8 bg-white rounded-lg shadow-md">
+        <h2 className="text-3xl font-normal text-gray-800 mb-2 text-center">
+          Update Booking Status
+        </h2>
+        <div className="flex items-center justify-center mb-6">
+          <MdMiscellaneousServices className="text-2xl mr-2 text-gray-400" />{' '}
+          {/* Updated icon */}
+          <h3 className="text-sm font-light text-gray-600">{serviceName}</h3>
+        </div>
+        <Form submitHandler={onFinish}>
+          <FormSelectField
+            name="status"
+            options={statusOptions}
+            placeholder="Select status"
+            size="large"
+            label="Select Status"
+            required
+          />
 
-        <FormTextArea
-          name="notes"
-          placeholder="Enter notes here"
-          size="large"
-          label="Notes"
-          required
-        />
-        <SVButton
-          type="primary"
-          htmlType="submit"
-          loading={isLoading}
-          title={isLoading ? 'Updating...' : 'Update Status'}
-          className="w-full mt-5"
-        />
-      </Form>
-    </div>
+          <FormTextArea
+            name="notes"
+            placeholder="Enter notes here"
+            size="large"
+            label="Notes"
+            required
+          />
+          <SVButton
+            type="primary"
+            htmlType="submit"
+            loading={isLoading}
+            title={isLoading ? 'Updating...' : 'Update Status'}
+            className="w-full mt-5"
+          />
+        </Form>
+      </div>
+    </>
   );
 };
 

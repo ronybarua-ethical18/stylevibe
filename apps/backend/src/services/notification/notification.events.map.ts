@@ -18,6 +18,8 @@ export enum AppEvent {
   SERVICE_CREATED = 'SERVICE_CREATED',
   SERVICE_UPDATED = 'SERVICE_UPDATED',
   SHOP_UPDATED = 'SHOP_UPDATED',
+  VERIFY_EMAIL = 'verify_email',
+  FORGOT_PASSWORD = 'forgot_password',
 }
 
 export const notificationEventMap = {
@@ -238,6 +240,44 @@ export const notificationEventMap = {
         shopName: data.shopName,
         updatedAt: new Date(),
         changes: data.changes,
+      },
+    }),
+  },
+  [AppEvent.VERIFY_EMAIL]: {
+    type: NotificationType.EMAIL,
+    channels: [NotificationChannel.EMAIL],
+    getMessage: (data: any) => ({
+      title: 'StyleVibe - Email Verification',
+      message: `Please verify your email address to complete your account setup.`,
+      recipient: data.email,
+      sender: data.systemId || undefined,
+      meta: {
+        userId: data.userId,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: data.role,
+        verificationToken: data.verificationToken,
+        sentAt: new Date(),
+      },
+    }),
+  },
+  [AppEvent.FORGOT_PASSWORD]: {
+    type: NotificationType.EMAIL,
+    channels: [NotificationChannel.EMAIL],
+    getMessage: (data: any) => ({
+      title: 'StyleVibe - Password Reset',
+      message: `You requested to reset your password for your StyleVibe account.`,
+      recipient: data.email,
+      sender: data.systemId || undefined,
+      meta: {
+        userId: data.userId,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: data.role,
+        verificationToken: data.verificationToken,
+        sentAt: new Date(),
       },
     }),
   },

@@ -1,9 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { useUserInfo } from '@/hooks/useUserInfo';
+import { NavigationService } from '@/services/navigation.service';
+import SuccessLoader from '../ui/SuccessLoader';
 
 interface RoleSelectionGuardProps {
   children: React.ReactNode;
@@ -11,39 +13,44 @@ interface RoleSelectionGuardProps {
 
 export const RoleSelectionGuard = ({ children }: RoleSelectionGuardProps) => {
   const router = useRouter();
-  const { isAuthenticated, needsRoleSelection, isLoading, userInfo } =
-    useUserInfo();
+  const pathname = usePathname();
+  const { isAuthenticated, isLoading, userInfo } = useUserInfo();
+
+  // Add client-side only state to prevent hydration mismatch
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && isClient) {
       if (!isAuthenticated) {
         router.push('/login');
-      } else if (needsRoleSelection) {
+      } else if (NavigationService.shouldRedirectToRoleSelection(userInfo)) {
         router.push('/select-role');
       } else if (userInfo?.role) {
-        router.push(`/${userInfo.role.toLowerCase()}/dashboard`);
+        // Only redirect to dashboard if user is not already on a valid page for their role
+        const currentRole = userInfo.role.toLowerCase();
+        const isValidRolePage = pathname.startsWith(`/${currentRole}/`);
+
+        if (!isValidRolePage) {
+          router.push(`/${currentRole}/dashboard`);
+        }
       }
     }
-  }, [isAuthenticated, needsRoleSelection, isLoading, userInfo, router]);
+  }, [isAuthenticated, isLoading, userInfo, router, isClient, pathname]);
 
-  // Show loading while checking authentication
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div>Loading...</div>
-      </div>
-    );
+  // During SSR and initial client render, show a consistent loading state
+  if (!isClient || isLoading) {
+    return <SuccessLoader title="" message="Please wait..." />;
   }
 
   // Don't render children if user is not authenticated or needs role selection
-  if (!isAuthenticated || needsRoleSelection) {
+  if (
+    !isAuthenticated ||
+    NavigationService.shouldRedirectToRoleSelection(userInfo)
+  ) {
     return null;
   }
 

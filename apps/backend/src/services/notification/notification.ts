@@ -5,13 +5,17 @@ import {
   CreateNotificationData,
 } from '../../modules/notifications/notification.interface';
 import { io } from '../../modules/socket/socket';
-import sendEmail from '../../services/mail/sendMail';
+import { AppEvent } from './notification.events.map';
+import { VERIFY_EMAIL_PATH, VERIFY_EMAIL_TEMPLATE } from '../mail/constants';
+import { sendMailWithToken } from '../../utils/auth.utils';
 
 interface SendNotificationProps extends CreateNotificationData {
+  event: AppEvent;
   channel?: NotificationChannel[];
 }
 
 export async function sendNotification({
+  event,
   recipient,
   sender,
   type,
@@ -50,67 +54,66 @@ export async function sendNotification({
       try {
         io.to(recipient.toString()).emit('notification', notification);
       } catch (socketError) {
-        console.error('Socket notification error:', socketError);
+        throw new Error('Socket notification error:' + socketError);
       }
     }
 
     // Email Notification
     if (channel.includes(NotificationChannel.EMAIL)) {
       try {
-        await sendEmailNotification(notification);
+        if (
+          event === AppEvent.VERIFY_EMAIL ||
+          event === AppEvent.FORGOT_PASSWORD
+        ) {
+          sendMailWithToken(
+            {
+              email: recipient,
+              firstName: meta.firstName,
+              lastName: meta.lastName,
+              role: meta.role,
+            },
+            title,
+            VERIFY_EMAIL_PATH,
+            VERIFY_EMAIL_TEMPLATE,
+            meta.verificationToken
+          );
+        }
       } catch (emailError) {
-        console.error('Email notification error:', emailError);
+        throw new Error('Email notification error:' + emailError);
       }
-    }
-
-    // SMS Notification
-    if (channel.includes(NotificationChannel.SMS)) {
-      try {
-        await sendSMSNotification(notification);
-      } catch (smsError) {
-        console.error('SMS notification error:', smsError);
-      }
-      // Implement your SMS service here
     }
 
     return notification;
   } catch (error) {
-    console.error('Notification creation error:', error);
-    throw error;
+    throw new Error('Notification creation error:' + error);
   }
 }
 
-async function sendEmailNotification(notification: any) {
-  try {
-    const recipientEmail = notification.recipient.email;
-    const senderName = notification.sender
-      ? `${notification.sender.firstName} ${notification.sender.lastName}`
-      : 'System';
+// async function sendEmailNotification(notification: any) {
+//   try {
+//     const recipientEmail = notification.recipient.email;
+//     const senderName = notification.sender
+//       ? `${notification.sender.firstName} ${notification.sender.lastName}`
+//       : 'System';
 
-    await sendEmail(
-      [recipientEmail],
-      {
-        subject: notification.title || 'New Notification',
-        data: {
-          title: notification.title,
-          message: notification.message,
-          senderName,
-          meta: notification.meta,
-          timestamp: new Date().toLocaleString(),
-        },
-      },
-      'notification'
-    );
-  } catch (error) {
-    console.error('Email notification failed:', error);
-  }
-}
-
-async function sendSMSNotification(notification: any) {
-  // Implement your SMS service here
-  // Example: Twilio, AWS SNS, etc.
-  console.log('SMS notification would be sent:', notification.message);
-}
+//     await sendEmail(
+//       [recipientEmail],
+//       {
+//         subject: notification.title || 'New Notification',
+//         data: {
+//           title: notification.title,
+//           message: notification.message,
+//           senderName,
+//           meta: notification.meta,
+//           timestamp: new Date().toLocaleString(),
+//         },
+//       },
+//       'notification'
+//     );
+//   } catch (error) {
+//     console.error('Email notification failed:', error);
+//   }
+// }
 
 // Get notifications for a user
 export async function getUserNotifications(

@@ -69,7 +69,7 @@ export default function SVTopbar() {
         zIndex: 2,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         {/* <BellOutlined style={{ fontSize: '25px', marginRight: '10px' }} /> */}
         <NotificationBell />
         <ProfileDropmenu

@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import React from 'react';
 
 interface SuccessLoaderProps {
@@ -9,7 +10,6 @@ interface SuccessLoaderProps {
 const SuccessLoader: React.FC<SuccessLoaderProps> = ({
   title = 'Success!',
   message = 'Processing...',
-  showLoader = true,
 }) => {
   return (
     <div
@@ -24,7 +24,7 @@ const SuccessLoader: React.FC<SuccessLoaderProps> = ({
         <h3
           style={{
             color: '#333',
-            marginBottom: '15px',
+            marginBottom: '5px',
             fontSize: '20px',
           }}
         >
@@ -32,30 +32,7 @@ const SuccessLoader: React.FC<SuccessLoaderProps> = ({
         </h3>
         <p style={{ color: '#666', marginBottom: '25px' }}>{message}</p>
 
-        {showLoader && (
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              border: '3px solid #f3f3f3',
-              borderTop: '3px solid #1890ff',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto',
-            }}
-          />
-        )}
-
-        <style jsx>{`
-          @keyframes spin {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-        `}</style>
+        <Spin size="large" />
       </div>
     </div>
   );

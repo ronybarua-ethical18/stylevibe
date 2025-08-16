@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { BiBell } from 'react-icons/bi';
 
 const { Text } = Typography;
-const { TabPane } = Tabs;
+// Remove this line: const { TabPane } = Tabs;
 
 export const NotificationBell: React.FC = () => {
   const {
@@ -18,13 +18,10 @@ export const NotificationBell: React.FC = () => {
     isError,
   } = useNotifications();
 
-  const [visible, setVisible] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const handleVisibleChange = (visible: boolean) => {
-    setVisible(visible);
-    if (visible) {
-      refreshNotifications();
-    }
+  const onOpenChange = (visible: boolean) => {
+    setOpen(visible);
   };
 
   const handleMarkAsRead = (notificationId: string) => {
@@ -33,7 +30,7 @@ export const NotificationBell: React.FC = () => {
 
   const handleMarkAllAsRead = () => {
     markAllAsRead();
-    setVisible(false);
+    setOpen(false);
   };
 
   const getNotificationIcon = (type: string) => {
@@ -110,6 +107,84 @@ export const NotificationBell: React.FC = () => {
   const unreadNotifications = notifications.filter((n) => !n.isRead);
   const readNotifications = notifications.filter((n) => n.isRead);
 
+  // Define tabs items array
+  const tabItems = [
+    {
+      key: 'unread',
+      label: (
+        <span>
+          Unread
+          {unreadCount > 0 && (
+            <Badge
+              count={unreadCount}
+              size="small"
+              style={{ marginLeft: '8px' }}
+            />
+          )}
+        </span>
+      ),
+      children: (
+        <div style={{ maxHeight: 300, overflowY: 'auto' }}>
+          <List
+            dataSource={unreadNotifications.slice(0, 10)}
+            renderItem={renderNotificationItem}
+            locale={{
+              emptyText: (
+                <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                  <Text type="secondary">No unread notifications</Text>
+                </div>
+              ),
+            }}
+          />
+          {unreadNotifications.length > 10 && (
+            <div style={{ textAlign: 'center', padding: '12px' }}>
+              <Button type="link" size="small">
+                View all unread notifications
+              </Button>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: 'previous',
+      label: (
+        <span>
+          Previous
+          {readNotifications.length > 0 && (
+            <Badge
+              count={readNotifications.length}
+              size="small"
+              style={{ marginLeft: '8px' }}
+            />
+          )}
+        </span>
+      ),
+      children: (
+        <div style={{ maxHeight: 300, overflowY: 'auto' }}>
+          <List
+            dataSource={readNotifications.slice(0, 10)}
+            renderItem={renderNotificationItem}
+            locale={{
+              emptyText: (
+                <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                  <Text type="secondary">No previous notifications</Text>
+                </div>
+              ),
+            }}
+          />
+          {readNotifications.length > 10 && (
+            <div style={{ textAlign: 'center', padding: '12px' }}>
+              <Button type="link" size="small">
+                View all previous notifications
+              </Button>
+            </div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   const notificationContent = (
     <div style={{ width: 400, maxHeight: 500 }}>
       <div
@@ -147,81 +222,11 @@ export const NotificationBell: React.FC = () => {
           </Button>
         </div>
       ) : (
-        <Tabs defaultActiveKey="unread" style={{ padding: '0 16px' }}>
-          <TabPane
-            tab={
-              <span>
-                Unread
-                {unreadCount > 0 && (
-                  <Badge
-                    count={unreadCount}
-                    size="small"
-                    style={{ marginLeft: '8px' }}
-                  />
-                )}
-              </span>
-            }
-            key="unread"
-          >
-            <div style={{ maxHeight: 300, overflowY: 'auto' }}>
-              <List
-                dataSource={unreadNotifications.slice(0, 10)}
-                renderItem={renderNotificationItem}
-                locale={{
-                  emptyText: (
-                    <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                      <Text type="secondary">No unread notifications</Text>
-                    </div>
-                  ),
-                }}
-              />
-            </div>
-            {unreadNotifications.length > 10 && (
-              <div style={{ textAlign: 'center', padding: '12px' }}>
-                <Button type="link" size="small">
-                  View all unread notifications
-                </Button>
-              </div>
-            )}
-          </TabPane>
-
-          <TabPane
-            tab={
-              <span>
-                Previous
-                {readNotifications.length > 0 && (
-                  <Badge
-                    count={readNotifications.length}
-                    size="small"
-                    style={{ marginLeft: '8px' }}
-                  />
-                )}
-              </span>
-            }
-            key="previous"
-          >
-            <div style={{ maxHeight: 300, overflowY: 'auto' }}>
-              <List
-                dataSource={readNotifications.slice(0, 10)}
-                renderItem={renderNotificationItem}
-                locale={{
-                  emptyText: (
-                    <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                      <Text type="secondary">No previous notifications</Text>
-                    </div>
-                  ),
-                }}
-              />
-            </div>
-            {readNotifications.length > 10 && (
-              <div style={{ textAlign: 'center', padding: '12px' }}>
-                <Button type="link" size="small">
-                  View all previous notifications
-                </Button>
-              </div>
-            )}
-          </TabPane>
-        </Tabs>
+        <Tabs
+          defaultActiveKey="unread"
+          style={{ padding: '0 16px' }}
+          items={tabItems}
+        />
       )}
     </div>
   );
@@ -231,8 +236,8 @@ export const NotificationBell: React.FC = () => {
       content={notificationContent}
       title={null}
       trigger="click"
-      visible={visible}
-      onVisibleChange={handleVisibleChange}
+      open={open}
+      onOpenChange={onOpenChange}
       placement="bottomRight"
       overlayStyle={{ padding: 0 }}
     >

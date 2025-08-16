@@ -20,7 +20,6 @@ export async function triggerNotification(
     if (!config) {
       return;
     }
-
     const notificationData = config.getMessage(data) as NotificationMessageData;
     const { title, message, recipient, meta } = notificationData;
     const sender = notificationData.sender;
@@ -30,6 +29,7 @@ export async function triggerNotification(
     }
 
     await sendNotification({
+      event,
       recipient,
       sender,
       type: config.type,
@@ -39,7 +39,9 @@ export async function triggerNotification(
       meta,
     });
   } catch (error) {
-    console.error(`Failed to trigger notification for event: ${event}:`, error);
+    throw new Error(
+      `Failed to trigger notification for event: ${event}:` + error
+    );
   }
 }
 
