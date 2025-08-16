@@ -28,10 +28,7 @@ export const useChatSocket = ({
     if (!senderId || !receiverId || !bookingId) return;
 
     const socket = getSocket();
-    if (!socket) {
-      console.log('🔌 No socket available for chat');
-      return;
-    }
+    if (!socket) return;
 
     // Use booking-based room instead of conversation-based
     const roomId = `booking_${bookingId}`;
@@ -57,6 +54,12 @@ export const useChatSocket = ({
           markMessagesAsSeen({
             conversationId: newMessage.conversationId,
             userId: currentUserId,
+          });
+
+          // Emit mark_seen with bookingId for real-time count updates
+          socket.emit('mark_seen', {
+            conversationId: newMessage.conversationId,
+            bookingId: bookingId,
           });
         }
       }

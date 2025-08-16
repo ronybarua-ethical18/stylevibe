@@ -89,6 +89,28 @@ const messageApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.CONVERSATION],
     }),
+
+    // 6. Get unread message count for a booking
+    getUnreadCountByBooking: build.query({
+      query: ({
+        bookingId,
+        userId,
+      }: {
+        bookingId: string;
+        userId: string;
+      }) => ({
+        url: `/socket/messages/unread-count?bookingId=${bookingId}&userId=${userId}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, arg) => [
+        {
+          type: tagTypes.MESSAGE,
+          id: `unread_${arg.bookingId}_${arg.userId}`,
+        },
+      ],
+      // Add caching to prevent excessive API calls
+      keepUnusedDataFor: 60, // Keep data for 60 seconds
+    }),
   }),
 });
 
@@ -99,4 +121,5 @@ export const {
   useMarkMessagesAsSeenMutation,
   useGetOrCreateConversationMutation,
   useGetConversationsQuery,
+  useGetUnreadCountByBookingQuery,
 } = messageApi;

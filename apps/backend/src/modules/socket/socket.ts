@@ -121,14 +121,23 @@ export const initSocket = (server: http.Server) => {
       }
     );
 
-    socket.on('mark_seen', async ({ conversationId }) => {
+    // Update the mark_seen event handler
+    socket.on('mark_seen', async ({ conversationId, bookingId }) => {
       try {
         await MessageModel.updateMany(
           { conversationId, receiverId: userId, seen: false },
           { $set: { seen: true } }
         );
+
+        // Emit to booking room that messages were marked as seen
+        if (bookingId) {
+          io.to(`booking_${bookingId}`).emit('messages_marked_seen', {
+            bookingId,
+            userId,
+          });
+        }
       } catch (error) {
-        console.error(error);
+        console.error('Error marking messages as seen:', error);
       }
     });
 
