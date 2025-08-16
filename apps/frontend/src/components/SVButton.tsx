@@ -26,7 +26,6 @@ export default function SVButton({
   className,
   disabled,
   icon,
-  loading,
   htmlType,
 }: IButton): React.ReactNode {
   return (

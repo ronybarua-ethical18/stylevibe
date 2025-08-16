@@ -4,6 +4,7 @@ import MessageModel from './models/message';
 import ConversationModel from './models/conversation';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
 import config from '../../config';
+import { NotificationModel } from '../notifications/notification.model';
 
 let io: IOServer;
 
@@ -19,10 +20,22 @@ export const initSocket = (server: http.Server) => {
   io.use((socket, next) => {
     try {
       const token = socket.handshake.auth.token;
+
+      if (!token) {
+        return next(new Error('No token provided'));
+      }
+
       const user = jwtHelpers.verifyToken(token, config.jwt.secret);
-      (socket as any).user = user;
+      const userId = user.userId || user.id || user._id;
+
+      if (!userId) {
+        return next(new Error('Invalid token: no user ID found'));
+      }
+
+      (socket as any).user = { ...user, id: userId };
       next();
-    } catch (err) {
+    } catch (error: any) {
+      console.error('Socket auth error:', error);
       next(new Error('Unauthorized'));
     }
   });
@@ -31,12 +44,16 @@ export const initSocket = (server: http.Server) => {
     const user = (socket as any).user;
     const userId = user.id;
 
+    console.log(`✅ SOCKET: User ${userId} (${user.role}) connected`);
+    console.log(`🔌 SOCKET: Socket ID: ${socket.id}`);
+
+    // Join user's personal room for notifications
     socket.join(userId);
+    console.log(`🔔 SOCKET: User ${userId} joined notification room`);
 
     // Handle joining rooms (now supports both conversation and booking rooms)
     socket.on('joinRoom', (roomId: string) => {
       socket.join(roomId);
-      console.log(`User ${userId} joined room: ${roomId}`);
     });
 
     socket.on(
@@ -121,6 +138,48 @@ export const initSocket = (server: http.Server) => {
 
     socket.on('typing_stop', ({ conversationId }) => {
       socket.to(conversationId).emit('typing_stop');
+    });
+
+    socket.on('mark_notification_read', async (notificationId: string) => {
+      try {
+        const result = await NotificationModel.findByIdAndUpdate(
+          notificationId,
+          { isRead: true },
+          { new: true }
+        );
+
+        if (result) {
+          socket.emit('notification_updated', {
+            notificationId,
+            isRead: true,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to mark notification as read', err);
+        socket.emit('notification_error', {
+          error: 'Failed to mark notification as read',
+          notificationId,
+        });
+      }
+    });
+
+    socket.on('get_notifications', async () => {
+      try {
+        const notifications = await NotificationModel.find({
+          recipient: userId,
+          isRead: false,
+        })
+          .populate('sender', 'firstName lastName')
+          .sort({ createdAt: -1 })
+          .limit(10);
+
+        socket.emit('notifications_list', notifications);
+      } catch (err) {
+        console.error('Failed to fetch notifications', err);
+        socket.emit('notification_error', {
+          error: 'Failed to fetch notifications',
+        });
+      }
     });
 
     socket.on('disconnect', () => {

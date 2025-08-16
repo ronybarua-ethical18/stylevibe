@@ -26,7 +26,7 @@ function SVSettings() {
       // Remove the query parameter after 2 seconds
       const timer = setTimeout(() => {
         router.replace('/seller/settings');
-      }, 2000);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }

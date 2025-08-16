@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { socket } from '../chatSocket';
+import { getSocket } from '../chatSocket';
 
 interface UseChatSocketProps {
   conversationId?: string;
@@ -26,6 +26,12 @@ export const useChatSocket = ({
 }: UseChatSocketProps) => {
   useEffect(() => {
     if (!senderId || !receiverId || !bookingId) return;
+
+    const socket = getSocket();
+    if (!socket) {
+      console.log('🔌 No socket available for chat');
+      return;
+    }
 
     // Use booking-based room instead of conversation-based
     const roomId = `booking_${bookingId}`;
