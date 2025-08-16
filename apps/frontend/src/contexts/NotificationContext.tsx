@@ -1,12 +1,21 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
+import { useDispatch } from 'react-redux';
 import { getSocket } from '@/chat/chatSocket';
 import {
   useGetNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
 } from '@/redux/api/notifications';
+import { baseApi } from '@/redux/api/baseApi';
+import { tagTypes } from '@/utils/tagTypes';
 
 interface Notification {
   _id: string;
@@ -50,7 +59,8 @@ export const useNotifications = () => {
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // RTK Query hooks
+  const dispatch = useDispatch();
+
   const {
     data: notificationsData,
     isLoading,
@@ -67,49 +77,81 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
   ).length;
 
   const socketRef = useRef<any>(null);
-  const pendingNotifications = useRef<Notification[]>([]);
+  const hasSetupSocket = useRef(false);
 
-  const refreshNotifications = () => {
+  const refreshNotifications = useCallback(() => {
+    dispatch(baseApi.util.invalidateTags([tagTypes.NOTIFICATIONS]));
     if (refetch) {
       refetch();
     }
-  };
+  }, [dispatch, refetch]);
 
-  // Process pending notifications when query is ready
+  // Set up socket connection
   useEffect(() => {
-    if (notificationsData && pendingNotifications.current.length > 0) {
-      console.log(
-        'Processing pending notifications:',
-        pendingNotifications.current.length
-      );
-      pendingNotifications.current = [];
-      refreshNotifications();
-    }
-  }, [notificationsData]);
+    if (hasSetupSocket.current) return;
 
-  // Set up socket only after we have data AND some time has passed
-  useEffect(() => {
-    if (!notificationsData) return;
+    hasSetupSocket.current = true;
 
-    // Wait 3 seconds after data is loaded before setting up socket
-    const timer = setTimeout(() => {
+    const setupNotificationListeners = () => {
       const socket = getSocket();
-      if (socket) {
-        // Now it's safe to set up notification listeners
-        socket.on('notification', (notification) => {
-          console.log('🔔 New notification received:', notification);
-          refetch();
-        });
+      if (!socket) {
+        setTimeout(setupNotificationListeners, 2000);
+        return;
       }
-    }, 3000);
 
-    return () => clearTimeout(timer);
-  }, [notificationsData]);
+      socketRef.current = socket;
+
+      // Remove existing listeners to prevent duplicates
+      socket.off('notification');
+      socket.off('notification_updated');
+
+      const handleNotification = (newNotification: any) => {
+        dispatch(baseApi.util.invalidateTags([tagTypes.NOTIFICATIONS]));
+        if (refetch) {
+          refetch();
+        }
+
+        // Show browser notification if permission granted
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(newNotification.title || 'New Notification', {
+            body: newNotification.message,
+            icon: '/favicon.ico',
+          });
+        }
+      };
+
+      const handleNotificationUpdate = () => {
+        refreshNotifications();
+      };
+
+      // Add listeners
+      socket.on('notification', handleNotification);
+      socket.on('notification_updated', handleNotificationUpdate);
+
+      // Handle reconnection
+      socket.on('connect', () => {
+        socket.off('notification');
+        socket.off('notification_updated');
+        socket.on('notification', handleNotification);
+        socket.on('notification_updated', handleNotificationUpdate);
+      });
+    };
+
+    setTimeout(setupNotificationListeners, 500);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off('notification');
+        socketRef.current.off('notification_updated');
+        socketRef.current.off('connect');
+        socketRef.current.off('disconnect');
+      }
+    };
+  }, [dispatch, refetch, refreshNotifications]);
 
   const markAsRead = async (notificationId: string) => {
     try {
       await markAsReadMutation(notificationId).unwrap();
-
       if (socketRef.current) {
         socketRef.current.emit('mark_notification_read', notificationId);
       }

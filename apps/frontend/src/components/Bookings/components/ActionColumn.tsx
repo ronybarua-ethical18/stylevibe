@@ -54,7 +54,7 @@ export const ActionColumn = memo(
           </SVDrawer>
           {isSeller && (
             <LiaEdit
-              className="text-xl cursor-pointer"
+              className="text-xl cursor-pointer ml-2"
               onClick={() => handleEditClick(record)}
             />
           )}

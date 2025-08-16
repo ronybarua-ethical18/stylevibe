@@ -184,55 +184,29 @@ const updateBooking = async (
   bookingId: mongoose.Types.ObjectId,
   updatePayload: object
 ): Promise<IBooking | null> => {
-  const oldBooking = await BookingModel.findOne({ _id: bookingId });
   const updateBooking = await BookingModel.findByIdAndUpdate(
     { _id: bookingId },
     { ...updatePayload },
     { new: true }
   ).populate('customer seller serviceId');
 
-  if (updateBooking && oldBooking) {
+  if (updateBooking) {
     // Determine what changed and trigger appropriate notifications
-    const changes = getBookingChanges(oldBooking, updateBooking);
-
-    if (changes.length > 0) {
-      try {
-        await triggerNotification(AppEvent.BOOKING_UPDATED, {
-          bookingId: bookingId.toString(),
-          serviceName: (updateBooking.serviceId as any)?.name || 'Service',
-          sellerId: updateBooking.seller._id.toString(),
-          customerId: updateBooking.customer._id.toString(),
-          changes: changes,
-        });
-      } catch (notificationError) {
-        console.error('Failed to send update notification:', notificationError);
-      }
+    try {
+      await triggerNotification(AppEvent.BOOKING_UPDATED, {
+        bookingId: bookingId.toString(),
+        serviceName: (updateBooking.serviceId as any)?.name || 'Service',
+        sellerId: updateBooking.seller._id.toString(),
+        customerId: updateBooking.customer._id.toString(),
+        changes: updatePayload,
+      });
+    } catch (notificationError) {
+      console.error('Failed to send update notification:', notificationError);
     }
   }
 
   return updateBooking;
 };
-
-// Helper function to detect booking changes
-function getBookingChanges(oldBooking: any, newBooking: any): string[] {
-  const changes: string[] = [];
-
-  if (oldBooking.status !== newBooking.status) {
-    changes.push(
-      `Status changed from ${oldBooking.status} to ${newBooking.status}`
-    );
-  }
-
-  if (oldBooking.serviceStartTime !== newBooking.serviceStartTime) {
-    changes.push('Service time updated');
-  }
-
-  if (oldBooking.totalAmount !== newBooking.totalAmount) {
-    changes.push('Amount updated');
-  }
-
-  return changes;
-}
 
 // Example: Seller marks booking as completed
 const markBookingAsCompleted = async (

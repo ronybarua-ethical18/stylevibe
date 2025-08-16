@@ -89,32 +89,6 @@ export async function sendNotification({
   }
 }
 
-// async function sendEmailNotification(notification: any) {
-//   try {
-//     const recipientEmail = notification.recipient.email;
-//     const senderName = notification.sender
-//       ? `${notification.sender.firstName} ${notification.sender.lastName}`
-//       : 'System';
-
-//     await sendEmail(
-//       [recipientEmail],
-//       {
-//         subject: notification.title || 'New Notification',
-//         data: {
-//           title: notification.title,
-//           message: notification.message,
-//           senderName,
-//           meta: notification.meta,
-//           timestamp: new Date().toLocaleString(),
-//         },
-//       },
-//       'notification'
-//     );
-//   } catch (error) {
-//     console.error('Email notification failed:', error);
-//   }
-// }
-
 // Get notifications for a user
 export async function getUserNotifications(
   userId: string,
@@ -167,16 +141,3 @@ export async function markAllNotificationsAsRead(userId: string) {
     { isRead: true }
   );
 }
-
-// Delete old notifications (cleanup utility)
-// export async function cleanupOldNotifications(daysOld: number = 90) {
-//   const cutoffDate = new Date();
-//   cutoffDate.setDate(cutoffDate.getDate() - daysOld);
-
-//   const result = await NotificationModel.deleteMany({
-//     createdAt: { $lt: cutoffDate },
-//     isRead: true
-//   });
-
-//   return result;
-// }

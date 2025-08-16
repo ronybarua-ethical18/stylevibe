@@ -44,8 +44,12 @@ export const initSocket = (server: http.Server) => {
     const user = (socket as any).user;
     const userId = user.id;
 
+    console.log(`✅ SOCKET: User ${userId} (${user.role}) connected`);
+    console.log(`🔌 SOCKET: Socket ID: ${socket.id}`);
+
     // Join user's personal room for notifications
     socket.join(userId);
+    console.log(`🔔 SOCKET: User ${userId} joined notification room`);
 
     // Handle joining rooms (now supports both conversation and booking rooms)
     socket.on('joinRoom', (roomId: string) => {
