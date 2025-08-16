@@ -145,9 +145,38 @@ const createMessage = tryCatchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// Get unread message count for a booking
+const getUnreadCountByBooking = tryCatchAsync(
+  async (req: Request, res: Response) => {
+    const { bookingId, userId } = req.query;
+
+    if (
+      !bookingId ||
+      !userId ||
+      typeof bookingId !== 'string' ||
+      typeof userId !== 'string'
+    ) {
+      throw new Error('bookingId and userId are required');
+    }
+
+    const count = await MessageService.getUnreadCountByBooking(
+      new mongoose.Types.ObjectId(bookingId),
+      new mongoose.Types.ObjectId(userId)
+    );
+
+    sendResponse<{ count: number }>(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Unread count fetched successfully',
+      data: { count },
+    });
+  }
+);
+
 export const MessageController = {
   getMessages,
   getMessagesByParticipants,
   updateMessageStatus,
   createMessage,
+  getUnreadCountByBooking,
 };

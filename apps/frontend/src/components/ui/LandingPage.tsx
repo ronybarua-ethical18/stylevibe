@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BiLogOut } from 'react-icons/bi';
 
 import SVClientReview from './SVClientReview';
@@ -20,16 +20,22 @@ import SVTypesOfServices from './SVTypesOfServices';
 import AuthButton from '@/app/components/AuthButton';
 import { authKey } from '@/constants/authKey';
 import { useGetTopServicesQuery } from '@/redux/api/services';
-import { getUserInfo } from '@/services/auth.service';
 import { removeUserInfo } from '@/utils/handleLocalStorage';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 export default function LandingPage() {
-  const userInfo: any = getUserInfo();
+  const { userInfo, needsRoleSelection } = useUserInfo();
   const role = userInfo?.role;
   const router = useRouter();
   const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery(
     {}
   );
+
+  useEffect(() => {
+    if (needsRoleSelection) {
+      router.push('/select-role');
+    }
+  }, [needsRoleSelection]);
 
   return (
     <div>

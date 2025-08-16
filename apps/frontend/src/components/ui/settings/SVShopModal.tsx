@@ -75,6 +75,7 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
   const loggedUser = getUserInfo() as any;
   const { refetch } = useGetUserProfileQuery(loggedUser?.userId);
   const [isChecked, setIsChecked] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
@@ -110,9 +111,9 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
       refetch();
       setIsChecked(false);
       dispatch(closeModal(false));
-      message.success('Shop created successfully!');
+      messageApi.success('Shop created successfully!');
     } catch (err: any) {
-      message.error(err?.data?.message);
+      messageApi.error(err?.data?.message);
     }
   };
 
@@ -122,139 +123,148 @@ const SVShopModal = ({ edit, shopData }: Props): ReactNode => {
   };
 
   return (
-    <div>
-      <div className="flex justify-center">
-        {edit ? (
-          <Switch
-            checked={isChecked}
-            checkedChildren="Edit"
-            unCheckedChildren="View"
-            onChange={handleChange}
-          />
-        ) : (
-          <div
-            className="border border-dashed rounded-full flex items-center justify-center w-28 h-28 cursor-pointer"
-            onClick={() => dispatch(showModal(true))}
-          >
-            <GrAdd />
-          </div>
-        )}
-      </div>
-      <Modal
-        width={850}
-        centered
-        open={isModalOpen}
-        footer={null}
-        onCancel={() => {
-          dispatch(closeModal(false));
-          setIsChecked(false);
-        }}
-        afterClose={() => {
-          dispatch(closeModal(false));
-          setIsChecked(false);
-        }}
-        style={{ height: '90vh', overflowY: 'auto' }}
-        className="no-scrollbar "
-      >
-        <div className="overflow-y-scroll no-scrollbar w-full p-6 ">
-          <h1 className="text-2xl text-center font-normal">Shop Information</h1>
-          <h2 className="text-base text-center font-light text-gray-600 mb-8">
-            Write down essential details about your shop and services.
-          </h2>
-          <Form submitHandler={onSubmit}>
-            <Row gutter={24}>
-              <Col className="gutter-row" span={12}>
-                <FormInput
-                  name="shopName"
-                  placeholder="Enter shop name"
-                  type="text"
-                  label="Name"
-                  defaultValue={shopData?.shop?.shopName || ''}
-                  // defaultValue={incomingData?.name || ""}
-                />
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <FormInput
-                  name="location"
-                  placeholder="Enter shop location"
-                  type="text"
-                  label="Location"
-                  defaultValue={shopData?.shop?.location || ''}
-                />
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <FormSelectField
-                  name="openingHour"
-                  options={SERVICE_TIME_SLOTS}
-                  placeholder="Select"
-                  label="Service Start Time"
-                  defaultValue={shopData?.shop?.serviceTime?.openingHour || ''}
-                />
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <FormSelectField
-                  name="closingHour"
-                  options={SERVICE_TIME_SLOTS}
-                  placeholder="Select"
-                  label="Service End Time"
-                  defaultValue={shopData?.shop?.serviceTime?.closingHour || ''}
-                />
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <FormInput
-                  name="maxResourcePerHour"
-                  placeholder="Max resource"
-                  type="number"
-                  label="Max Resource Per Hour"
-                  defaultValue={shopData?.shop?.maxResourcePerHour || ''}
-                />
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <FormSelectField
-                  name="offDays"
-                  options={SERVICE_OFF_DAYS}
-                  placeholder="Select"
-                  label="Service Off Days"
-                  mode="multiple"
-                  defaultValue={shopData?.shop?.serviceTime?.offDays || []}
-                />
-              </Col>
-              <Col className="gutter-row" span={24}>
-                <FormTextArea
-                  name="shopDescription"
-                  placeholder="Write Description"
-                  label="Description"
-                  maxLength={400}
-                  defaultValue={shopData?.shop?.shopDescription || ''}
-                />
-              </Col>
-              <Col className="gutter-row" span={24}>
-                <h2 className="text-sm font-normal mt-4">
-                  Upload Gallery Images
-                </h2>
-                <SVUplaod images={images} setImages={setImages} />
-              </Col>
-            </Row>
-            <div className="flex justify-end mt-7">
-              {!isLoading ? (
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  className="text-right"
-                  disabled={isUpdateLoading || isLoading}
-                >
-                  {edit ? 'Update' : 'Submit'}
-                </Button>
-              ) : (
-                <Button type="primary" loading iconPosition="end">
-                  Loading
-                </Button>
-              )}
+    <>
+      {contextHolder}
+      <div>
+        <div className="flex justify-center">
+          {edit ? (
+            <Switch
+              checked={isChecked}
+              checkedChildren="Edit"
+              unCheckedChildren="View"
+              onChange={handleChange}
+            />
+          ) : (
+            <div
+              className="border border-dashed rounded-full flex items-center justify-center w-28 h-28 cursor-pointer"
+              onClick={() => dispatch(showModal(true))}
+            >
+              <GrAdd />
             </div>
-          </Form>
+          )}
         </div>
-      </Modal>
-    </div>
+        <Modal
+          width={850}
+          centered
+          open={isModalOpen}
+          footer={null}
+          onCancel={() => {
+            dispatch(closeModal(false));
+            setIsChecked(false);
+          }}
+          afterClose={() => {
+            dispatch(closeModal(false));
+            setIsChecked(false);
+          }}
+          style={{ height: '90vh', overflowY: 'auto' }}
+          className="no-scrollbar "
+        >
+          <div className="overflow-y-scroll no-scrollbar w-full p-6 ">
+            <h1 className="text-2xl text-center font-normal">
+              Shop Information
+            </h1>
+            <h2 className="text-base text-center font-light text-gray-600 mb-8">
+              Write down essential details about your shop and services.
+            </h2>
+            <Form submitHandler={onSubmit}>
+              <Row gutter={24}>
+                <Col className="gutter-row" span={12}>
+                  <FormInput
+                    name="shopName"
+                    placeholder="Enter shop name"
+                    type="text"
+                    label="Name"
+                    defaultValue={shopData?.shop?.shopName || ''}
+                    // defaultValue={incomingData?.name || ""}
+                  />
+                </Col>
+                <Col className="gutter-row" span={12}>
+                  <FormInput
+                    name="location"
+                    placeholder="Enter shop location"
+                    type="text"
+                    label="Location"
+                    defaultValue={shopData?.shop?.location || ''}
+                  />
+                </Col>
+                <Col className="gutter-row" span={12}>
+                  <FormSelectField
+                    name="openingHour"
+                    options={SERVICE_TIME_SLOTS}
+                    placeholder="Select"
+                    label="Service Start Time"
+                    defaultValue={
+                      shopData?.shop?.serviceTime?.openingHour || ''
+                    }
+                  />
+                </Col>
+                <Col className="gutter-row" span={12}>
+                  <FormSelectField
+                    name="closingHour"
+                    options={SERVICE_TIME_SLOTS}
+                    placeholder="Select"
+                    label="Service End Time"
+                    defaultValue={
+                      shopData?.shop?.serviceTime?.closingHour || ''
+                    }
+                  />
+                </Col>
+                <Col className="gutter-row" span={12}>
+                  <FormInput
+                    name="maxResourcePerHour"
+                    placeholder="Max resource"
+                    type="number"
+                    label="Max Resource Per Hour"
+                    defaultValue={shopData?.shop?.maxResourcePerHour || ''}
+                  />
+                </Col>
+                <Col className="gutter-row" span={12}>
+                  <FormSelectField
+                    name="offDays"
+                    options={SERVICE_OFF_DAYS}
+                    placeholder="Select"
+                    label="Service Off Days"
+                    mode="multiple"
+                    defaultValue={shopData?.shop?.serviceTime?.offDays || []}
+                  />
+                </Col>
+                <Col className="gutter-row" span={24}>
+                  <FormTextArea
+                    name="shopDescription"
+                    placeholder="Write Description"
+                    label="Description"
+                    maxLength={400}
+                    defaultValue={shopData?.shop?.shopDescription || ''}
+                  />
+                </Col>
+                <Col className="gutter-row" span={24}>
+                  <h2 className="text-sm font-normal mt-4">
+                    Upload Gallery Images
+                  </h2>
+                  <SVUplaod images={images} setImages={setImages} />
+                </Col>
+              </Row>
+              <div className="flex justify-end mt-7">
+                {!isLoading ? (
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    className="text-right"
+                    disabled={isUpdateLoading || isLoading}
+                  >
+                    {edit ? 'Update' : 'Submit'}
+                  </Button>
+                ) : (
+                  <Button type="primary" loading iconPosition="end">
+                    Loading
+                  </Button>
+                )}
+              </div>
+            </Form>
+          </div>
+        </Modal>
+      </div>
+    </>
   );
 };
 

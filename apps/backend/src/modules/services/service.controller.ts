@@ -34,7 +34,6 @@ const getAllServices = tryCatchAsync(async (req: Request, res: Response) => {
     role: string;
   };
 
-  console.log('req.user', req.user);
   const filterOptions = pick(req.query, filterableFields);
   const queryOptions = pick(req.query, paginationFields);
 

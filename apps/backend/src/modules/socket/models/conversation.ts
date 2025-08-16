@@ -1,5 +1,5 @@
 // models/Conversation.ts
-import mongoose, { Schema, model, Document, Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { IConversation } from '../interfaces/conversation.interface';
 
 const ConversationSchema = new Schema<IConversation>(

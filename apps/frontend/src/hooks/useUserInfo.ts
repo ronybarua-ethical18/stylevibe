@@ -1,6 +1,6 @@
 import { useSession, signOut as nextAuthSignOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useMemo, useEffect } from 'react';
+import { useEffect, useMemo, useCallback, useState } from 'react';
 
 import { authKey } from '@/constants/authKey';
 import {
@@ -13,81 +13,98 @@ import {
   getFromLocalStorage,
 } from '@/utils/handleLocalStorage';
 
+interface LoggedUser {
+  accessToken?: string;
+  role?: string;
+  provider?: string;
+  [key: string]: any;
+}
+
+interface ExtendedSession {
+  loggedUser?: LoggedUser;
+}
+
 export const useUserInfo = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [localStorageVersion, setLocalStorageVersion] = useState(0);
 
-  // Handle OAuth token storage when session is available
-  useEffect(() => {
-    if (
-      (session as any)?.loggedUser?.accessToken &&
-      status === 'authenticated'
-    ) {
-      storeUserInfo((session as any).loggedUser.accessToken);
-    }
-  }, [session, status]);
-
-  const userInfo = useMemo(() => {
-    // For OAuth users, get info from session.loggedUser
-    if ((session as any)?.loggedUser) {
-      return (session as any).loggedUser;
+  const userInfo = useMemo((): LoggedUser | null => {
+    // OAuth users
+    if ((session as ExtendedSession)?.loggedUser) {
+      return (session as ExtendedSession).loggedUser || null;
     }
 
-    // For credential users, get info from localStorage
     const credentialUserInfo = getUserInfo();
+    return credentialUserInfo
+      ? { ...credentialUserInfo, provider: 'credentials' }
+      : null;
+  }, [session, localStorageVersion]);
 
-    if (credentialUserInfo) {
-      return {
-        ...credentialUserInfo,
-        provider: 'credentials',
-      };
-    }
+  // Authentication state
+  const isCredentialAuth = useMemo(
+    () => isLoggedIn() && !session,
+    [session, localStorageVersion]
+  );
+  const isOAuthAuth = useMemo(
+    () => !!(session as ExtendedSession)?.loggedUser?.accessToken,
+    [session]
+  );
+  const isAuthenticated = useMemo(
+    () => isCredentialAuth || isOAuthAuth,
+    [isCredentialAuth, isOAuthAuth]
+  );
 
-    return null;
-  }, [session]);
-
-  const isCredentialAuth = () => {
-    return isLoggedIn() && !session;
-  };
-
-  const isOAuthAuth = () => {
-    return !!(session as any)?.loggedUser?.accessToken;
-  };
-
-  const isAuthenticated = () => {
-    return isCredentialAuth() || isOAuthAuth();
-  };
-
-  const getAccessToken = () => {
-    if (isOAuthAuth()) {
-      return (session as any)?.loggedUser?.accessToken;
+  // Access token
+  const accessToken = useMemo(() => {
+    if (isOAuthAuth) {
+      return (session as ExtendedSession)?.loggedUser?.accessToken;
     }
     return getFromLocalStorage(authKey) || null;
-  };
+  }, [isOAuthAuth, session, localStorageVersion]);
 
-  const signOut = async () => {
+  // Sign out function
+  const signOut = useCallback(async () => {
     removeUserInfo(authKey);
-
     if (session) {
       await nextAuthSignOut({ redirect: false });
     }
-
     router.push('/login');
-  };
+  }, [session, router]);
+
+  // Store OAuth token when session is available
+  useEffect(() => {
+    const sessionUser = (session as ExtendedSession)?.loggedUser;
+    if (sessionUser?.accessToken && status === 'authenticated') {
+      storeUserInfo(sessionUser.accessToken);
+    }
+  }, [session, status]);
+
+  // Listen for auth events and localStorage changes
+  useEffect(() => {
+    const handleStorageChange = () =>
+      setLocalStorageVersion((prev) => prev + 1);
+
+    window.addEventListener('auth:tokenStored', handleStorageChange);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('auth:tokenStored', handleStorageChange);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   return {
     userInfo,
     isLoading: status === 'loading',
-    isAuthenticated: isAuthenticated(),
+    isAuthenticated,
     isOAuthUser: userInfo?.provider === 'google',
     hasRole: !!userInfo?.role,
-    needsRoleSelection:
-      userInfo?.provider === 'google' && userInfo?.role === 'guest',
-    isCredentialAuth: isCredentialAuth(),
-    isOAuthAuth: isOAuthAuth(),
-    accessToken: getAccessToken(),
-    user: session?.user,
     provider: userInfo?.provider,
+    isCredentialAuth,
+    isOAuthAuth,
+    accessToken,
+    user: session?.user,
     signOut,
     status,
     session,

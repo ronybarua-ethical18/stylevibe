@@ -1,14 +1,12 @@
 import { Col, Row } from 'antd';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import React, { useState } from 'react';
 
 import HairImage from '../../../public/hair1.png';
 import Makeup from '../../../public/makeup1.png';
 import Skin from '../../../public/skin1.png';
 import SVSectionTitle from '../SVSectionTitle';
-
 import SVCard from './SVCard';
-
 import { dummyServices, serviceCategories } from '@/utils/dummyServices';
 
 export default function SVTypesOfServices() {
@@ -18,10 +16,14 @@ export default function SVTypesOfServices() {
       <SVSectionTitle title1="CATEGORIES OF" title2="SERVICES" />
       <div className="w-2/4 m-auto flex justify-center">
         {serviceCategories.map(
-          (category: { id: number; name: string; img: any }) => {
+          (category: {
+            id: number;
+            name: string;
+            img: string | StaticImageData;
+          }) => {
             return (
               <div
-                onClick={(e) => setActive(category.id)}
+                onClick={() => setActive(category.id)}
                 className={`flex items-center cursor-pointer py-8 px-4 shadow-simple-shadow w-2/4  ${
                   category.id === active ? 'bg-customPrimary-800' : ''
                 } mb-16 ${
@@ -82,9 +84,10 @@ export default function SVTypesOfServices() {
             <Col
               xs={24}
               sm={12}
-              md={6}
-              lg={6}
-              xl={6}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={6}
               key={service._id || index}
               className="mb-8"
             >

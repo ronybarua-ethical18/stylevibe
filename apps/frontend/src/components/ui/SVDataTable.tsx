@@ -35,9 +35,12 @@ const SVDataTable = ({
       }
     : false;
 
+  // Check if dataSource is empty
+  const isEmpty = !dataSource || dataSource.length === 0;
+
   return (
     <Table
-      className=""
+      className={isEmpty ? 'empty-table' : ''}
       // rowSelection={}
       loading={loading}
       columns={columns}

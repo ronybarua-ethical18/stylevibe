@@ -23,6 +23,13 @@ router.get(
   ConversationController.getAllConversations
 );
 
+// Add new route for unread count (before the parameterized routes)
+router.get(
+  '/messages/unread-count',
+  auth(ENUM_USER_ROLE.CUSTOMER, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN),
+  MessageController.getUnreadCountByBooking
+);
+
 // Message routes
 router.post(
   '/messages',

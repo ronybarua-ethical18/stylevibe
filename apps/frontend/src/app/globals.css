@@ -55,6 +55,7 @@ h1,h2,h3,h4,h5,h6{
 .ant-table {
   border-radius: 8px !important;
   overflow: hidden;
+  min-height: 400px !important;
 }
 .ant-table-thead{
   background-color: white !important;
@@ -90,6 +91,11 @@ h1,h2,h3,h4,h5,h6{
      border-inline-end: 1px solid rgba(255,255,255) !important;
    
   }
+
+  .ant-popover-inner{
+    border-radius: 12px !important;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
     width: 0px;
@@ -99,5 +105,68 @@ h1,h2,h3,h4,h5,h6{
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+/* Profile Dropmenu Styles */
+.menu-item-hover:hover {
+  background: linear-gradient(135deg, #f0f4ff 0%, #e6f7ff 100%) !important;
+  transform: translateX(2px);
+}
+
+.menu-item-hover:hover .ant-typography {
+  color: #407AFF !important;
+}
+
+.menu-item-hover:hover .anticon {
+  color: #407AFF !important;
+}
+
+/* Custom scrollbar for dropdown */
+.ant-dropdown-menu {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 transparent;
+}
+
+.ant-dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ant-dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ant-dropdown-menu::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 2px;
+}
+
+.ant-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+/* Profile dropdown specific styles */
+.ant-dropdown {
+  border-radius: 12px !important;
+}
+
+.ant-dropdown-menu-item {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 6px !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background: transparent !important;
+}
+
+.ant-dropdown-menu-item-divider {
+  margin: 8px 0 !important;
+  border-color: #f0f0f0 !important;
+}
+
+/* Remove bottom border when table is empty */
+.empty-table .ant-table-tbody > tr > th,
+.empty-table .ant-table-tbody > tr > td {
+  border-bottom: none !important;
+}
 
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { socket } from '../chatSocket';
+import { getSocket } from '../chatSocket';
 
 interface UseChatSocketProps {
   conversationId?: string;
@@ -27,6 +27,9 @@ export const useChatSocket = ({
   useEffect(() => {
     if (!senderId || !receiverId || !bookingId) return;
 
+    const socket = getSocket();
+    if (!socket) return;
+
     // Use booking-based room instead of conversation-based
     const roomId = `booking_${bookingId}`;
     socket.emit('joinRoom', roomId);
@@ -51,6 +54,12 @@ export const useChatSocket = ({
           markMessagesAsSeen({
             conversationId: newMessage.conversationId,
             userId: currentUserId,
+          });
+
+          // Emit mark_seen with bookingId for real-time count updates
+          socket.emit('mark_seen', {
+            conversationId: newMessage.conversationId,
+            bookingId: bookingId,
           });
         }
       }

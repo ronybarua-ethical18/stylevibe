@@ -4,13 +4,10 @@ import httpStatus from 'http-status';
 import config from '../../config';
 import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
-import {
-  FORGOT_PASSWORD_TEMPLATE,
-  VERIFY_EMAIL_TEMPLATE,
-} from '../../services/mail/constants';
-import { sendMailWithToken } from '../../utils/auth.utils';
 import { IUser } from '../user/user.interface';
 import { UserModel } from '../user/user.model';
+import { triggerNotification } from '../../services/notification/notification.trigger';
+import { AppEvent } from '../../services/notification/notification.events.map';
 
 import {
   ILoginUser,
@@ -34,12 +31,19 @@ const signUpUser = async (
 
   const newUser = await UserModel.create(payload);
 
-  sendMailWithToken(
-    newUser,
-    'StyleVibe - Verify your e-mail',
-    'verify-email',
-    VERIFY_EMAIL_TEMPLATE
-  );
+  // Trigger email verification notification
+  await triggerNotification(AppEvent.VERIFY_EMAIL, {
+    userId: newUser._id,
+    email: newUser.email,
+    firstName: newUser.firstName,
+    lastName: newUser.lastName,
+    role: newUser.role,
+    verificationToken: jwtHelpers.createToken(
+      { userId: newUser._id },
+      config.jwt.secret as string,
+      Number(config.jwt.expires_in)
+    ),
+  });
 
   return newUser;
 };
@@ -79,6 +83,8 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     role: user?.role,
     firstName: user?.firstName,
     lastName: user?.lastName,
+    name: user?.firstName + ' ' + user?.lastName,
+    email: user?.email,
   };
 
   const accessToken = jwtHelpers.createToken(
@@ -133,8 +139,6 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 };
 
 const verifyEmail = async (token: string): Promise<void> => {
-  console.log('token', token);
-
   const { userId } = jwtHelpers.verifyToken(token, config.jwt.secret as string);
 
   const user = await UserModel.findById({ _id: userId });
@@ -152,12 +156,26 @@ const forgotPassword = async (email: string): Promise<IUser> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  sendMailWithToken(
-    user,
-    'StyleVibe - Password Reset',
-    'reset-password',
-    FORGOT_PASSWORD_TEMPLATE
-  );
+  // sendMailWithToken(
+  //   user,
+  //   'StyleVibe - Password Reset',
+  //   'reset-password',
+  //   FORGOT_PASSWORD_TEMPLATE,
+  // );
+
+  // Trigger email verification notification
+  await triggerNotification(AppEvent.FORGOT_PASSWORD, {
+    userId: user._id,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role,
+    verificationToken: jwtHelpers.createToken(
+      { userId: user._id },
+      config.jwt.secret as string,
+      Number(config.jwt.expires_in)
+    ),
+  });
 
   return user;
 };

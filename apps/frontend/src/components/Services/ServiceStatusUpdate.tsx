@@ -1,6 +1,6 @@
 'use client';
 
-import { message, Input } from 'antd';
+import { message } from 'antd';
 import React from 'react';
 import { MdMiscellaneousServices } from 'react-icons/md'; // Import the new icon
 
@@ -10,8 +10,6 @@ import FormTextArea from '../Forms/FormTextArea';
 import SVButton from '../SVButton';
 
 import { useUpdateServiceMutation } from '@/redux/api/services';
-
-const { TextArea } = Input;
 
 interface ServiceStatusUpdateProps {
   serviceId: string;
@@ -25,17 +23,18 @@ const ServiceStatusUpdate: React.FC<ServiceStatusUpdateProps> = ({
   onClose,
 }) => {
   const [updateService, { isLoading }] = useUpdateServiceMutation();
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: { status: string; notes: string }) => {
     try {
       await updateService({
         id: serviceId,
         data: { status: values.status, notes: values.notes },
       }).unwrap();
-      message.success('Service status updated successfully');
+      messageApi.success('Service status updated successfully');
       onClose();
-    } catch (error) {
-      message.error('Failed to update service status');
+    } catch {
+      messageApi.error('Failed to update service status');
     }
   };
 
@@ -45,41 +44,44 @@ const ServiceStatusUpdate: React.FC<ServiceStatusUpdateProps> = ({
   ];
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md">
-      <h2 className="text-3xl font-normal text-gray-800 mb-2 text-center">
-        Update Service Status
-      </h2>
-      <div className="flex items-center justify-center mb-6">
-        <MdMiscellaneousServices className="text-2xl mr-2 text-gray-400" />{' '}
-        {/* Updated icon */}
-        <h3 className="text-sm font-light text-gray-600">{serviceName}</h3>
-      </div>
-      <Form submitHandler={onFinish}>
-        <FormSelectField
-          name="status"
-          options={statusOptions}
-          placeholder="Select status"
-          size="large"
-          label="Select Status"
-          required
-        />
+    <>
+      {contextHolder}
+      <div className="p-8 bg-white rounded-lg shadow-md">
+        <h2 className="text-3xl font-normal text-gray-800 mb-2 text-center">
+          Update Service Status
+        </h2>
+        <div className="flex items-center justify-center mb-6">
+          <MdMiscellaneousServices className="text-2xl mr-2 text-gray-400" />{' '}
+          {/* Updated icon */}
+          <h3 className="text-sm font-light text-gray-600">{serviceName}</h3>
+        </div>
+        <Form submitHandler={onFinish}>
+          <FormSelectField
+            name="status"
+            options={statusOptions}
+            placeholder="Select status"
+            size="large"
+            label="Select Status"
+            required
+          />
 
-        <FormTextArea
-          name="notes"
-          placeholder="Enter notes here"
-          size="large"
-          label="Notes"
-          required
-        />
-        <SVButton
-          type="primary"
-          htmlType="submit"
-          loading={isLoading}
-          title={isLoading ? 'Updating...' : 'Update Status'}
-          className="w-full mt-5"
-        />
-      </Form>
-    </div>
+          <FormTextArea
+            name="notes"
+            placeholder="Enter notes here"
+            size="large"
+            label="Notes"
+            required
+          />
+          <SVButton
+            type="primary"
+            htmlType="submit"
+            loading={isLoading}
+            title={isLoading ? 'Updating...' : 'Update Status'}
+            className="w-full mt-5"
+          />
+        </Form>
+      </div>
+    </>
   );
 };
 
