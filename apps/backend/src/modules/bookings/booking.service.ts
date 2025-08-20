@@ -61,7 +61,6 @@ const createBooking = async (
   loggedUser: JwtPayload,
   bookingPayload: IBookingPayload
 ): Promise<any> => {
-  console.log('bookingPayload', bookingPayload);
   if (loggedUser.role !== ENUM_USER_ROLE.CUSTOMER) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'You are not a customer');
   }
@@ -182,7 +181,7 @@ const getBooking = async (
 };
 const updateBooking = async (
   bookingId: mongoose.Types.ObjectId,
-  updatePayload: object
+  updatePayload: { status: string }
 ): Promise<IBooking | null> => {
   const updateBooking = await BookingModel.findByIdAndUpdate(
     { _id: bookingId },
@@ -190,11 +189,16 @@ const updateBooking = async (
     { new: true }
   ).populate('customer seller serviceId');
 
+  const eventType =
+    updatePayload.status === 'CANCELLED'
+      ? AppEvent.BOOKING_CANCELLED
+      : AppEvent.BOOKING_UPDATED;
+
   if (updateBooking) {
     // Determine what changed and trigger appropriate notifications
     try {
-      await triggerNotification(AppEvent.BOOKING_UPDATED, {
-        bookingId: bookingId.toString(),
+      await triggerNotification(eventType, {
+        bookingId: updateBooking.bookingId,
         serviceName: (updateBooking.serviceId as any)?.name || 'Service',
         sellerId: updateBooking.seller._id.toString(),
         customerId: updateBooking.customer._id.toString(),
@@ -213,7 +217,6 @@ const markBookingAsCompleted = async (
   bookingId: string,
   updatePayload: any
 ) => {
-  console.log('updateBooking', updatePayload);
   const updateBooking = await BookingModel.findByIdAndUpdate(
     { _id: bookingId },
     { ...updatePayload },

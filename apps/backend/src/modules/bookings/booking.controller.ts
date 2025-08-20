@@ -72,8 +72,6 @@ const getBooking = tryCatchAsync(async (req: Request, res: Response) => {
 });
 
 const updateBooking = tryCatchAsync(async (req: Request, res: Response) => {
-  console.log('req.params.bookingId', req.params.bookingId);
-  console.log('req.body', req.body);
   if (typeof req.params.bookingId === 'string') {
     const result = await BookingService.updateBooking(
       new mongoose.Types.ObjectId(req.params['bookingId']),
@@ -108,8 +106,6 @@ const updateBookings = tryCatchAsync(async (req: Request, res: Response) => {
     },
   ];
 
-  console.log('bookings', bookings);
-
   const filteredBookings = await Promise.all(
     bookings.map(async (booking) => {
       const processedBooking = await BookingService.verifyBooking(
@@ -119,8 +115,6 @@ const updateBookings = tryCatchAsync(async (req: Request, res: Response) => {
       return processedBooking; // Return the processed booking
     })
   ).then((results) => results.filter((booking) => booking));
-
-  console.log('filtered bookings', filteredBookings);
 
   if (filteredBookings.length > 0) {
     for (const booking of filteredBookings) {
@@ -157,6 +151,24 @@ const deleteBooking = tryCatchAsync(async (req: Request, res: Response) => {
   }
 });
 
+const markBookingAsCompleted = tryCatchAsync(
+  async (req: Request, res: Response) => {
+    if (typeof req.params.bookingId === 'string') {
+      const result = await BookingService.markBookingAsCompleted(
+        req.params.bookingId,
+        { status: 'COMPLETED', ...req.body }
+      );
+
+      sendResponse<IBooking>(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Booking marked as completed successfully',
+        data: result,
+      });
+    }
+  }
+);
+
 export const BookingController = {
   createBooking,
   getAllBookings,
@@ -164,4 +176,5 @@ export const BookingController = {
   updateBooking,
   deleteBooking,
   updateBookings,
+  markBookingAsCompleted,
 };
