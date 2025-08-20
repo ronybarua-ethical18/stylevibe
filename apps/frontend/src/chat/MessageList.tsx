@@ -123,7 +123,11 @@ export const MessageList: React.FC<MessageListProps> = ({
 
   return (
     <div className="h-full flex flex-col bg-gray-50">
-      <ChatHeader customerInfo={customerInfo} isTyping={isTyping} />
+      <ChatHeader
+        customerInfo={customerInfo}
+        isTyping={isTyping}
+        bookingId={bookingId}
+      />
 
       <div className="flex justify-center py-3">
         <div className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">

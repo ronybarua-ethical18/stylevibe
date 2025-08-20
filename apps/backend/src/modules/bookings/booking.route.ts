@@ -46,6 +46,12 @@ router.put(
   BookingController.updateBookings
 );
 
+router.patch(
+  '/:bookingId/complete',
+  auth(ENUM_USER_ROLE.SELLER),
+  BookingController.markBookingAsCompleted
+);
+
 router.delete(
   '/:bookingId',
   auth(ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),

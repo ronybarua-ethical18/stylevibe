@@ -75,7 +75,7 @@ export const notificationEventMap = {
     channels: [NotificationChannel.IN_APP, NotificationChannel.EMAIL],
     getMessage: (data: any) => ({
       title: 'Booking Cancelled',
-      message: `Your booking for ${data.serviceName} has been cancelled.`,
+      message: `Your booking #${data.bookingId} for ${data.serviceName} has been cancelled.`,
       recipient: data.customerId,
       sender: data.sellerId,
       meta: {
@@ -106,9 +106,9 @@ export const notificationEventMap = {
     channels: [NotificationChannel.IN_APP, NotificationChannel.EMAIL],
     getMessage: (data: any) => ({
       title: 'Booking Completed',
-      message: `Your booking for ${data.serviceName} has been completed successfully.`,
-      recipient: data.sellerId,
-      sender: data.customerId,
+      message: `Your booking #${data.bookingId} for ${data.serviceName} has been completed successfully. Thank you for choosing StyleVibe. If you have any issues, please create a dispute.`,
+      recipient: data.customerId,
+      sender: data.sellerId,
       meta: {
         bookingId: data.bookingId,
         serviceName: data.serviceName,

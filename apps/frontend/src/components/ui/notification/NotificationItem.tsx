@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { List, Typography, Avatar } from 'antd';
+import { List, Typography, Avatar, Button } from 'antd';
 import { formatDistanceToNow } from 'date-fns';
 
 const { Text } = Typography;
@@ -33,6 +33,12 @@ const STYLES = {
     alignItems: 'flex-start',
     marginBottom: '4px',
   },
+  buttonsContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '8px',
+    marginTop: '12px',
+  },
 } as const;
 
 interface NotificationItemProps {
@@ -62,6 +68,22 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
       [notification.isRead]
     );
 
+    const handleFeedback = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        // TODO: Implement feedback functionality
+      },
+      [notification._id]
+    );
+
+    const handleDispute = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        // TODO: Implement dispute functionality
+      },
+      [notification._id]
+    );
+
     const avatarColor = useMemo(() => {
       return (
         NOTIFICATION_COLORS[
@@ -71,17 +93,22 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
     }, [notification.type]);
 
     const displayName = useMemo(() => {
-      if (notification.sender?.firstName && notification.sender?.lastName) {
-        return `${notification.sender.firstName} ${notification.sender.lastName}`;
-      }
       return notification.title || notification.type;
-    }, [notification.sender, notification.title, notification.type]);
+    }, [notification.title, notification.type]);
 
     const timeAgo = useMemo(() => {
       return formatDistanceToNow(new Date(notification.createdAt), {
         addSuffix: true,
       });
     }, [notification.createdAt]);
+
+    // Check if this is a completed booking notification
+    const isCompletedBooking = useMemo(() => {
+      return (
+        notification.type === 'BOOKING' &&
+        notification.title.includes('Completed')
+      );
+    }, [notification.type, notification.title]);
 
     return (
       <List.Item
@@ -93,58 +120,94 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
       >
-        <div style={STYLES.notificationContent}>
-          <Avatar
-            size={40}
-            style={{ backgroundColor: avatarColor, flexShrink: 0 }}
-            src={notification.sender?.avatar}
-          >
-            {notification.sender?.firstName?.[0] || notification.type[0] || 'N'}
-          </Avatar>
-
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={STYLES.notificationHeader}>
-              <Text strong style={{ fontSize: '14px', color: '#262626' }}>
-                {displayName}
-              </Text>
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-              >
-                <Text
-                  style={{
-                    fontSize: '12px',
-                    color: '#8c8c8c',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {timeAgo}
-                </Text>
-                {!notification.isRead && (
-                  <div
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      backgroundColor: '#1890ff',
-                      flexShrink: 0,
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-
-            <Text
-              style={{
-                fontSize: '13px',
-                color: '#595959',
-                display: 'block',
-                lineHeight: '1.4',
-                wordBreak: 'break-word',
-              }}
+        <div style={{ width: '100%' }}>
+          <div style={STYLES.notificationContent}>
+            <Avatar
+              size={40}
+              style={{ backgroundColor: avatarColor, flexShrink: 0 }}
+              src={notification.sender?.avatar}
             >
-              {notification.message}
-            </Text>
+              {notification.sender?.firstName?.[0] ||
+                notification.type[0] ||
+                'N'}
+            </Avatar>
+
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={STYLES.notificationHeader}>
+                <Text strong style={{ fontSize: '14px', color: '#262626' }}>
+                  {displayName}
+                </Text>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <Text
+                    style={{
+                      fontSize: '12px',
+                      color: '#8c8c8c',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {timeAgo}
+                  </Text>
+                  {!notification.isRead && (
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        backgroundColor: '#1890ff',
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <Text
+                style={{
+                  fontSize: '13px',
+                  color: '#595959',
+                  display: 'block',
+                  lineHeight: '1.4',
+                  wordBreak: 'break-word',
+                }}
+              >
+                {notification.message}
+              </Text>
+            </div>
           </div>
+
+          {/* Action Buttons - Only show for completed bookings */}
+          {isCompletedBooking && (
+            <div style={STYLES.buttonsContainer}>
+              <Button
+                size="small"
+                type="default"
+                onClick={handleFeedback}
+                style={{
+                  fontSize: '12px',
+                  height: '28px',
+                  borderColor: '#d9d9d9',
+                  color: '#595959',
+                }}
+              >
+                Give feedback
+              </Button>
+              <Button
+                size="small"
+                type="default"
+                onClick={handleDispute}
+                style={{
+                  fontSize: '12px',
+                  height: '28px',
+                  borderColor: '#ff7875',
+                  color: '#ff4d4f',
+                }}
+              >
+                Create dispute
+              </Button>
+            </div>
+          )}
         </div>
       </List.Item>
     );
