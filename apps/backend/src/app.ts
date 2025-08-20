@@ -21,7 +21,14 @@ app.use(
       }
     },
     credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type', 'Origin', 'Accept'], // Add Authorization here
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Add OPTIONS for preflight
+    allowedHeaders: [
+      'Authorization',
+      'Content-Type',
+      'Origin',
+      'Accept',
+      'X-Requested-With', // Add this for file uploads
+    ],
   })
 );
 

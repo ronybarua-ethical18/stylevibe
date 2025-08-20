@@ -81,7 +81,9 @@ const createMessage = async (payload: {
   senderId: mongoose.Types.ObjectId;
   receiverId: mongoose.Types.ObjectId;
   message: string;
-  bookingId: mongoose.Types.ObjectId; // Add bookingId to payload
+  attachments?: any[];
+  messageType?: string;
+  bookingId: mongoose.Types.ObjectId;
 }): Promise<IMessage> => {
   const newMessage = await MessageModel.create({
     ...payload,
