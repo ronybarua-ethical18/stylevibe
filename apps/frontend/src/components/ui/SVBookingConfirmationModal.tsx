@@ -20,7 +20,7 @@ const SVBookingConfirmationModal = ({
 }): ReactNode => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(!open);
+  const handleClose = () => setOpen(false);
 
   // Update the default date to use UTC
   const [selectedDate, setSelectedDate] = useState(
@@ -84,8 +84,6 @@ const SVBookingConfirmationModal = ({
       ),
     },
   ];
-
-  console.log('selected method', selectedMethod);
 
   return (
     <div>

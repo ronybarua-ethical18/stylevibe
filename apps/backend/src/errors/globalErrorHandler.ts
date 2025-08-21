@@ -9,6 +9,7 @@ import ApiError from './ApiError';
 import handleValidationError from './handleValidationError';
 import handleZodError from './handleZodError';
 // import { errorLogger } from '../shared/logger'
+import { SentrycaptureException } from '../config/sentry';
 
 const globalErrorHandler = (
   error: any,
@@ -16,9 +17,14 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  config.env === 'development'
-    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, error)
-    : console.log(`🐱‍🏍 globalErrorHandler ~~`, error);
+  // Capture error in Sentry before processing
+  SentrycaptureException(error);
+
+  if (config.env === 'development') {
+    console.log(`🐱‍🏍 globalErrorHandler ~~`, error);
+  } else {
+    console.log(`🐱‍🏍 globalErrorHandler ~~`, error);
+  }
 
   let statusCode = 500;
   let message = 'Something went wrong!';
@@ -35,16 +41,16 @@ const globalErrorHandler = (
     message = normalizeError.message;
     errorMessages = normalizeError.errorMessages;
   } else if (error instanceof ApiError) {
-    ((statusCode = error?.statusCode),
-      (message = error?.message),
-      (errorMessages = error?.message
-        ? [
-            {
-              path: '',
-              message: error?.message,
-            },
-          ]
-        : []));
+    statusCode = error?.statusCode;
+    message = error?.message;
+    errorMessages = error?.message
+      ? [
+          {
+            path: '',
+            message: error?.message,
+          },
+        ]
+      : [];
   } else if (error instanceof Error) {
     message = error?.message;
     errorMessages = error?.message

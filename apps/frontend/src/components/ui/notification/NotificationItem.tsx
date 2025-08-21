@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
-import { List, Typography, Avatar, Button } from 'antd';
+import { List, Typography, Avatar } from 'antd';
 import { formatDistanceToNow } from 'date-fns';
+import SVReviewFormModal from '../SVReviewFormModal';
+import SVDisputeModal from '../SVDisputeModal';
 
 const { Text } = Typography;
 
@@ -36,8 +38,9 @@ const STYLES = {
   buttonsContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    gap: '8px',
+    alignItems: 'center',
     marginTop: '12px',
+    gap: '8px',
   },
 } as const;
 
@@ -68,21 +71,21 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
       [notification.isRead]
     );
 
-    const handleFeedback = useCallback(
-      (e: React.MouseEvent) => {
-        e.stopPropagation();
-        // TODO: Implement feedback functionality
-      },
-      [notification._id]
-    );
+    // const handleFeedback = useCallback(
+    //   (e: React.MouseEvent) => {
+    //     e.stopPropagation();
+    //     // TODO: Implement feedback functionality
+    //   },
+    //   [notification._id]
+    // );
 
-    const handleDispute = useCallback(
-      (e: React.MouseEvent) => {
-        e.stopPropagation();
-        // TODO: Implement dispute functionality
-      },
-      [notification._id]
-    );
+    // const handleDispute = useCallback(
+    //   (e: React.MouseEvent) => {
+    //     e.stopPropagation();
+    //     // TODO: Implement dispute functionality
+    //   },
+    //   [notification._id]
+    // );
 
     const avatarColor = useMemo(() => {
       return (
@@ -180,32 +183,8 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
           {/* Action Buttons - Only show for completed bookings */}
           {isCompletedBooking && (
             <div style={STYLES.buttonsContainer}>
-              <Button
-                size="small"
-                type="default"
-                onClick={handleFeedback}
-                style={{
-                  fontSize: '12px',
-                  height: '28px',
-                  borderColor: '#d9d9d9',
-                  color: '#595959',
-                }}
-              >
-                Give feedback
-              </Button>
-              <Button
-                size="small"
-                type="default"
-                onClick={handleDispute}
-                style={{
-                  fontSize: '12px',
-                  height: '28px',
-                  borderColor: '#ff7875',
-                  color: '#ff4d4f',
-                }}
-              >
-                Create dispute
-              </Button>
+              <SVReviewFormModal />
+              <SVDisputeModal bookingId={notification.bookingId} />
             </div>
           )}
         </div>

@@ -6,7 +6,11 @@ import { JwtPayload } from 'jsonwebtoken';
 import moment from 'moment';
 import mongoose, { SortOrder } from 'mongoose';
 
-import { SentryCaptureMessage, SentrySetContext } from '../../config/sentry';
+import {
+  SentryCaptureMessage,
+  SentrySetContext,
+  SentrycaptureException,
+} from '../../config/sentry';
 import ApiError from '../../errors/ApiError';
 import { paginationHelpers } from '../../helpers/pagination';
 import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
@@ -20,6 +24,7 @@ import { toFixConverter } from '../../utils/toFixConverter';
 import { getTotals } from '../services/service.utils';
 import { IShopDocument } from '../shop/shop.interface';
 import ShopModel from '../shop/shop.model';
+import { ServiceModel } from '../services/service.model';
 import { ShopTimeSlotsServices } from '../shop_timeslots/shop_timeslots.service';
 import {
   AmountStatus,
@@ -75,6 +80,14 @@ const createBooking = async (
 
     if (!shop) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Shop not found');
+    }
+
+    // Get service details to populate service name
+    const service = await ServiceModel.findById(
+      bookingPayload.serviceId
+    ).session(session);
+    if (!service) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Service not found');
     }
 
     const dayOfWeek = moment(bookingPayload.serviceDate).format(
@@ -144,17 +157,24 @@ const createBooking = async (
 
     await session.commitTransaction();
 
-    // Trigger notification after successful booking creation
+    // Trigger notification after successful booking creation with actual service name
     try {
       await triggerNotification(AppEvent.BOOKING_CREATED, {
-        bookingId: booking[0]._id.toString(),
-        serviceName: 'Service', // You'll need to populate this from service
+        bookingId: booking[0].bookingId,
+        serviceName: service.name, // ✅ Using actual service name
         serviceDate: bookingPayload.serviceDate,
         sellerId: bookingPayload.sellerId,
         customerId: loggedUser.userId,
         amount: bookingPayload.totalAmount,
       });
     } catch (notificationError) {
+      // Log infrastructure failures
+      SentrySetContext('Infrastructure Error', {
+        component: 'notification_service',
+        event: AppEvent.BOOKING_CREATED,
+        bookingId: booking[0]._id.toString(),
+      });
+      SentrycaptureException(notificationError);
       console.error('Failed to send booking notification:', notificationError);
       // Don't fail the booking creation if notification fails
     }
@@ -162,6 +182,18 @@ const createBooking = async (
     return booking[0];
   } catch (error) {
     await session.abortTransaction();
+
+    // Only log unexpected technical errors to Sentry
+    if (!(error instanceof ApiError)) {
+      SentrySetContext('Unexpected Booking Creation Error', {
+        customerId: loggedUser.userId,
+        sellerId: bookingPayload.sellerId,
+        serviceId: bookingPayload.serviceId,
+        amount: bookingPayload.totalAmount,
+      });
+      SentrycaptureException(error);
+    }
+
     throw error;
   } finally {
     session.endSession();
@@ -179,37 +211,61 @@ const getBooking = async (
 
   return booking;
 };
+
 const updateBooking = async (
   bookingId: mongoose.Types.ObjectId,
   updatePayload: { status: string }
 ): Promise<IBooking | null> => {
-  const updateBooking = await BookingModel.findByIdAndUpdate(
-    { _id: bookingId },
-    { ...updatePayload },
-    { new: true }
-  ).populate('customer seller serviceId');
+  try {
+    const updateBooking = await BookingModel.findByIdAndUpdate(
+      { _id: bookingId },
+      { ...updatePayload },
+      { new: true }
+    ).populate([
+      { path: 'customer', select: 'firstName lastName' },
+      { path: 'seller', select: 'firstName lastName' },
+      { path: 'serviceId', select: 'name' }, // ✅ Populate service name
+    ]);
 
-  const eventType =
-    updatePayload.status === 'CANCELLED'
-      ? AppEvent.BOOKING_CANCELLED
-      : AppEvent.BOOKING_UPDATED;
+    const eventType =
+      updatePayload.status === 'CANCELLED'
+        ? AppEvent.BOOKING_CANCELLED
+        : AppEvent.BOOKING_UPDATED;
 
-  if (updateBooking) {
-    // Determine what changed and trigger appropriate notifications
-    try {
-      await triggerNotification(eventType, {
-        bookingId: updateBooking.bookingId,
-        serviceName: (updateBooking.serviceId as any)?.name || 'Service',
-        sellerId: updateBooking.seller._id.toString(),
-        customerId: updateBooking.customer._id.toString(),
-        changes: updatePayload,
-      });
-    } catch (notificationError) {
-      console.error('Failed to send update notification:', notificationError);
+    if (updateBooking) {
+      // Determine what changed and trigger appropriate notifications
+      try {
+        await triggerNotification(eventType, {
+          bookingId: updateBooking.bookingId,
+          serviceName:
+            (updateBooking.serviceId as any)?.name || 'Unknown Service', // ✅ Use populated service name
+          sellerId: updateBooking.seller._id.toString(),
+          customerId: updateBooking.customer._id.toString(),
+          changes: updatePayload,
+        });
+      } catch (notificationError) {
+        SentrySetContext('Infrastructure Error', {
+          component: 'notification_service',
+          event: eventType,
+          bookingId: updateBooking.bookingId,
+        });
+        SentrycaptureException(notificationError);
+        console.error('Failed to send update notification:', notificationError);
+      }
     }
-  }
 
-  return updateBooking;
+    return updateBooking;
+  } catch (error) {
+    // Only log unexpected database/technical errors
+    if (!(error instanceof ApiError)) {
+      SentrySetContext('Booking Update Error', {
+        bookingId: bookingId.toString(),
+        updatePayload,
+      });
+      SentrycaptureException(error);
+    }
+    throw error;
+  }
 };
 
 // Example: Seller marks booking as completed
@@ -217,30 +273,50 @@ const markBookingAsCompleted = async (
   bookingId: string,
   updatePayload: any
 ) => {
-  const updateBooking = await BookingModel.findByIdAndUpdate(
-    { _id: bookingId },
-    { ...updatePayload },
-    { new: true }
-  ).populate('customer seller serviceId');
+  try {
+    const updateBooking = await BookingModel.findByIdAndUpdate(
+      { _id: bookingId },
+      { ...updatePayload },
+      { new: true }
+    ).populate([
+      { path: 'customer', select: 'firstName lastName' },
+      { path: 'seller', select: 'firstName lastName' },
+      { path: 'serviceId', select: 'name' }, // ✅ Populate service name
+    ]);
 
-  if (updateBooking) {
-    // Trigger completion notification
-    try {
-      await triggerNotification(AppEvent.BOOKING_COMPLETED, {
-        bookingId: bookingId,
-        serviceName: (updateBooking.serviceId as any)?.name || 'Service',
-        sellerId: updateBooking.seller._id.toString(),
-        customerId: updateBooking.customer._id.toString(),
-      });
-    } catch (notificationError) {
-      console.error(
-        'Failed to send completion notification:',
-        notificationError
-      );
+    if (updateBooking) {
+      // Trigger completion notification
+      try {
+        await triggerNotification(AppEvent.BOOKING_COMPLETED, {
+          bookingId: updateBooking.bookingId,
+          serviceName:
+            (updateBooking.serviceId as any)?.name || 'Unknown Service', // ✅ Use populated service name
+          sellerId: updateBooking.seller._id.toString(),
+          customerId: updateBooking.customer._id.toString(),
+        });
+      } catch (notificationError) {
+        SentrySetContext('Infrastructure Error', {
+          component: 'notification_service',
+          event: AppEvent.BOOKING_COMPLETED,
+          bookingId: updateBooking.bookingId,
+        });
+        SentrycaptureException(notificationError);
+        console.error(
+          'Failed to send completion notification:',
+          notificationError
+        );
+      }
     }
-  }
 
-  return updateBooking;
+    return updateBooking;
+  } catch (error) {
+    // Only log unexpected technical errors
+    SentrySetContext('Booking Completion Error', {
+      bookingId,
+    });
+    SentrycaptureException(error);
+    throw error;
+  }
 };
 
 const verifyBooking = async (
@@ -266,7 +342,7 @@ const verifyBooking = async (
       { path: 'shopTimeSlot', select: 'slotFor' },
       { path: 'seller', select: 'firstName lastName email phone' },
       { path: 'customer', select: 'firstName lastName email phone' },
-      { path: 'serviceId', select: 'name' },
+      { path: 'serviceId', select: 'name' }, // ✅ Populate service name
       { path: 'shop', select: 'shopName' },
     ])
     .lean();
@@ -327,7 +403,7 @@ const verifyBooking = async (
     customerBookingId: findBooking.bookingId,
     sellerId: seller?._id,
     customerId: customer?._id,
-    serviceName: findBooking.serviceId?.name,
+    serviceName: findBooking.serviceId?.name || 'Unknown Service', // ✅ Use populated service name
     sellerName: `${seller?.firstName ?? ''} ${seller?.lastName ?? ''}`,
     sellerEmail: seller?.email,
     customerName: `${customer?.firstName ?? ''} ${customer?.lastName ?? ''}`,
@@ -352,87 +428,98 @@ const getAllBookings = async (
   queryOptions: IPaginationOptions,
   filterOptions: IFilterOptions
 ): Promise<IGenericResponse<IBooking[]>> => {
-  let queryPayload = {
-    $or: [
-      { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
-      { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
-    ],
-  } as any;
-  if (isAdmin(loggedUser.role)) {
-    queryPayload = {};
-  }
-  const { searchTerm, ...filterableFields } = filterOptions as any;
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(queryOptions);
+  try {
+    let queryPayload = {
+      $or: [
+        { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
+        { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
+      ],
+    } as any;
+    if (isAdmin(loggedUser.role)) {
+      queryPayload = {};
+    }
+    const { searchTerm, ...filterableFields } = filterOptions as any;
+    const { page, limit, skip, sortBy, sortOrder } =
+      paginationHelpers.calculatePagination(queryOptions);
 
-  const sortCondition: { [key: string]: SortOrder } = {};
+    const sortCondition: { [key: string]: SortOrder } = {};
 
-  if (sortBy && sortOrder) {
-    sortCondition[sortBy] = sortOrder;
-  }
+    if (sortBy && sortOrder) {
+      sortCondition[sortBy] = sortOrder;
+    }
 
-  const queriesWithFilterableFields = queryFieldsManipulation(
-    searchTerm,
-    ['status'],
-    filterableFields
-  );
-
-  if (queriesWithFilterableFields.length > 0) {
-    queryPayload.$and = queriesWithFilterableFields;
-  }
-  let bookings;
-
-  if (searchTerm) {
-    const nameRegex: RegExp = new RegExp(searchTerm, 'i');
-
-    bookings = await BookingModel.aggregate(
-      bookingsAggregationPipeline(nameRegex)
+    const queriesWithFilterableFields = queryFieldsManipulation(
+      searchTerm,
+      ['status'],
+      filterableFields
     );
-  } else {
-    bookings = await BookingModel.find(queryPayload)
-      .sort(sortCondition)
-      .limit(limit)
-      .skip(skip)
-      .populate([
-        { path: 'customer', select: 'firstName lastName phone' },
-        { path: 'seller', select: 'firstName lastName phone' },
-        { path: 'serviceId', select: 'name category subCategory price' },
-        {
-          path: 'shop',
-          select: 'shopName location maxResourcePerHour serviceTime',
-        },
-        { path: 'shopTimeSlot', select: 'slotFor' },
-      ])
-      .lean();
+
+    if (queriesWithFilterableFields.length > 0) {
+      queryPayload.$and = queriesWithFilterableFields;
+    }
+    let bookings;
+
+    if (searchTerm) {
+      const nameRegex: RegExp = new RegExp(searchTerm, 'i');
+
+      bookings = await BookingModel.aggregate(
+        bookingsAggregationPipeline(nameRegex)
+      );
+    } else {
+      bookings = await BookingModel.find(queryPayload)
+        .sort(sortCondition)
+        .limit(limit)
+        .skip(skip)
+        .populate([
+          { path: 'customer', select: 'firstName lastName phone' },
+          { path: 'seller', select: 'firstName lastName phone' },
+          { path: 'serviceId', select: 'name category subCategory price' }, // ✅ Include service name
+          {
+            path: 'shop',
+            select: 'shopName location maxResourcePerHour serviceTime',
+          },
+          { path: 'shopTimeSlot', select: 'slotFor' },
+        ])
+        .lean();
+    }
+
+    // Create a clean query for totals (without filterable fields)
+    const totalsQuery = isAdmin(loggedUser.role)
+      ? {}
+      : {
+          $or: [
+            { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
+            { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
+          ],
+        };
+
+    const totals = await getTotals(BookingModel as any, totalsQuery, [
+      'BOOKED',
+      'CANCELLED',
+      'COMPLETED',
+    ]);
+
+    return {
+      meta: {
+        page,
+        limit,
+        total: totals?.total,
+        totalBooked: totals['BOOKED'],
+        totalCompleted: totals['COMPLETED'],
+        totalCancelled: totals['CANCELLED'],
+      },
+      data: bookings,
+    };
+  } catch (error) {
+    // Only log unexpected database errors
+    SentrySetContext('Database Query Error', {
+      operation: 'getAllBookings',
+      userId: loggedUser.userId,
+      role: loggedUser.role,
+    });
+    SentrycaptureException(error);
+    throw error;
   }
-
-  // Create a clean query for totals (without filterable fields)
-  const totalsQuery = isAdmin(loggedUser.role)
-    ? {}
-    : {
-        $or: [
-          { seller: new mongoose.Types.ObjectId(loggedUser.userId) },
-          { customer: new mongoose.Types.ObjectId(loggedUser.userId) },
-        ],
-      };
-
-  const totals = await getTotals(BookingModel as any, totalsQuery, [
-    'BOOKED',
-    'CANCELLED',
-    'COMPLETED',
-  ]);
-
-  return {
-    meta: {
-      page,
-      limit,
-      total: totals?.total,
-      totalBooked: totals['BOOKED'],
-      totalCompleted: totals['COMPLETED'],
-      totalCancelled: totals['CANCELLED'],
-    },
-    data: bookings,
-  };
 };
 
 export const BookingService = {
