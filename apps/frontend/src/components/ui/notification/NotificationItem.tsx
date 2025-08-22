@@ -1,53 +1,79 @@
+'use client';
+
+import { Avatar, List, Typography } from 'antd';
+import moment from 'moment';
 import React, { useCallback, useMemo } from 'react';
-import { List, Typography, Avatar } from 'antd';
-import { formatDistanceToNow } from 'date-fns';
-import SVReviewFormModal from '../SVReviewFormModal';
+import { ClockCircleOutlined, UserOutlined } from '@ant-design/icons';
+
 import SVDisputeModal from '../SVDisputeModal';
+import SVReviewFormModal from '../SVReviewFormModal';
 
 const { Text } = Typography;
-
-// Constants
-const NOTIFICATION_COLORS = {
-  BOOKING: '#1890ff',
-  PAYMENT: '#52c41a',
-  DISPUTE: '#ff4d4f',
-  SYSTEM: '#722ed1',
-  DEFAULT: '#13c2c2',
-} as const;
-
-const STYLES = {
-  notificationItem: {
-    padding: '16px 20px',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    marginBottom: '5px',
-    borderRadius: '6px',
-  },
-  notificationContent: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    width: '100%',
-    gap: '12px',
-  },
-  notificationHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: '4px',
-  },
-  buttonsContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginTop: '12px',
-    gap: '8px',
-  },
-} as const;
 
 interface NotificationItemProps {
   notification: any;
   onMarkAsRead: (id: string) => void;
 }
+
+// Optimized styles object
+const STYLES = {
+  notificationItem: {
+    padding: '16px',
+    cursor: 'pointer',
+    borderBottom: '1px solid #f0f0f0',
+    transition: 'background-color 0.2s ease',
+  },
+  contentContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+    width: '100%',
+  },
+  textContainer: {
+    flex: 1,
+    minWidth: 0,
+  },
+  titleContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '4px',
+  },
+  unreadDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    backgroundColor: '#1890ff',
+    flexShrink: 0,
+  },
+  timeContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    color: '#8c8c8c',
+    fontSize: '12px',
+    marginTop: '8px',
+  },
+  buttonsContainer: {
+    display: 'flex',
+    gap: '8px',
+    marginTop: '12px',
+    flexWrap: 'wrap' as const,
+    justifyContent: 'flex-end',
+  },
+} as const;
+
+// Simple booking info extraction
+const getBookingInfo = (notification: any) => {
+  const meta = notification?.meta || {};
+
+  return {
+    bookingId: meta.bookingId,
+    bookingObjectId: meta.bookingObjectId,
+    serviceId: meta.serviceId,
+    serviceName: meta.serviceName,
+  };
+};
 
 export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
   ({ notification, onMarkAsRead }) => {
@@ -71,47 +97,29 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
       [notification.isRead]
     );
 
-    // const handleFeedback = useCallback(
-    //   (e: React.MouseEvent) => {
-    //     e.stopPropagation();
-    //     // TODO: Implement feedback functionality
-    //   },
-    //   [notification._id]
-    // );
+    const timeAgo = useMemo(
+      () => moment(notification.createdAt).fromNow(),
+      [notification.createdAt]
+    );
 
-    // const handleDispute = useCallback(
-    //   (e: React.MouseEvent) => {
-    //     e.stopPropagation();
-    //     // TODO: Implement dispute functionality
-    //   },
-    //   [notification._id]
-    // );
-
-    const avatarColor = useMemo(() => {
-      return (
-        NOTIFICATION_COLORS[
-          notification.type as keyof typeof NOTIFICATION_COLORS
-        ] || NOTIFICATION_COLORS.DEFAULT
-      );
-    }, [notification.type]);
-
-    const displayName = useMemo(() => {
-      return notification.title || notification.type;
-    }, [notification.title, notification.type]);
-
-    const timeAgo = useMemo(() => {
-      return formatDistanceToNow(new Date(notification.createdAt), {
-        addSuffix: true,
-      });
-    }, [notification.createdAt]);
-
-    // Check if this is a completed booking notification
     const isCompletedBooking = useMemo(() => {
       return (
         notification.type === 'BOOKING' &&
         notification.title.includes('Completed')
       );
     }, [notification.type, notification.title]);
+
+    // Check if notification is within 2 days
+    const isWithinTwoDays = useMemo(() => {
+      const notificationDate = moment(notification.createdAt);
+      const twoDaysAgo = moment().subtract(2, 'days');
+      return notificationDate.isAfter(twoDaysAgo);
+    }, [notification.createdAt]);
+
+    const { bookingId, bookingObjectId, serviceId, serviceName } = useMemo(
+      () => getBookingInfo(notification),
+      [notification]
+    );
 
     return (
       <List.Item
@@ -123,70 +131,50 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
       >
-        <div style={{ width: '100%' }}>
-          <div style={STYLES.notificationContent}>
-            <Avatar
-              size={40}
-              style={{ backgroundColor: avatarColor, flexShrink: 0 }}
-              src={notification.sender?.avatar}
-            >
-              {notification.sender?.firstName?.[0] ||
-                notification.type[0] ||
-                'N'}
-            </Avatar>
+        <div style={STYLES.contentContainer}>
+          <Avatar
+            src={notification.sender?.profileImage}
+            icon={<UserOutlined />}
+            size={40}
+          />
 
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={STYLES.notificationHeader}>
-                <Text strong style={{ fontSize: '14px', color: '#262626' }}>
-                  {displayName}
-                </Text>
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <Text
-                    style={{
-                      fontSize: '12px',
-                      color: '#8c8c8c',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {timeAgo}
-                  </Text>
-                  {!notification.isRead && (
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        backgroundColor: '#1890ff',
-                        flexShrink: 0,
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-
-              <Text
-                style={{
-                  fontSize: '13px',
-                  color: '#595959',
-                  display: 'block',
-                  lineHeight: '1.4',
-                  wordBreak: 'break-word',
-                }}
-              >
-                {notification.message}
+          <div style={STYLES.textContainer}>
+            <div style={STYLES.titleContainer}>
+              {!notification.isRead && <div style={STYLES.unreadDot} />}
+              <Text strong style={{ fontSize: '14px' }}>
+                {notification.title}
               </Text>
             </div>
-          </div>
 
-          {/* Action Buttons - Only show for completed bookings */}
-          {isCompletedBooking && (
-            <div style={STYLES.buttonsContainer}>
-              <SVReviewFormModal />
-              <SVDisputeModal bookingId={notification.bookingId} />
+            <Text
+              style={{
+                fontSize: '13px',
+                color: '#595959',
+                display: 'block',
+                lineHeight: '1.4',
+              }}
+            >
+              {notification.message}
+            </Text>
+
+            <div style={STYLES.timeContainer}>
+              <ClockCircleOutlined />
+              <span>{timeAgo}</span>
             </div>
-          )}
+
+            {/* Only show buttons for completed bookings within 2 days */}
+            {isCompletedBooking && isWithinTwoDays && (
+              <div style={STYLES.buttonsContainer}>
+                <SVReviewFormModal
+                  bookingObjectId={bookingObjectId}
+                  serviceId={serviceId}
+                  bookingId={bookingId}
+                  serviceName={serviceName}
+                />
+                <SVDisputeModal bookingId={bookingId} />
+              </div>
+            )}
+          </div>
         </div>
       </List.Item>
     );
@@ -194,3 +182,5 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
 );
 
 NotificationItem.displayName = 'NotificationItem';
+
+export default NotificationItem;

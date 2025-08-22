@@ -6,6 +6,8 @@ const feedBackSchema = new mongoose.Schema<IFeedback>(
     user: { type: Schema.Types.ObjectId, ref: 'user', required: true },
     comment: { type: String, required: true },
     rating: { type: Number, required: true },
+    booking: { type: Schema.Types.ObjectId, ref: 'booking', required: true },
+    service: { type: Schema.Types.ObjectId, ref: 'service', required: true },
   },
   { timestamps: true }
 );

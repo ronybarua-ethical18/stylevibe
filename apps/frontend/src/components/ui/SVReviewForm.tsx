@@ -156,6 +156,7 @@ interface SVReviewFormProps {
   onCancel?: () => void;
   title?: string;
   subtitle?: string;
+  isLoading?: boolean;
 }
 
 export default function SVReviewForm({
@@ -163,6 +164,7 @@ export default function SVReviewForm({
   onCancel,
   title = 'Rate Your Experience',
   subtitle = 'How was your beauty service experience? Your feedback helps us improve our services.',
+  isLoading = false,
 }: SVReviewFormProps) {
   const [selectedRating, setSelectedRating] = useState<string>('');
   const [feedback, setFeedback] = useState<string>('');
@@ -172,6 +174,10 @@ export default function SVReviewForm({
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
+    if (!selectedRating) {
+      return;
+    }
+
     const values = {
       rating: selectedRating,
       feedback,
@@ -179,7 +185,6 @@ export default function SVReviewForm({
       researchConsent,
     };
 
-    console.log('Review submitted:', values);
     onSubmit?.(values);
   };
 
@@ -207,7 +212,11 @@ export default function SVReviewForm({
                 key={option.key}
                 selected={selectedRating === option.key}
                 ratingType={option.key}
-                onClick={() => setSelectedRating(option.key)}
+                onClick={() => !isLoading && setSelectedRating(option.key)}
+                style={{
+                  opacity: isLoading ? 0.6 : 1,
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                }}
               >
                 <IconComponent className="rating-icon" />
                 <span className="rating-label">{option.label}</span>
@@ -223,16 +232,20 @@ export default function SVReviewForm({
             rows={4}
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
+            disabled={isLoading}
           />
         </Form.Item>
 
         {/* Action Buttons */}
         <ButtonContainer>
-          <CancelButton onClick={handleCancel}>Cancel</CancelButton>
+          <CancelButton onClick={handleCancel} disabled={isLoading}>
+            Cancel
+          </CancelButton>
           <SubmitButton
             type="primary"
             onClick={handleSubmit}
-            disabled={!selectedRating}
+            disabled={!selectedRating || isLoading}
+            loading={isLoading}
           >
             Submit Review
           </SubmitButton>

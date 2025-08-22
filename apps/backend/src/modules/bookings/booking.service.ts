@@ -161,7 +161,9 @@ const createBooking = async (
     try {
       await triggerNotification(AppEvent.BOOKING_CREATED, {
         bookingId: booking[0].bookingId,
-        serviceName: service.name, // ✅ Using actual service name
+        bookingObjectId: booking[0]._id.toString(),
+        serviceId: service._id.toString(),
+        serviceName: service.name,
         serviceDate: bookingPayload.serviceDate,
         sellerId: bookingPayload.sellerId,
         customerId: loggedUser.userId,
@@ -224,7 +226,7 @@ const updateBooking = async (
     ).populate([
       { path: 'customer', select: 'firstName lastName' },
       { path: 'seller', select: 'firstName lastName' },
-      { path: 'serviceId', select: 'name' }, // ✅ Populate service name
+      { path: 'serviceId', select: 'name' },
     ]);
 
     const eventType =
@@ -233,12 +235,13 @@ const updateBooking = async (
         : AppEvent.BOOKING_UPDATED;
 
     if (updateBooking) {
-      // Determine what changed and trigger appropriate notifications
       try {
         await triggerNotification(eventType, {
           bookingId: updateBooking.bookingId,
+          bookingObjectId: updateBooking._id.toString(),
+          serviceId: updateBooking.serviceId._id.toString(),
           serviceName:
-            (updateBooking.serviceId as any)?.name || 'Unknown Service', // ✅ Use populated service name
+            (updateBooking.serviceId as any)?.name || 'Unknown Service',
           sellerId: updateBooking.seller._id.toString(),
           customerId: updateBooking.customer._id.toString(),
           changes: updatePayload,
@@ -274,25 +277,37 @@ const markBookingAsCompleted = async (
   updatePayload: any
 ) => {
   try {
+    // Get the original booking WITHOUT population to get clean ObjectIds
+    const originalBooking = await BookingModel.findById(bookingId);
+
+    if (!originalBooking) {
+      throw new Error('Booking not found');
+    }
+
+    // Get populated booking for service name
+    const populatedBooking = await BookingModel.findById(bookingId).populate([
+      { path: 'customer', select: 'firstName lastName' },
+      { path: 'seller', select: 'firstName lastName' },
+      { path: 'serviceId', select: 'name' },
+    ]);
+
+    // Update the booking
     const updateBooking = await BookingModel.findByIdAndUpdate(
       { _id: bookingId },
       { ...updatePayload },
       { new: true }
-    ).populate([
-      { path: 'customer', select: 'firstName lastName' },
-      { path: 'seller', select: 'firstName lastName' },
-      { path: 'serviceId', select: 'name' }, // ✅ Populate service name
-    ]);
+    );
 
-    if (updateBooking) {
-      // Trigger completion notification
+    if (updateBooking && populatedBooking) {
       try {
         await triggerNotification(AppEvent.BOOKING_COMPLETED, {
           bookingId: updateBooking.bookingId,
+          bookingObjectId: updateBooking._id.toString(),
+          serviceId: originalBooking.serviceId.toString(), // ✅ Use original unpopulated serviceId
           serviceName:
-            (updateBooking.serviceId as any)?.name || 'Unknown Service', // ✅ Use populated service name
-          sellerId: updateBooking.seller._id.toString(),
-          customerId: updateBooking.customer._id.toString(),
+            (populatedBooking.serviceId as any)?.name || 'Unknown Service',
+          sellerId: originalBooking.seller.toString(),
+          customerId: originalBooking.customer.toString(),
         });
       } catch (notificationError) {
         SentrySetContext('Infrastructure Error', {
