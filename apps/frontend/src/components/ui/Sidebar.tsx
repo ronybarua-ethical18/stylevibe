@@ -23,7 +23,7 @@ export default function Sidebar(): React.ReactNode {
         console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
+        console.log("collapsed", collapsed, "type", type);
       }}
       style={{
         overflow: 'auto',
