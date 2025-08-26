@@ -22,11 +22,16 @@ import { authKey } from '@/constants/authKey';
 import { useGetTopServicesQuery } from '@/redux/api/services';
 import { removeUserInfo } from '@/utils/handleLocalStorage';
 import { useUserInfo } from '@/hooks/useUserInfo';
+import { NavigationService } from '@/services/navigation.service';
 
 export default function LandingPage() {
-  const { userInfo, needsRoleSelection } = useUserInfo();
+  const { userInfo } = useUserInfo();
   const role = userInfo?.role;
   const router = useRouter();
+  
+  // Compute needsRoleSelection using NavigationService
+  const needsRoleSelection = NavigationService.shouldRedirectToRoleSelection(userInfo);
+  
   const { data: services, isLoading: servicesLoading } = useGetTopServicesQuery(
     {}
   );

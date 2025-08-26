@@ -59,7 +59,7 @@ export default function Sidebar(): React.ReactNode {
         theme="light"
         mode="inline"
         selectedKeys={[pathname]}
-        items={sidebarItems(role)}
+        items={sidebarItems(role || 'guest')}
       />
     </Sider>
   );
