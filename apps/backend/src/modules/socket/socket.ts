@@ -58,10 +58,25 @@ export const initSocket = (server: http.Server) => {
 
     socket.on(
       'send_message',
-      async ({ senderId, receiverId, message, conversationId, bookingId }) => {
+      async ({
+        senderId,
+        receiverId,
+        message,
+        conversationId,
+        bookingId,
+        attachments,
+      }) => {
         try {
           if (!bookingId) {
             throw new Error('bookingId is required');
+          }
+
+          // Updated validation: Allow attachment-only messages
+          const hasMessage = message && message.trim().length > 0;
+          const hasAttachments = attachments && attachments.length > 0;
+
+          if (!hasMessage && !hasAttachments) {
+            throw new Error('Either message text or attachments are required');
           }
 
           // Find or create conversation for this specific booking
@@ -69,7 +84,6 @@ export const initSocket = (server: http.Server) => {
 
           if (conversationId && conversationId !== 'undefined') {
             conversation = await ConversationModel.findById(conversationId);
-            // Verify the conversation belongs to the specified booking
             if (
               conversation &&
               conversation.bookingId.toString() !== bookingId
@@ -81,7 +95,13 @@ export const initSocket = (server: http.Server) => {
           }
 
           if (!conversation) {
-            // Create new conversation or find existing one for this booking
+            // Determine last message for conversation
+            const lastMessageText = hasMessage
+              ? message
+              : hasAttachments
+                ? `📎 ${attachments.length} attachment${attachments.length > 1 ? 's' : ''}`
+                : 'New message';
+
             conversation = await ConversationModel.findOneAndUpdate(
               {
                 participants: { $all: [senderId, receiverId] },
@@ -89,7 +109,7 @@ export const initSocket = (server: http.Server) => {
               },
               {
                 $set: {
-                  lastMessage: message,
+                  lastMessage: lastMessageText,
                   lastMessageTime: new Date(),
                 },
                 $setOnInsert: {
@@ -101,22 +121,58 @@ export const initSocket = (server: http.Server) => {
             );
           } else {
             // Update existing conversation
-            conversation.lastMessage = message;
+            const lastMessageText = hasMessage
+              ? message
+              : hasAttachments
+                ? `📎 ${attachments.length} attachment${attachments.length > 1 ? 's' : ''}`
+                : 'New message';
+
+            conversation.lastMessage = lastMessageText;
             conversation.lastMessageTime = new Date();
             await conversation.save();
           }
+
+          // Determine message type automatically
+          let finalMessageType = 'text';
+          if (hasAttachments && hasMessage) {
+            finalMessageType = 'mixed';
+          } else if (hasAttachments && !hasMessage) {
+            finalMessageType = 'attachment';
+          }
+
+          // Create the message with attachments in the database
+          const newMessage = await MessageModel.create({
+            conversationId: conversation._id,
+            senderId,
+            receiverId,
+            message: message || '', // Allow empty string for attachment-only
+            attachments: attachments || [],
+            messageType: finalMessageType,
+            bookingId,
+            seen: false,
+            timestamp: new Date(),
+          });
+
+          // Populate the message
+          const populatedMessage = await MessageModel.findById(newMessage._id)
+            .populate('senderId', 'firstName lastName email img')
+            .populate('receiverId', 'firstName lastName email img');
 
           // Emit to the booking room for real-time updates
           io.to(`booking_${bookingId}`).emit('message_created', {
             conversationId: conversation._id,
             senderId,
             receiverId,
-            message,
+            message: populatedMessage,
             bookingId,
           });
+
+          socket.emit('message_sent', { message: populatedMessage });
         } catch (error) {
           console.error('Socket message error:', error);
-          socket.emit('message_error', { error: 'Failed to process message' });
+          socket.emit('message_error', {
+            error: error.message || 'Failed to process message',
+          });
         }
       }
     );

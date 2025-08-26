@@ -42,8 +42,6 @@ export default function CreateService({ savedData }: any) {
     setIncomingData(savedData || {});
   }, [savedData]);
 
-  console.log('data from create service', savedData);
-
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
       if (savedData) {

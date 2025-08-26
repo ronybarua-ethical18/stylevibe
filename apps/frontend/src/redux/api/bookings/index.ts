@@ -40,6 +40,19 @@ const bookingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.BOOKINGS],
     }),
+
+    markBookingAsCompleted: build.mutation({
+      query: ({ id, data = {} }) => ({
+        url: `/bookings/${id}/complete`,
+        method: 'PATCH',
+        data: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: [tagTypes.BOOKINGS],
+    }),
+
     deleteBooking: build.mutation({
       query: (id) => ({
         url: `/bookings/${id}`,
@@ -56,4 +69,5 @@ export const {
   useGetBookingQuery,
   useDeleteBookingMutation,
   useUpdateBookingMutation,
+  useMarkBookingAsCompletedMutation,
 } = bookingApi;

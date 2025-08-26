@@ -272,16 +272,20 @@ const PaymentForm = ({
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         width={650}
-        style={{
+        centered
+        destroyOnClose
+        bodyStyle={{
           padding: '40px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: '400px',
+          textAlign: 'center',
         }}
-        centered
-        destroyOnClose
+        getContainer={() => document.body}
+        mask={true}
+        maskClosable={false}
       >
         {modalContent}
       </Modal>

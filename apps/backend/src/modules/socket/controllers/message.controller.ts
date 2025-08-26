@@ -91,33 +91,44 @@ const updateMessageStatus = tryCatchAsync(
 
 // Create a new message
 const createMessage = tryCatchAsync(async (req: Request, res: Response) => {
-  const { conversationId, senderId, receiverId, message, bookingId } = req.body;
+  const {
+    conversationId,
+    senderId,
+    receiverId,
+    message,
+    bookingId,
+    attachments,
+  } = req.body;
 
   if (!bookingId) {
     throw new Error('bookingId is required');
   }
 
+  // Updated validation: Allow attachment-only messages
+  const hasMessage = message && message.trim().length > 0;
+  const hasAttachments = attachments && attachments.length > 0;
+
+  if (!hasMessage && !hasAttachments) {
+    throw new Error('Either message text or attachments are required');
+  }
+
   let conversation;
 
   if (conversationId) {
-    // Use existing conversation
     conversation = await ConversationModel.findById(conversationId);
     if (!conversation) {
       throw new Error('Conversation not found');
     }
 
-    // Verify the conversation belongs to the specified booking
     if (conversation.bookingId.toString() !== bookingId) {
       throw new Error('Conversation does not match the specified booking');
     }
   } else {
-    // First try to find existing conversation for this booking
     conversation = await ConversationModel.findOne({
       participants: { $all: [senderId, receiverId] },
       bookingId: bookingId,
     });
 
-    // If no conversation exists, create a new one
     if (!conversation) {
       conversation = await ConversationModel.create({
         participants: [senderId, receiverId],
@@ -126,12 +137,34 @@ const createMessage = tryCatchAsync(async (req: Request, res: Response) => {
     }
   }
 
+  // Determine message type automatically
+  let finalMessageType = 'text';
+  if (hasAttachments && hasMessage) {
+    finalMessageType = 'mixed';
+  } else if (hasAttachments && !hasMessage) {
+    finalMessageType = 'attachment';
+  }
+
   const result = await MessageService.createMessage({
     conversationId: conversation._id,
     senderId: new mongoose.Types.ObjectId(senderId),
     receiverId: new mongoose.Types.ObjectId(receiverId),
-    message,
-    bookingId: new mongoose.Types.ObjectId(bookingId), // Include bookingId
+    message: message || '', // Allow empty string for attachment-only
+    attachments: attachments || [],
+    messageType: finalMessageType,
+    bookingId: new mongoose.Types.ObjectId(bookingId),
+  });
+
+  // Update conversation with appropriate last message
+  const lastMessageText = hasMessage
+    ? message
+    : hasAttachments
+      ? `📎 ${attachments.length} attachment${attachments.length > 1 ? 's' : ''}`
+      : 'New message';
+
+  await ConversationModel.findByIdAndUpdate(conversation._id, {
+    lastMessage: lastMessageText,
+    lastMessageTime: new Date(),
   });
 
   // Emit real-time message to the booking room

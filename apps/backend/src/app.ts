@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import httpStatus from 'http-status';
 import logger from 'morgan';
 
-import { initSentry, SentryCaptureMessage } from './config/sentry';
+import { initSentry, addSentryErrorHandler } from './config/sentry';
 import globalErrorHandler from './errors/globalErrorHandler';
 import routes from './routes';
 const app: Application = express();
@@ -21,7 +21,14 @@ app.use(
       }
     },
     credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type', 'Origin', 'Accept'], // Add Authorization here
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Add OPTIONS for preflight
+    allowedHeaders: [
+      'Authorization',
+      'Content-Type',
+      'Origin',
+      'Accept',
+      'X-Requested-With', // Add this for file uploads
+    ],
   })
 );
 
@@ -30,14 +37,14 @@ declare module 'http' {
     rawBody?: string | object | unknown;
   }
 }
-// Initialize Sentry
+// Initialize Sentry FIRST (before other middleware)
 initSentry(app);
 
-// Test Sentry connection
-app.get('/api/v1/test-sentry', (req, res) => {
-  SentryCaptureMessage('Testing Sentry connection');
-  res.send('Test Sentry triggered');
-});
+// Remove the old test route as it has syntax error
+// app.get('/api/v1/test-sentry', (req, res) => {
+//   SentryCaptureMessage('Testing Sentry connection');
+//   res.send('Test Sentry triggered');
+// });
 
 //parser
 app.use(
@@ -85,6 +92,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   });
   next();
 });
+// Add Sentry error handler BEFORE your global error handler
+addSentryErrorHandler(app);
+
+// Your global error handler should come AFTER Sentry's
 app.use(globalErrorHandler);
 
 export default app;

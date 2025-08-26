@@ -42,7 +42,12 @@ const messageApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `/socket/messages`,
         method: 'POST',
-        data,
+        data: {
+          ...data,
+          // Ensure attachments and messageType are included
+          attachments: data.attachments || [],
+          messageType: data.messageType || 'text',
+        },
         headers: {
           'Content-Type': 'application/json',
         },

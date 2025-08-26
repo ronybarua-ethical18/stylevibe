@@ -10,6 +10,7 @@ export enum AppEvent {
   BOOKING_CANCELLED = 'BOOKING_CANCELLED',
   BOOKING_COMPLETION_REQUEST = 'BOOKING_COMPLETION_REQUEST',
   BOOKING_COMPLETED = 'BOOKING_COMPLETED',
+  FEEDBACK_CREATED = 'FEEDBACK_CREATED',
   PAYMENT_RELEASED = 'PAYMENT_RELEASED',
   PAYMENT_FAILED = 'PAYMENT_FAILED',
   DISPUTE_CREATED = 'DISPUTE_CREATED',
@@ -33,6 +34,8 @@ export const notificationEventMap = {
       sender: data.customerId,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
+        serviceId: data.serviceId,
         serviceName: data.serviceName,
         serviceDate: data.serviceDate,
         amount: data.amount,
@@ -49,6 +52,8 @@ export const notificationEventMap = {
       sender: data.sellerId,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
+        serviceId: data.serviceId,
         serviceName: data.serviceName,
         confirmedAt: new Date(),
       },
@@ -64,6 +69,8 @@ export const notificationEventMap = {
       sender: data.sellerId,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
+        serviceId: data.serviceId,
         serviceName: data.serviceName,
         updatedAt: new Date(),
         changes: data.changes,
@@ -75,11 +82,13 @@ export const notificationEventMap = {
     channels: [NotificationChannel.IN_APP, NotificationChannel.EMAIL],
     getMessage: (data: any) => ({
       title: 'Booking Cancelled',
-      message: `Your booking for ${data.serviceName} has been cancelled.`,
+      message: `Your booking #${data.bookingId} for ${data.serviceName} has been cancelled.`,
       recipient: data.customerId,
       sender: data.sellerId,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
+        serviceId: data.serviceId,
         serviceName: data.serviceName,
         cancelledAt: new Date(),
         reason: data.reason,
@@ -96,6 +105,8 @@ export const notificationEventMap = {
       sender: data.sellerId,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
+        serviceId: data.serviceId,
         serviceName: data.serviceName,
         requestedAt: new Date(),
       },
@@ -106,13 +117,35 @@ export const notificationEventMap = {
     channels: [NotificationChannel.IN_APP, NotificationChannel.EMAIL],
     getMessage: (data: any) => ({
       title: 'Booking Completed',
-      message: `Your booking for ${data.serviceName} has been completed successfully.`,
+      message: `Your booking #${data.bookingId} for ${data.serviceName} has been completed successfully. Thank you for choosing StyleVibe. If you have any issues, please create a dispute.`,
+      recipient: data.customerId,
+      sender: data.sellerId,
+      meta: {
+        bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
+        serviceId: data.serviceId,
+        serviceName: data.serviceName,
+        completedAt: new Date(),
+      },
+    }),
+  },
+  [AppEvent.FEEDBACK_CREATED]: {
+    type: NotificationType.SYSTEM,
+    channels: [NotificationChannel.IN_APP],
+    getMessage: (data: any) => ({
+      title: 'New Review Received',
+      message: `${data.customerName} left a ${data.rating}-star review for your ${data.serviceName} service: "${data.comment}"`,
       recipient: data.sellerId,
       sender: data.customerId,
       meta: {
+        feedbackId: data.feedbackId,
         bookingId: data.bookingId,
+        serviceId: data.serviceId,
         serviceName: data.serviceName,
-        completedAt: new Date(),
+        rating: data.rating,
+        comment: data.comment,
+        customerName: data.customerName,
+        createdAt: new Date(),
       },
     }),
   },
@@ -123,9 +156,10 @@ export const notificationEventMap = {
       title: 'Payment Released',
       message: `Your payment of $${data.amount} has been released for booking #${data.bookingId}.`,
       recipient: data.sellerId,
-      sender: data.systemId || undefined, // Add sender field
+      sender: data.systemId || undefined,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
         amount: data.amount,
         releasedAt: new Date(),
       },
@@ -138,9 +172,10 @@ export const notificationEventMap = {
       title: 'Payment Failed',
       message: `Payment of $${data.amount} for booking #${data.bookingId} has failed. Please try again.`,
       recipient: data.customerId,
-      sender: data.systemId || undefined, // Add sender field
+      sender: data.systemId || undefined,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
         amount: data.amount,
         failedAt: new Date(),
         reason: data.reason,
@@ -157,6 +192,7 @@ export const notificationEventMap = {
       sender: data.userId,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
         disputeId: data.disputeId,
         reason: data.reason,
         createdAt: new Date(),
@@ -170,9 +206,10 @@ export const notificationEventMap = {
       title: 'Dispute Resolved',
       message: `The dispute for booking #${data.bookingId} has been resolved. ${data.resolution}.`,
       recipient: data.userId,
-      sender: data.adminId || undefined, // Add sender field
+      sender: data.adminId || undefined,
       meta: {
         bookingId: data.bookingId,
+        bookingObjectId: data.bookingObjectId,
         disputeId: data.disputeId,
         resolution: data.resolution,
         resolvedAt: new Date(),
@@ -186,7 +223,7 @@ export const notificationEventMap = {
       title: 'Email Status Update',
       message: `Your email regarding ${data.subject} has been ${data.status}.`,
       recipient: data.userId,
-      sender: data.systemId || undefined, // Add sender field
+      sender: data.systemId || undefined,
       meta: {
         emailId: data.emailId,
         subject: data.subject,
@@ -202,7 +239,7 @@ export const notificationEventMap = {
       title: 'New Service Available',
       message: `A new service "${data.serviceName}" is now available in ${data.shopName}.`,
       recipient: data.customerId,
-      sender: data.sellerId || undefined, // Add sender field
+      sender: data.sellerId || undefined,
       meta: {
         serviceId: data.serviceId,
         serviceName: data.serviceName,
@@ -218,7 +255,7 @@ export const notificationEventMap = {
       title: 'Service Updated',
       message: `The service "${data.serviceName}" has been updated.`,
       recipient: data.customerId,
-      sender: data.sellerId || undefined, // Add sender field
+      sender: data.sellerId || undefined,
       meta: {
         serviceId: data.serviceId,
         serviceName: data.serviceName,
@@ -234,7 +271,7 @@ export const notificationEventMap = {
       title: 'Shop Information Updated',
       message: `The shop "${data.shopName}" has updated their information.`,
       recipient: data.customerId,
-      sender: data.sellerId || undefined, // Add sender field
+      sender: data.sellerId || undefined,
       meta: {
         shopId: data.shopId,
         shopName: data.shopName,

@@ -42,4 +42,9 @@ export default {
     stripe_payment_success_url: process.env.STRIPE_PAYMENT_SUCCESS_URL,
     stripe_payment_failed_url: process.env.STRIPE_PAYMENT_FAILED_URL,
   },
+  sentry: {
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV || 'development',
+    debug: process.env.NODE_ENV === 'development',
+  },
 };
