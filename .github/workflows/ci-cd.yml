@@ -79,7 +79,6 @@ jobs:
     needs: build-and-push-backend
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    environment: DOCKER_USERNAME=ronypersonal22
     
     steps:
     - name: Deploy to Render
@@ -92,7 +91,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    environment: DOCKER_USERNAME=ronypersonal22
     
     steps:
     - uses: actions/checkout@v4
