@@ -1,0 +1,8 @@
+node_modules
+.git
+.turbo
+apps/backend
+packages/ui/dist
+*.log
+.env.local
+.env.*.local

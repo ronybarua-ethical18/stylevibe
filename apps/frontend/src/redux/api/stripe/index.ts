@@ -5,7 +5,7 @@ import { tagTypes } from '@/utils/tagTypes';
 const stripeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     connectStripeAccount: build.mutation({
-      query: (data) => ({
+      query: (_data) => ({
         url: '/stripe/connect',
         method: 'POST',
       }),

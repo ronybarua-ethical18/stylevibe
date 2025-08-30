@@ -24,16 +24,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 9
+    
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'pnpm'
-    
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 8
     
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
@@ -44,11 +44,8 @@ jobs:
     - name: Run type checking
       run: pnpm check-types
     
-    # Remove test step if no tests are configured
-    # - name: Run tests
-    #   run: pnpm test
-    #   env:
-    #     REDIS_URL: redis://localhost:6379
+    - name: Build all packages
+      run: pnpm build
 
   build-and-push-backend:
     needs: test
@@ -70,7 +67,7 @@ jobs:
     - name: Build and push Backend
       uses: docker/build-push-action@v5
       with:
-        context: .  # Root context for monorepo
+        context: .
         file: ./apps/backend/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/stylevibe-backend:latest
@@ -86,7 +83,7 @@ jobs:
     - name: Deploy to Render
       uses: johnbeynon/render-deploy-action@v1.0.0
       with:
-        service-id: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
         api-key: ${{ secrets.RENDER_API_KEY }}
 
   deploy-frontend:
@@ -97,16 +94,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 9
+    
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'pnpm'
-    
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 8
     
     - name: Install dependencies
       run: pnpm install --frozen-lockfile

@@ -2,12 +2,15 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "build": "turbo run build",
+    "build": "next build",
     "build:frontend": "next build",
     "dev": "next dev",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 300",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit",
     "build:check": "npm run check-types && next build",
@@ -57,7 +60,7 @@
     "use-count-up": "^3.0.1"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
+
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

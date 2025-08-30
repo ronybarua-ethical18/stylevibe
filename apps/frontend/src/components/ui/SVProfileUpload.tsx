@@ -40,11 +40,9 @@ const SVProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
       if (!response.ok) throw new Error('Upload failed');
 
       const data = await response.json();
-
-      console.log('uploaded profile photo', data);
       setPhotoUrl(data?.data);
-    } catch (err) {
-      setError('Error uploading image');
+    } catch {
+      setError('Error uploading image',);
     } finally {
       setIsUploading(false);
     }

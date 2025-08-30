@@ -25,7 +25,7 @@ const rangePresets: TimeRangePickerProps['presets'] = [
   { label: 'Last 90 Days', value: [dayjs().add(-90, 'd'), dayjs()] },
 ];
 
-const SVDateRangePicker = ({ className }: { className: string }) => (
+const SVDateRangePicker = () => (
   <Space direction="vertical" size={12}>
     <RangePicker
       presets={rangePresets}

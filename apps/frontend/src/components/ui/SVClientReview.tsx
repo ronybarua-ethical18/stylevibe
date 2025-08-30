@@ -29,7 +29,7 @@ export default function SVClientReview() {
       <SVSectionTitle title1="WHAT PEOPLE THINKS " title2="ABOUT US" />
       <div className="w-2/4 m-auto bg-white">
         <Slider {...settings}>
-          {dummyClientReviews.map((client, index) => (
+          {dummyClientReviews.map((client) => (
             <div key={client.id} className="mb-14">
               <div className="shadow-review-card m-5  p-6 rounded-review-card">
                 <div className="w-[80px] border rounded-review-card">

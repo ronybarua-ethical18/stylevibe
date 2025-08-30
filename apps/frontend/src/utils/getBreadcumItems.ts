@@ -4,9 +4,6 @@ export const getBreadcrumbItems = (page: string, id?: string) => {
   const userDetails: any = getUserInfo();
   const breadcrumbItems = [];
 
-  // Construct URL based on userDetails?.role, page, and id
-  const url = `/${userDetails?.role}/${page}/${id}`;
-
   // Check if there's an ID in the URL
   if (id) {
     breadcrumbItems.push({

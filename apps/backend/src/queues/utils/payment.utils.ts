@@ -34,8 +34,6 @@ export const paymentDisbursed = async (
   } = bookingDetails;
 
   try {
-    console.log('Booking details from payment disbursed', bookingDetails);
-
     const sellerStripeAccount = await StripeAccount.findOne({
       user: new mongoose.Types.ObjectId(sellerId),
       status: 'active',

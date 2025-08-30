@@ -83,7 +83,7 @@ export const emailDispatch = async (
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      'Something went wrong with sending mail'
+      'Something went wrong with sending mail ' + error
     );
   }
 };
