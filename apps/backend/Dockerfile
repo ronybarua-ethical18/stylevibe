@@ -26,10 +26,13 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 backend
 
-# Copy built app and all necessary dependencies
+# Install only production dependencies to reduce memory usage
+RUN npm install -g pnpm
+COPY apps/backend/package.json ./package.json
+RUN pnpm install --prod --frozen-lockfile
+
+# Copy built app
 COPY --from=builder --chown=backend:nodejs /app/apps/backend/dist ./dist
-COPY --from=builder --chown=backend:nodejs /app/apps/backend/package.json ./package.json
-COPY --from=deps --chown=backend:nodejs /app/node_modules ./node_modules
 
 USER backend
 EXPOSE 8000
@@ -37,4 +40,4 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:8000/health || exit 1
 
-CMD ["node", "dist/server.js"]
+CMD ["node", "--max-old-space-size=256", "dist/server.js"]
