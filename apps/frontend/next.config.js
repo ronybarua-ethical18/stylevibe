@@ -5,7 +5,6 @@ module.exports = {
   compiler: {
     styledComponents: true,
   },
-  output: 'standalone',
   images: {
     remotePatterns: [
       {

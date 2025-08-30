@@ -40,7 +40,6 @@ const getUser = tryCatchAsync(async (req: Request, res: Response) => {
 
 const updateUser = tryCatchAsync(async (req: Request, res: Response) => {
   if (typeof req.params.userId === 'string') {
-    console.log('req.body', req.body, req.params.userId);
     const result = await UserService.updateUser(
       new mongoose.Types.ObjectId(req.params['userId']),
       req.body
@@ -58,9 +57,6 @@ const updateUser = tryCatchAsync(async (req: Request, res: Response) => {
 const updateUserRole = tryCatchAsync(async (req: Request, res: Response) => {
   const { userId } = req.user as { userId: mongoose.Types.ObjectId };
   const { role } = req.body;
-
-  console.log('userId', userId);
-  console.log('role', role);
 
   const result = await UserService.updateUserRole(userId, role);
 

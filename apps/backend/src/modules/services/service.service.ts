@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
-import mongoose, { SortOrder, Types } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 
 import ApiError from '../../errors/ApiError';
 import { paginationHelpers } from '../../helpers/pagination';

@@ -1,7 +1,6 @@
 import { paginationHelpers } from '../../helpers/pagination';
 import { queryFieldsManipulation } from '../../helpers/queryFieldsManipulation';
 import BookingModel from '../../modules/bookings/booking.model';
-import { ENUM_USER_ROLE } from '../../shared/enums/user.enum';
 import {
   IFilterOptions,
   IGenericResponse,

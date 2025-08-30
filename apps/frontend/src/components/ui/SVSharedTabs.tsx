@@ -87,7 +87,8 @@ const SharedTabs: React.FC<SharedTabsProps> = ({
             />
 
             <div className="h-full">
-              <SVDateRangePicker className="ml-5 w-full" />
+              {/* <SVDateRangePicker className="ml-5 w-full" /> */}
+              <SVDateRangePicker />
             </div>
           </div>
         </div>

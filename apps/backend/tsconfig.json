@@ -8,25 +8,26 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "typeRoots": ["./src/types", "node_modules/@types"],
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["./src/types", "node_modules/@types"],
+
     "paths": {
       "@/*": ["./*"]
     }
   },
   "include": [
-    "src/**/*",
-    "src/types/**/*.d.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

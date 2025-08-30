@@ -1,10 +1,9 @@
-module.exports = {
+export default {
   mode: 'jit',
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-    // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
@@ -33,5 +32,5 @@ module.exports = {
       },
     },
   },
-  plugins: [], // Add any Tailwind plugins here if needed
-}
+  plugins: [],
+};

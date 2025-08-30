@@ -28,7 +28,6 @@ const updateTransaction = async (
   paymentIntentId: string,
   updatePayload: object
 ): Promise<ITransactions | null> => {
-  console.log('update transaction payload from queue', updatePayload);
   const updateTransaction = await Transaction.findOneAndUpdate(
     { stripePaymentIntentId: paymentIntentId },
     { ...updatePayload },
@@ -102,7 +101,6 @@ const getAllTransactions = async (
     .skip(skip)
     .limit(limit);
 
-  console.log('queryPayload', queryPayload);
   const totals = await getTotals(
     Transaction as any,
     loggedUser?.role === 'seller'

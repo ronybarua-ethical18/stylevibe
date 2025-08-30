@@ -24,10 +24,8 @@ interface ITextInput {
 
 const FormTextArea = ({
   name,
-  value,
   placeholder = 'Description',
   label,
-  handleChange,
   maxLength = 1000,
   rows = 4,
   defaultValue,

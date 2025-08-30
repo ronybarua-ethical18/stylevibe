@@ -6,7 +6,7 @@ import { CiBank } from 'react-icons/ci';
 import { CiFlag1 } from 'react-icons/ci';
 import { HiOutlineCurrencyRupee } from 'react-icons/hi2';
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 interface StripeAccountInformationProps {
   bankName: string;

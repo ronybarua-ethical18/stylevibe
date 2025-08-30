@@ -34,7 +34,6 @@ const uploadFile = async (req: Request, res: Response) => {
       data: uploadResult.secure_url,
     });
   } catch (error) {
-    console.error('Error uploading file:', error);
     sendResponse(res, {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,
       success: false,
@@ -45,4 +44,3 @@ const uploadFile = async (req: Request, res: Response) => {
 };
 
 export default uploadFile;
-``;

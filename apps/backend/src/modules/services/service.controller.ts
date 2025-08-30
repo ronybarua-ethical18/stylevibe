@@ -75,7 +75,6 @@ const getAllServices = tryCatchAsync(async (req: Request, res: Response) => {
 });
 const getTopServices = tryCatchAsync(async (req: Request, res: Response) => {
   const queryOptions = pick(req.query, paginationFields);
-  console.log('req.query options', queryOptions);
   const result = await SaloonService.getTopServices(queryOptions);
 
   sendResponse<IService[]>(res, {

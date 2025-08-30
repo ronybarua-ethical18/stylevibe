@@ -85,8 +85,6 @@ const updateUser = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  console.log('updated user', updatedUser);
-
   return updatedUser;
 };
 

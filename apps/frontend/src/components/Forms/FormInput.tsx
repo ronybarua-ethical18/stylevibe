@@ -27,9 +27,7 @@ const FormInput = ({
   value,
   defaultValue,
   prefix,
-  id,
   placeholder,
-  validation,
   style,
   label,
   variant = 'outlined',
@@ -38,7 +36,7 @@ const FormInput = ({
 }: IInput) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors: _errors },
   } = useFormContext();
 
   //   const errorMessage = getErrorMessageByPropertyName(errors, name);

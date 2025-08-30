@@ -17,9 +17,9 @@ import SVReviews from './components/SVReviews';
 import Loading from '@/app/loading';
 import { getBreadcrumbItems } from '@/utils/getBreadcumItems';
 
-export default function Service({ service, loading, role }: any) {
+export default function Service({ service, role }: any) {
   const ratings = [300, 100, 50, 35, 15];
-  console.log(service);
+
   return (
     <div>
       {!service ? (
