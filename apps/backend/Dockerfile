@@ -9,7 +9,7 @@ COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 COPY apps/backend/package.json ./apps/backend/
 COPY packages/ ./packages/
 # Install all dependencies (including workspace dependencies)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --prod
 
 FROM base AS builder
 RUN npm install -g pnpm
@@ -26,13 +26,14 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 backend
 
-# Install only production dependencies to reduce memory usage
-RUN npm install -g pnpm
-COPY apps/backend/package.json ./package.json
-RUN pnpm install --prod --frozen-lockfile
-
-# Copy built app
+# Copy built app and package.json
 COPY --from=builder --chown=backend:nodejs /app/apps/backend/dist ./dist
+COPY --from=builder --chown=backend:nodejs /app/apps/backend/package.json ./package.json
+
+# Install production dependencies directly in the runner stage
+RUN npm install -g pnpm && \
+    pnpm install --prod --frozen-lockfile && \
+    npm uninstall -g pnpm
 
 USER backend
 EXPOSE 8000
