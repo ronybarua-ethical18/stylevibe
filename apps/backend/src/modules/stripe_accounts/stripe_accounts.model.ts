@@ -51,8 +51,6 @@ const StripeAccountSchema = new mongoose.Schema<IStripeAccount>(
   }
 );
 
-StripeAccountSchema.index({ stripeAccountId: 1 }, { unique: true });
-
 // Create the Mongoose Model
 const StripeAccount = mongoose.model<IStripeAccount>(
   'StripeAccount',

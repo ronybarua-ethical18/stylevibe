@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 // next.config.js
 module.exports = {
+  output: 'standalone',
   compiler: {
     styledComponents: true,
   },
