@@ -29,6 +29,11 @@ jobs:
       with:
         version: 9
     
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 9
+    
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -44,6 +49,8 @@ jobs:
     - name: Run type checking
       run: pnpm check-types
     
+    - name: Build all packages
+      run: pnpm build
     - name: Build all packages
       run: pnpm build
 
@@ -69,6 +76,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
+        context: .
         file: ./apps/backend/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/stylevibe-backend:latest
@@ -82,10 +90,10 @@ jobs:
     
     steps:
     - name: Deploy to Render
-      run: |
-        curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
-        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-        -H "Content-Type: application/json"
+      uses: johnbeynon/render-deploy-action@v1.0.0
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
 
   deploy-frontend:
     needs: test
@@ -95,26 +103,25 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install Vercel CLI
-      run: npm install --global vercel@latest
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 9
     
-    - name: Pull Vercel Environment Information
-      run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      working-directory: ./apps/frontend
-      env:
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
     
-    - name: Build Project Artifacts
-      run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      working-directory: ./apps/frontend
-      env:
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
     
-    - name: Deploy Project Artifacts to Vercel
-      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-      working-directory: ./apps/frontend
-      env:
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./apps/frontend
+        vercel-args: '--prod'

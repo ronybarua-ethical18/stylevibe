@@ -20,7 +20,7 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV NEXT_DISABLE_ESLINT=1
 ENV NEXT_PRIVATE_SKIP_TYPE_CHECK=1
 
-# Build Next.js directly
+# Build Next.js
 RUN pnpm -C apps/frontend exec next build
 
 FROM node:18-alpine AS runner
@@ -32,15 +32,15 @@ ENV HOSTNAME=0.0.0.0
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-# Public assets
-COPY --from=builder /app/apps/frontend/public ./apps/frontend/public
+# Copy the built application
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/package.json ./package.json
 
-# Next standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
+# Install only production dependencies
+RUN npm install --only=production
 
 USER nextjs
 EXPOSE 3000
 
-WORKDIR /app/apps/frontend
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
