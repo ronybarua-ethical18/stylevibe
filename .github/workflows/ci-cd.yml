@@ -29,6 +29,11 @@ jobs:
       with:
         version: 9
     
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 9
+    
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -46,11 +51,14 @@ jobs:
     
     - name: Build all packages
       run: pnpm build
+    - name: Build all packages
+      run: pnpm build
 
   build-and-push-backend:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    environment: DOCKER_USERNAME=ronypersonal22
     
     steps:
     - uses: actions/checkout@v4
@@ -67,6 +75,7 @@ jobs:
     - name: Build and push Backend
       uses: docker/build-push-action@v5
       with:
+        context: .
         context: .
         file: ./apps/backend/Dockerfile
         push: true
