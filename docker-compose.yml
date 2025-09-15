@@ -1,5 +1,6 @@
 services:
   backend:
+    image: ronypersonal22/stylevibe-backend:latest
     build:
       context: .
       dockerfile: ./apps/backend/Dockerfile
@@ -11,17 +12,14 @@ services:
       - NODE_ENV=development
       - REDIS_URL=redis://redis:6379
     depends_on:
-      mongodb:
-        condition: service_started
-        required: true
-      redis:
-        condition: service_started
-        required: true
+      - mongodb
+      - redis
     volumes:
       - ./apps/backend:/app
       - /app/node_modules
 
   frontend:
+    image: ronypersonal22/stylevibe-frontend:latest
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
@@ -35,9 +33,7 @@ services:
       - NEXT_PUBLIC_API_URL=http://backend:8000
       - NEXTAUTH_SECRET=your-super-secret-key-here-make-it-long-and-random
     depends_on:
-      backend:
-        condition: service_started
-        required: true
+      - backend
 
   redis:
     image: redis:7-alpine

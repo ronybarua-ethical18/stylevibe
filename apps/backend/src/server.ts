@@ -19,16 +19,22 @@ function getMongoUrl() {
 const url: string = getMongoUrl() || '';
 
 //server connect
-mongoose.connect(url).then(() => {
-  console.log('<===== Database Connected Successfully Yahoo! =====>');
-  server = app.listen(config.port, () => {
-    console.log(`Listening to port ${config.port}`);
-    // Initialize Socket.IO AFTER the server is listening
-    console.log('Initializing Socket.IO...');
-    initSocket(server);
-    console.log('Socket.IO initialization complete');
+mongoose
+  .connect(url)
+  .then(() => {
+    console.log('<===== Database Connected Successfully Yahoo! =====>');
+    server = app.listen(config.port, () => {
+      console.log(`Listening to port ${config.port}`);
+      // Initialize Socket.IO AFTER the server is listening
+      console.log('Initializing Socket.IO...');
+      initSocket(server);
+      console.log('Socket.IO initialization complete');
+    });
+  })
+  .catch((error) => {
+    console.error('Database connection error:', error);
+    process.exit(1);
   });
-});
 
 const serverExitHandler = () => {
   if (server) {

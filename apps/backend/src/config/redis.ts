@@ -6,11 +6,20 @@ const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
 const REDIS_PORT_NUM = parseInt(process.env.REDIS_PORT || '6379');
 const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 
-// Create a Redis instance
+// Create a Redis instance with TLS
 export const redisClient = new Redis({
   host: REDIS_HOST,
   port: REDIS_PORT_NUM,
-  password: REDIS_PASSWORD, // Will be undefined if not set, which is fine
+  password: REDIS_PASSWORD,
+  tls: {
+    rejectUnauthorized: false,
+  },
+  // Connection settings
+  connectTimeout: 10000,
+  lazyConnect: true,
+  maxRetriesPerRequest: 3,
+  enableReadyCheck: false,
+  keepAlive: 30000,
 });
 
 // Listen for Redis connection events
