@@ -95,7 +95,7 @@ export const dummyServices = [
     price: 50,
     images: [
       {
-        img: 'https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/61xJTtVzfmL._AC_UF1000,1000_QL80_.jpg',
+        img: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&h=500&fit=crop&crop=face',
         _id: {
           $oid: '65a2bc351fa4d4d5b9a0a385',
         },
@@ -182,7 +182,8 @@ export const dummyBlogs = [
     title: 'Trendy Hairstyles for This Season',
     content:
       'Explore the latest and trendiest hairstyles for this season. From chic bobs to elegant updos, discover the perfect look for you.',
-    media: 'https://example.com/salon-image.jpg',
+    media:
+      'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop',
     author: 'Rony Barua',
     tags: ['hairstyles', 'beauty', 'fashion', 'salon'],
     createdAt: '2024-03-02',
@@ -192,7 +193,8 @@ export const dummyBlogs = [
     title: 'Trendy Hairstyles for This Season 2',
     content:
       'Explore the latest and trendiest hairstyles for this season. From chic bobs to elegant updos, discover the perfect look for you.',
-    media: 'https://example.com/salon-image.jpg',
+    media:
+      'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop',
     author: 'Rony Barua',
     tags: ['hairstyles', 'beauty', 'fashion', 'salon'],
     createdAt: '2024-03-02',
@@ -202,7 +204,8 @@ export const dummyBlogs = [
     title: 'Trendy Hairstyles for This Season 3',
     content:
       'Explore the latest and trendiest hairstyles for this season. From chic bobs to elegant updos, discover the perfect look for you.',
-    media: 'https://example.com/salon-image.jpg',
+    media:
+      'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=600&fit=crop',
     author: 'Rony Barua',
     tags: ['hairstyles', 'beauty', 'fashion', 'salon'],
     createdAt: '2024-03-02',

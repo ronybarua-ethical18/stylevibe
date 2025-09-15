@@ -30,7 +30,7 @@ export default function SVLatestBlogs() {
                 <div className="relative overflow-hidden">
                   <Image
                     src={dummyImage}
-                    objectFit="cover"
+                    style={{ objectFit: 'cover' }}
                     alt=""
                     className="transform transition-all duration-500 hover:scale-110 hover:-rotate-1"
                   />

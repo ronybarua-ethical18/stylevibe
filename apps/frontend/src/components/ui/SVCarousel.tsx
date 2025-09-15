@@ -35,10 +35,13 @@ export default function SVCarousel() {
       >
         <Image
           src={imgOne}
-          style={{ maxWidth: '700px', margin: 'auto' }}
+          style={{
+            maxWidth: '700px',
+            margin: 'auto',
+            objectFit: 'contain',
+            objectPosition: 'center center',
+          }}
           layout="responsive"
-          objectFit="contain"
-          objectPosition="center center"
           alt=""
         />
         <div style={{ marginBottom: '70px' }}>
@@ -55,10 +58,13 @@ export default function SVCarousel() {
       >
         <Image
           src={imgTwo}
-          style={{ maxWidth: '700px', margin: 'auto' }}
+          style={{
+            maxWidth: '700px',
+            margin: 'auto',
+            objectFit: 'contain',
+            objectPosition: 'center center',
+          }}
           layout="responsive"
-          objectFit="contain"
-          objectPosition="center center"
           alt=""
         />
         <div style={{ marginBottom: '70px' }}>
@@ -77,10 +83,13 @@ export default function SVCarousel() {
       >
         <Image
           src={imgThree}
-          style={{ maxWidth: '700px', margin: 'auto' }}
+          style={{
+            maxWidth: '700px',
+            margin: 'auto',
+            objectFit: 'contain',
+            objectPosition: 'center center',
+          }}
           layout="responsive"
-          objectFit="contain"
-          objectPosition="center center"
           alt=""
         />
         <div style={{ marginBottom: '70px' }}>

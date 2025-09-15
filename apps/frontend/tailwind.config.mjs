@@ -15,6 +15,21 @@ export default {
         paragraph: {
           400: '#eee',
         },
+        violet: {
+          700: '#7c3aed',
+        },
+        gray: {
+          200: '#e5e7eb',
+          400: '#9ca3af',
+          600: '#4b5563',
+          700: '#374151',
+        },
+        red: {
+          500: '#ef4444',
+        },
+        black: {
+          DEFAULT: '#000000',
+        },
       },
       boxShadow: {
         'custom-shadow': 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',

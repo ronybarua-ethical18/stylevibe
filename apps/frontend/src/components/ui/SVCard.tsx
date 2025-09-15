@@ -42,8 +42,7 @@ export default function SVCard({
             <Image
               src={service?.images[0]?.img}
               fill
-              objectFit="cover"
-              objectPosition="center"
+              style={{ objectFit: 'cover', objectPosition: 'center' }}
               alt=""
             />
           )}

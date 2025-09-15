@@ -46,8 +46,7 @@ export default function SVTypesOfServices() {
                               : category.img
                         : category.img
                     }
-                    objectFit="contain"
-                    objectPosition="center"
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
                     width={60}
                     height={60}
                     alt=""

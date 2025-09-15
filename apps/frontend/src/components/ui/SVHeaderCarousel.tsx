@@ -37,10 +37,12 @@ export default function SVHeaderCarousel() {
         <div key={index}>
           <Image
             src={img}
-            style={{ width: '100%' }}
+            style={{
+              width: '100%',
+              objectFit: 'contain',
+              objectPosition: 'center center',
+            }}
             layout="responsive"
-            objectFit="contain"
-            objectPosition="center center"
             alt={`Slide ${index + 1}`}
           />
         </div>

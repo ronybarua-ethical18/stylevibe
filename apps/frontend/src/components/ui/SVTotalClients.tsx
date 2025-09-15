@@ -11,8 +11,7 @@ export default function SVTotalClients() {
         <Image
           src={HappyClient}
           layout="fixed"
-          objectFit="cover"
-          objectPosition="center"
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
           alt=""
           className="h-[450px] w-full"
         />

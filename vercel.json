@@ -1,0 +1,6 @@
+{
+    "version": 2,
+    "buildCommand": "turbo run build",
+    "outputDirectory": ".next",
+    "installCommand": "pnpm install"
+}

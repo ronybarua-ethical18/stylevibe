@@ -16,8 +16,7 @@ export default function SVHowItWorks() {
           <div className="p-8 border-2 border-customPrimary-800 rounded-full">
             <Image
               src={Search}
-              objectFit="contain"
-              objectPosition="center"
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
               width={80}
               height={80}
               alt=""
@@ -37,8 +36,7 @@ export default function SVHowItWorks() {
           <div className="p-8 border-2 border-customPrimary-800 rounded-full">
             <Image
               src={Book}
-              objectFit="contain"
-              objectPosition="center"
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
               width={80}
               height={80}
               alt=""
@@ -56,8 +54,7 @@ export default function SVHowItWorks() {
           <div className="p-8 border-2 border-customPrimary-800 rounded-full">
             <Image
               src={Enjoy}
-              objectFit="contain"
-              objectPosition="center"
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
               width={80}
               height={80}
               alt=""

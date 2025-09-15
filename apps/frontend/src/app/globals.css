@@ -4,22 +4,29 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   font-family: "Rubik", sans-serif;
-  
+
 }
+
 body::-webkit-scrollbar {
   display: none;
 }
-h1,h2,h3,h4,h5,h6{
-  margin:10px 0px;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 10px 0px;
   font-weight: 600;
 }
 
-.flexCenterBetween{
+.flexCenterBetween {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,29 +34,32 @@ h1,h2,h3,h4,h5,h6{
 
 /* react slice overrides */
 .slick-dots li {
-  margin:30px !important;
+  margin: 30px !important;
 }
+
 .slick-dots li button:before {
   background-color: #407AFF;
   height: 8px !important;
   width: 70px !important;
   border-radius: 10px;
   /* text-indent: -9999px; */
-  overflow:hidden; 
-  position:absolute;
-  bottom:5px
-  }
+  overflow: hidden;
+  position: absolute;
+  bottom: 5px
+}
 
-.antd-table{
+.antd-table {
   background-color: transparent !important;
   border-radius: 15px !important;
 }
+
 .apexcharts-tooltip {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;
 }
+
 /* Add border radius to the table container */
 .ant-table-wrapper,
 .ant-table {
@@ -57,54 +67,60 @@ h1,h2,h3,h4,h5,h6{
   overflow: hidden;
   min-height: 400px !important;
 }
-.ant-table-thead{
+
+.ant-table-thead {
   background-color: white !important;
 }
-.ant-table-cell{
+
+.ant-table-cell {
   background: white !important;
 }
 
 /* Keep header background always white, even on hover */
-.ant-table-thead > tr > .ant-table-cell {
+.ant-table-thead>tr>.ant-table-cell {
   background: white !important;
 }
 
 /* Highlight full row on hover (body only) */
-.ant-table-row:hover > .ant-table-cell {
+.ant-table-row:hover>.ant-table-cell {
   background: #e6f7ff !important;
 }
-  /* antd design overrides  */
-  .ant-menu-item-selected {
-    background-color: #eef4ff !important;
-    color:black;
-    font-weight: 500 !important;
-  }
 
-  .ant-menu-item:hover {
-    background-color: #e6f7ff !important;
-    color:#407AFF !important; /* Change the color as per your requirement */
-  }
+/* antd design overrides  */
+.ant-menu-item-selected {
+  background-color: #eef4ff !important;
+  color: black;
+  font-weight: 500 !important;
+}
 
-  .ant-menu-light.ant-menu-root.ant-menu-inline,
-  .ant-menu-light.ant-menu-root.ant-menu-vertical 
-  {
-     border-inline-end: 1px solid rgba(255,255,255) !important;
-   
-  }
+.ant-menu-item:hover {
+  background-color: #e6f7ff !important;
+  color: #407AFF !important;
+  /* Change the color as per your requirement */
+}
 
-  .ant-popover-inner{
-    border-radius: 12px !important;
-  }
+.ant-menu-light.ant-menu-root.ant-menu-inline,
+.ant-menu-light.ant-menu-root.ant-menu-vertical {
+  border-inline-end: 1px solid rgba(255, 255, 255) !important;
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-    width: 0px;
-  }
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+}
+
+.ant-popover-inner {
+  border-radius: 12px !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
 
 /* Profile Dropmenu Styles */
 .menu-item-hover:hover {
@@ -164,9 +180,7 @@ h1,h2,h3,h4,h5,h6{
 }
 
 /* Remove bottom border when table is empty */
-.empty-table .ant-table-tbody > tr > th,
-.empty-table .ant-table-tbody > tr > td {
+.empty-table .ant-table-tbody>tr>th,
+.empty-table .ant-table-tbody>tr>td {
   border-bottom: none !important;
 }
-
-
