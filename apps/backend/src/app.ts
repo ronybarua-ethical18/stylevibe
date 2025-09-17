@@ -68,6 +68,15 @@ app.use(helmet());
 // sanitize request data to remove unwanted characters from req.body, req.query, req.params ($, . etc ..)
 app.use(ExpressMongoSanitize());
 
+// Add this before the existing routes
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
+
 // application routes
 app.use('/api/v1', routes);
 
