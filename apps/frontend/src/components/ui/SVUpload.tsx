@@ -3,6 +3,7 @@ import type { UploadProps } from 'antd';
 import { message, Upload, Spin } from 'antd';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { getBaseUrl } from '@/config/envConfig';
 
 const { Dragger } = Upload;
 
@@ -21,7 +22,7 @@ const SVUpload = ({ images, setImages }: SVUploadProps) => {
   const props: UploadProps = {
     name: 'img',
     multiple: true,
-    action: 'https://stylevibe-backend.onrender.com/api/v1/uploads',
+    action: `${getBaseUrl()}/uploads`, // Use environment variable instead of hardcoded URL
     method: 'POST',
     showUploadList: false,
     onChange(info) {

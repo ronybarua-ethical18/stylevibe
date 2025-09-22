@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Upload, Button, message } from 'antd';
 import { PaperClipOutlined, LoadingOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
+import { getBaseUrl } from '@/config/envConfig';
 
 interface FileUploadProps {
   onFilesUploaded: (attachments: any[]) => void;
@@ -26,7 +27,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const uploadProps: UploadProps = {
     name: 'img',
-    action: 'https://stylevibe-backend.onrender.com/api/v1/uploads',
+    action: `${getBaseUrl()}/uploads`, // Use environment variable instead of hardcoded URL
     multiple: true,
     showUploadList: false,
     beforeUpload: (file) => {
