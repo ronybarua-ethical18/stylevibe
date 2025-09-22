@@ -21,7 +21,7 @@ const SVUpload = ({ images, setImages }: SVUploadProps) => {
   const props: UploadProps = {
     name: 'img',
     multiple: true,
-    action: 'http://localhost:8000/api/v1/uploads',
+    action: 'https://stylevibe-backend.onrender.com/api/v1/uploads',
     method: 'POST',
     showUploadList: false,
     onChange(info) {

@@ -26,7 +26,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const uploadProps: UploadProps = {
     name: 'img',
-    action: 'http://localhost:8000/api/v1/uploads',
+    action: 'https://stylevibe-backend.onrender.com/api/v1/uploads',
     multiple: true,
     showUploadList: false,
     beforeUpload: (file) => {

@@ -32,10 +32,13 @@ const SVProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
     formData.append('img', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/uploads', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        'https://stylevibe-backend.onrender.com/api/v1/uploads',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
       if (!response.ok) throw new Error('Upload failed');
 

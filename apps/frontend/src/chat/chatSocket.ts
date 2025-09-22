@@ -4,7 +4,8 @@ import { io, Socket } from 'socket.io-client';
 
 const getSocketUrl = () => {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+    process.env.NEXT_PUBLIC_SOCKET_URL ||
+    'https://stylevibe-backend.onrender.com';
   return baseUrl.replace('/api/v1', '');
 };
 
