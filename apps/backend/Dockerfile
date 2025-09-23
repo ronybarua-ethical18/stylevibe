@@ -35,6 +35,9 @@ RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 backend
 COPY --from=builder --chown=backend:nodejs /app/apps/backend/dist ./dist
 COPY --from=builder --chown=backend:nodejs /app/apps/backend/package.json ./package.json
 
+# Copy email templates
+COPY --from=builder --chown=backend:nodejs /app/apps/backend/src/services/mail/templates ./dist/services/mail/templates
+
 # Copy .env file for local testing
 COPY --from=builder --chown=backend:nodejs /app/apps/backend/.env ./.env
 
