@@ -14,7 +14,8 @@ import SVCarousel from '@/components/ui/SVCarousel';
 interface LoginFormProps {
   onSubmit: (data: { email: string; password: string }) => void;
   onGoogleLogin: () => void;
-  isLoading: boolean;
+  isLoadingCredentials: boolean;
+  isLoadingGoogle: boolean;
 }
 
 interface FormValues {
@@ -22,7 +23,7 @@ interface FormValues {
   password: string;
 }
 
-const LoginForm = ({ onSubmit, onGoogleLogin, isLoading }: LoginFormProps) => {
+const LoginForm = ({ onSubmit, onGoogleLogin, isLoadingCredentials, isLoadingGoogle }: LoginFormProps) => {
   const handleSubmit: SubmitHandler<FormValues> = (data) => {
     onSubmit(data);
   };
@@ -99,10 +100,10 @@ const LoginForm = ({ onSubmit, onGoogleLogin, isLoading }: LoginFormProps) => {
                   htmlType="submit"
                   style={{ width: '100%', margin: '20px 0px 0px 0px' }}
                   size="large"
-                  loading={isLoading}
-                  disabled={isLoading}
+                  loading={isLoadingCredentials}
+                  disabled={isLoadingCredentials || isLoadingGoogle}
                 >
-                  {isLoading ? 'Logging in...' : 'Login'}
+                  {isLoadingCredentials ? 'Logging in...' : 'Login'}
                 </Button>
 
                 <div
@@ -110,19 +111,20 @@ const LoginForm = ({ onSubmit, onGoogleLogin, isLoading }: LoginFormProps) => {
                   onClick={onGoogleLogin}
                   style={{
                     marginBottom: '20px',
-                    opacity: isLoading ? 0.6 : 1,
-                    pointerEvents: isLoading ? 'none' : 'auto',
+                    opacity: isLoadingGoogle ? 0.6 : 1,
+                    pointerEvents: isLoadingGoogle ? 'none' : 'auto',
                   }}
                 >
-                  <Image
-                    src={GoogleIcon.src}
-                    width={20}
-                    height={20}
-                    alt="Google icon"
-                    className="mr-5 text-lg"
-                    preview={false}
-                  />
-                  {isLoading ? 'Signing in...' : 'Login with Google'}
+                  <div style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}>
+                    <Image
+                      src={GoogleIcon.src}
+                      width={20}
+                      height={20}
+                      alt="Google icon"
+                      preview={false}
+                    />
+                  </div>
+                  {isLoadingGoogle ? 'Signing in...' : 'Login with Google'}
                 </div>
 
                 <div style={{ textAlign: 'center', width: '100%' }}>

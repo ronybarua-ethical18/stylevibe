@@ -5,7 +5,8 @@ import { storeUserInfo } from '@/services/auth.service';
 
 interface AuthState {
   status: 'idle' | 'submitting' | 'success' | 'error';
-  isLoading: boolean;
+  isLoadingCredentials: boolean;
+  isLoadingGoogle: boolean;
   error: string | null;
 }
 
@@ -18,7 +19,8 @@ export const useAuth = () => {
   const [userLogin] = useUserLoginMutation();
   const [authState, setAuthState] = useState<AuthState>({
     status: 'idle',
-    isLoading: false,
+    isLoadingCredentials: false,
+    isLoadingGoogle: false,
     error: null,
   });
 
@@ -26,7 +28,8 @@ export const useAuth = () => {
     async (credentials: LoginCredentials) => {
       setAuthState({
         status: 'submitting',
-        isLoading: true,
+        isLoadingCredentials: true,
+        isLoadingGoogle: false,
         error: null,
       });
 
@@ -44,14 +47,16 @@ export const useAuth = () => {
 
           setAuthState({
             status: 'success',
-            isLoading: false,
+            isLoadingCredentials: false,
+            isLoadingGoogle: false,
             error: null,
           });
         }
       } catch (error: any) {
         setAuthState({
           status: 'error',
-          isLoading: false,
+          isLoadingCredentials: false,
+          isLoadingGoogle: false,
           error: error?.data?.message || 'Login failed',
         });
       }
@@ -62,7 +67,8 @@ export const useAuth = () => {
   const googleLogin = useCallback(async () => {
     setAuthState({
       status: 'submitting',
-      isLoading: true,
+      isLoadingCredentials: false,
+      isLoadingGoogle: true,
       error: null,
     });
 
@@ -72,20 +78,23 @@ export const useAuth = () => {
       if (result?.error) {
         setAuthState({
           status: 'error',
-          isLoading: false,
+          isLoadingCredentials: false,
+          isLoadingGoogle: false,
           error: `Google login failed: ${result.error}`,
         });
       } else if (result?.ok) {
         setAuthState({
           status: 'success',
-          isLoading: false,
+          isLoadingCredentials: false,
+          isLoadingGoogle: false,
           error: null,
         });
       }
     } catch (error: any) {
       setAuthState({
         status: 'error',
-        isLoading: false,
+        isLoadingCredentials: false,
+        isLoadingGoogle: false,
         error: `Google login failed: ${error?.message}`,
       });
     }

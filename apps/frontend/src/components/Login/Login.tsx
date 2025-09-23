@@ -43,12 +43,13 @@ const LoginPage = () => {
     );
   }
 
-  // Success state
-  if (authState.status === 'success') {
+  // Only show success loader if we don't have userInfo yet
+  // This prevents blocking the redirect logic
+  if (authState.status === 'success' && !userInfo) {
     return (
       <SuccessLoader
         title="Login Successful!"
-        message="Redirecting to dashboard..."
+        message="Redirecting..."
       />
     );
   }
@@ -59,7 +60,8 @@ const LoginPage = () => {
       <LoginForm
         onSubmit={handleSubmit}
         onGoogleLogin={googleLogin}
-        isLoading={authState.isLoading}
+        isLoadingCredentials={authState.isLoadingCredentials}
+        isLoadingGoogle={authState.isLoadingGoogle}
       />
     </>
   );
