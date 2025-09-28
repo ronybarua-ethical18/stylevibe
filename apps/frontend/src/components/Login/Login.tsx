@@ -43,9 +43,7 @@ const LoginPage = () => {
     );
   }
 
-  // Only show success loader if we don't have userInfo yet
-  // This prevents blocking the redirect logic
-  if (authState.status === 'success' && !userInfo) {
+  if (authState.status === 'success') {
     return (
       <SuccessLoader
         title="Login Successful!"
