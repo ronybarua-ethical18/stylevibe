@@ -16,6 +16,7 @@ const transporterOptions = {
   tls: {
     rejectUnauthorized: false,
   },
+  connectionTimeout: 20000,
 };
 
 const transporter: nodemailer.Transporter =

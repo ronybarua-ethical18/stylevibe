@@ -30,7 +30,10 @@ export default function SVCard({
   service: ICard;
   loading: boolean;
 }): JSX.Element {
-  const { hasRole } = useUserInfo();
+  const { hasRole, userInfo } = useUserInfo();
+  const isCustomer = userInfo?.role === 'customer';
+
+  console.log({hasRole, isCustomer})
 
   return (
     <div className="shadow-custom-shadow h-full flex flex-col relative mt-5 rounded-xl">
@@ -88,7 +91,7 @@ export default function SVCard({
           <Skeleton.Button active block className="!w-full" />
         ) : (
           <>
-            {hasRole ? (
+            {(hasRole && isCustomer) ? (
               <div className="flex space-x-4 justify-center">
                 <div style={{ width: '80%' }}>
                   <SVBookingConfirmationModal width="65%" service={service} />
@@ -111,9 +114,9 @@ export default function SVCard({
               </div>
             ) : (
               <div className="flex space-x-4 justify-center">
-                <div style={{ width: '80%' }}>
+               { !hasRole && <div style={{ width: '80%' }}>
                   <SVSignupConfirmationModal width={400} />
-                </div>
+                </div>}
                 <Link
                   href={`/product-details/${service?._id}`}
                   className="text-black"

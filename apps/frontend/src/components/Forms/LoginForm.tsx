@@ -111,8 +111,10 @@ const LoginForm = ({ onSubmit, onGoogleLogin, isLoadingCredentials, isLoadingGoo
                   onClick={onGoogleLogin}
                   style={{
                     marginBottom: '20px',
-                    opacity: isLoadingGoogle ? 0.6 : 1,
-                    pointerEvents: isLoadingGoogle ? 'none' : 'auto',
+                    // opacity: isLoadingGoogle ? 0.6 : 1,
+                    // pointerEvents: isLoadingGoogle ? 'none' : 'auto',
+                    opacity: 0.4,
+                    pointerEvents: 'none',
                   }}
                 >
                   <div style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}>
