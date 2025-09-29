@@ -45,16 +45,19 @@ export const useTransactionColumns = ({
         title: 'Payout Amount',
         dataIndex: 'sellerAmount',
         key: 'sellerAmount',
+        render: (amount: number) => <>€ {amount}</>,
       },
       {
         title: 'Application Fee',
         dataIndex: 'applicationFee',
         key: 'applicationFee',
+        render: (amount: number) => <>€ {amount}</>,
       },
       {
         title: 'Processing Fee',
         dataIndex: 'stripeProcessingFee',
         key: 'stripeProcessingFee',
+        render: (amount: number) => <>€ {amount}</>,
       },
       {
         title: 'Status',

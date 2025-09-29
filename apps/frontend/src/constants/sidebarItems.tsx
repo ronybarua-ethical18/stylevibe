@@ -35,6 +35,15 @@ export const sidebarItems = (role: string) => {
     // },
   ];
 
+  const customerSidebarItems: MenuProps['items'] = [
+    ...defaultSidebarItems,
+    {
+      label: <Link href={`/${role}/settings`}>Settings</Link>,
+      key: `/${role}/settings`,
+      icon: <IoSettingsOutline style={{ fontSize: '16px' }} />,
+    },
+  ];
+
   const sellerSidebarItems: MenuProps['items'] = [
     ...defaultSidebarItems,
     {
@@ -90,6 +99,7 @@ export const sidebarItems = (role: string) => {
   ];
 
   if (role === UserRole.USER) return defaultSidebarItems;
+  else if (role === UserRole.CUSTOMER) return customerSidebarItems;
   else if (role === UserRole.SELLER) return sellerSidebarItems;
   else if (role === UserRole.ADMIN) return adminSidebarItems;
   else if (role === UserRole.SUPER_ADMIN) return superAdminSiderbarItems;
