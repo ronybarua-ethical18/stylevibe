@@ -23,7 +23,12 @@ interface FormValues {
   password: string;
 }
 
-const LoginForm = ({ onSubmit, onGoogleLogin, isLoadingCredentials, isLoadingGoogle }: LoginFormProps) => {
+const LoginForm = ({
+  onSubmit,
+  onGoogleLogin,
+  isLoadingCredentials,
+  isLoadingGoogle,
+}: LoginFormProps) => {
   const handleSubmit: SubmitHandler<FormValues> = (data) => {
     onSubmit(data);
   };
@@ -117,7 +122,13 @@ const LoginForm = ({ onSubmit, onGoogleLogin, isLoadingCredentials, isLoadingGoo
                     pointerEvents: 'none',
                   }}
                 >
-                  <div style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      marginRight: '10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Image
                       src={GoogleIcon.src}
                       width={20}

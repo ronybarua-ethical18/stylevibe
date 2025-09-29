@@ -8,8 +8,12 @@ import SVSectionTitle from '../SVSectionTitle';
 
 export default function SVHowItWorks() {
   return (
-    <div className="p-8 bg-gray-200 mt-20 text-center">
-      <SVSectionTitle title1="HOW IT" title2="WORKS" />
+    <div className="p-8 bg-gray-100 mt-20 text-center">
+      <SVSectionTitle
+        title1="How It"
+        title2="Works"
+        subtitle="Easy steps to get your beauty services"
+      />
 
       <div className="flex justify-between items-center flex-wrap w-3/4 m-auto p-8">
         <div className="text-center flex flex-col items-center">
@@ -28,9 +32,8 @@ export default function SVHowItWorks() {
               1. Discover
             </h3>
             <p className="text-gray-600 text-base">
-              Search for beauty services
+              Search for beauty services you need
             </p>
-            <p className="text-gray-600 text-base">you need</p>
           </div>
         </div>
         <div className="text-center flex flex-col items-center">
@@ -46,9 +49,8 @@ export default function SVHowItWorks() {
           </div>
           <div className="w-auto">
             <h3 className="font-normal text-2xl text-gray-600 mt-5">2. Book</h3>
-            <p className="text-gray-600 text-base">Choose your service and</p>
             <p className="text-gray-600 text-base">
-              book an appointment directly
+              Choose your service and book an appointment directly
             </p>
           </div>
         </div>
@@ -67,8 +69,9 @@ export default function SVHowItWorks() {
             <h3 className="font-normal text-2xl text-gray-600 mt-5">
               3. Enjoy
             </h3>
-            <p className="text-gray-600 text-base">Sit back and enjoy your</p>
-            <p className="text-gray-600 text-base">unique beauty experience</p>
+            <p className="text-gray-600 text-base">
+              Sit back and enjoy your unique beauty experience
+            </p>
           </div>
         </div>
       </div>

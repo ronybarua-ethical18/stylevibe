@@ -22,6 +22,7 @@ interface ProfileDropmenuProps {
     role?: string;
   };
   onMenuClick?: (key: string) => void;
+  reverseLayout?: boolean;
 }
 
 interface MenuItem {
@@ -35,6 +36,7 @@ interface MenuItem {
 const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
   user,
   onMenuClick,
+  reverseLayout = false,
 }) => {
   const { token } = theme.useToken();
 
@@ -242,6 +244,7 @@ const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
+          flexDirection: reverseLayout ? 'row-reverse' : 'row',
         }}
       >
         <Avatar
@@ -263,7 +266,7 @@ const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
               margin: 0,
               fontWeight: 400,
               fontSize: '12px',
-              textAlign: 'left',
+              textAlign: reverseLayout ? 'right' : 'left',
               color: token.colorTextSecondary,
             }}
           >

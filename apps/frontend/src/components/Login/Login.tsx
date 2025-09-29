@@ -44,12 +44,7 @@ const LoginPage = () => {
   }
 
   if (authState.status === 'success') {
-    return (
-      <SuccessLoader
-        title="Login Successful!"
-        message="Redirecting..."
-      />
-    );
+    return <SuccessLoader title="Login Successful!" message="Redirecting..." />;
   }
 
   return (

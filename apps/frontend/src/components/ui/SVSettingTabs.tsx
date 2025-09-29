@@ -14,6 +14,7 @@ import SVShopInfo from './settings/SVShopInfo';
 const SVSettingTabs = ({ userProfile }: any) => {
   const [activeTab, setActiveTab] = React.useState<SegmentedValue>('1');
 
+  // Conditionally create items array based on user role
   const items = [
     {
       value: '1',
@@ -21,12 +22,17 @@ const SVSettingTabs = ({ userProfile }: any) => {
       chipTitle: '',
       icon: <CiUser />,
     },
-    {
-      value: '2',
-      label: 'Stripe Account',
-      chipTitle: 'pending',
-      icon: <CiCreditCard2 />,
-    },
+    // Only include Stripe Account tab if user is not a customer
+    ...(userProfile?.role !== 'customer'
+      ? [
+          {
+            value: '2',
+            label: 'Stripe Account',
+            chipTitle: 'pending',
+            icon: <CiCreditCard2 />,
+          },
+        ]
+      : []),
   ];
 
   const handleTabChange = (value: SegmentedValue) => {
@@ -41,7 +47,9 @@ const SVSettingTabs = ({ userProfile }: any) => {
           <>
             <div className="grid grid-cols-2 gap-10">
               <SVPersonalInfo userProfile={userProfile} />
-              <SVShopInfo shopData={userProfile} />
+              {userProfile?.role !== 'customer' && (
+                <SVShopInfo shopData={userProfile} />
+              )}
             </div>
           </>
         ) : (

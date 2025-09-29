@@ -26,21 +26,27 @@ export default function SVClientReview() {
   };
   return (
     <div className="">
-      <SVSectionTitle title1="WHAT PEOPLE THINKS " title2="ABOUT US" />
+      <SVSectionTitle
+        title1="What People Thinks"
+        title2="About Us"
+        subtitle="What our clients say about us"
+      />
       <div className="w-2/4 m-auto bg-white">
         <Slider {...settings}>
           {dummyClientReviews.map((client) => (
             <div key={client.id} className="mb-14">
-              <div className="shadow-review-card m-5  p-6 rounded-review-card">
-                <div className="w-[80px] border rounded-review-card">
+              <div className="m-5 p-6 shadow rounded-md">
+                <div className="w-[80px] border rounded-md">
                   <Image src={ClientImage} alt="" />
                 </div>
                 <div className="flex items-center">
-                  <h1 className="text-gray-600 text-base mr-5">John Alex</h1>
+                  <h1 className="text-gray-600 text-base mr-5 mt-2">
+                    John Alex
+                  </h1>
                   <Rate
                     allowHalf
                     defaultValue={client.rating}
-                    className="text-base "
+                    className="text-base text-customPrimary-800"
                   />
                 </div>
                 <p>{client.review}</p>

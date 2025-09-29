@@ -13,7 +13,11 @@ import { dummyBlogs } from '@/utils/dummyServices';
 export default function SVLatestBlogs() {
   return (
     <div className="">
-      <SVSectionTitle title1="OUR LATEST" title2="BLOGS" />
+      <SVSectionTitle
+        title1="Our Latest"
+        title2="Blogs"
+        subtitle="Stay updated with our latest news and tips"
+      />
       <div className="w-3/4 m-auto">
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           {dummyBlogs.map((blog, index) => (
