@@ -24,37 +24,33 @@ export const useMenuHandler = () => {
       case 'sign-out':
         logOut();
         break;
+      case 'go-to-dashboard':
+        // Navigate to role-specific dashboard
+        router.push(`/${userInfo?.role}/dashboard`);
+        break;
       case 'view-profile':
         // Navigate to profile page
         router.push(`/${userInfo?.role}/settings`);
         break;
       case 'settings':
         // Open settings modal/page
-        router.push('/settings');
+        router.push(`/${userInfo?.role}/settings`);
         break;
       case 'subscription':
         // Navigate to subscription page
-        router.push('/subscription');
-        break;
-      case 'changelog':
-        // Open changelog modal
-        // Could implement a modal or redirect
+        // router.push('/subscription');
         break;
       case 'team':
         // Navigate to team page
-        router.push('/team');
-        break;
-      case 'invite-member':
-        // Open invite member modal
-        // Could implement a modal
+        // router.push('/team');
         break;
       case 'support':
         // Open support chat/modal
-        router.push('/support');
+        // router.push('/support');
         break;
       case 'community':
         // Navigate to community page
-        router.push('/community');
+        // router.push('/community');
         break;
       default:
         break;

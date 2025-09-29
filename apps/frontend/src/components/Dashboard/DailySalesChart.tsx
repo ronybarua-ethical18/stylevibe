@@ -1,6 +1,16 @@
+import dynamic from 'next/dynamic';
 import React from 'react';
-import Chart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
+
+// Dynamic import for Chart component - reduces initial bundle size
+const Chart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full flex items-center justify-center">
+      <div className="animate-pulse bg-gray-200 rounded-lg w-full h-48"></div>
+    </div>
+  ),
+});
 
 const data = [200, 800, 600, 1200, 1000, 1700, 1200];
 const categories = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
@@ -86,16 +96,13 @@ const options: ApexOptions = {
       seriesIndex: number;
       dataPointIndex: number;
     }) => {
-      // Example: Replace with your real date logic if you have dates
-      // For demo, we'll just use a static date string
-      // You can map categories to dates if needed
-      const date = 'July, 29th 2021'; // Replace with your dynamic date if available
+      const date = 'July, 29th 2021';
       const value = series[seriesIndex][dataPointIndex]
         .toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })
-        .replace('.', ','); // For $119,87 style
+        .replace('.', ',');
       return `
         <div style="
           background: #2d2357;
@@ -133,7 +140,7 @@ export default function DailySalesChart() {
         background: '#ffff',
         borderRadius: 16,
         padding: 24,
-        height: '100%', // Make this container take 100% height of its parent
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         width: '100%',

@@ -1,6 +1,26 @@
 'use client';
 
-import { Table } from 'antd';
+import dynamic from 'next/dynamic';
+
+// Dynamic import for Ant Design Table
+const Table = dynamic(
+  () => import('antd').then((mod) => ({ default: mod.Table })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="space-y-4 p-4">
+        <div className="animate-pulse">
+          <div className="h-10 bg-gray-200 rounded mb-4"></div>
+          <div className="space-y-2">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-12 bg-gray-100 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ),
+  }
+);
 
 type UMTableProps = {
   loading?: boolean;
@@ -41,13 +61,12 @@ const SVDataTable = ({
   return (
     <Table
       className={isEmpty ? 'empty-table' : ''}
-      // rowSelection={}
       loading={loading}
       columns={columns}
       dataSource={dataSource}
       pagination={paginationConfig}
       onChange={onTableChange}
-      rowKey={(record) => record?._id}
+      rowKey={(record: any) => record?._id || record?.id || Math.random()}
     />
   );
 };

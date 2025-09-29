@@ -99,6 +99,7 @@ export default function SVNavMenus({ footer }: any) {
                 }}
                 onMenuClick={handleMenuClick}
                 reverseLayout={true}
+                isHomepage={true}
               />
             </div>
           ) : (

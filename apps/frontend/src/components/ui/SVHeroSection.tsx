@@ -7,10 +7,7 @@ export default function SVHeroSection() {
   const [serviceName, setServiceName] = useState('');
   const [address, setAddress] = useState('');
 
-  const handleSearch = () => {
-    // Handle search functionality here
-    console.log('Search:', { serviceName, address });
-  };
+  const handleSearch = () => {};
 
   return (
     <div className="h-screen relative mb-20">

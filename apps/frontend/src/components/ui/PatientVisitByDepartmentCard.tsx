@@ -1,5 +1,15 @@
+import dynamic from 'next/dynamic';
 import React from 'react';
-import Chart from 'react-apexcharts';
+
+// Dynamic import for Chart component
+const Chart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-52 ml-2 flex items-center justify-center">
+      <div className="animate-pulse bg-gray-200 rounded-full w-48 h-48"></div>
+    </div>
+  ),
+});
 
 const data = [
   { label: 'Psychiatrist', value: 45, color: '#5B6CFF' },
@@ -57,8 +67,6 @@ const PatientVisitByDepartmentCard = () => (
         ))}
       </div>
       <div className="w-52 ml-2">
-        {' '}
-        {/* Increased width from w-36 to w-52 */}
         <Chart
           options={{
             ...chartOptions,
@@ -72,7 +80,7 @@ const PatientVisitByDepartmentCard = () => (
                 ...chartOptions.plotOptions.pie,
                 donut: {
                   ...chartOptions.plotOptions.pie.donut,
-                  size: '85%', // Increased donut size
+                  size: '85%',
                 },
               },
             },

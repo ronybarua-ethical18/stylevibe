@@ -6,6 +6,10 @@ interface UserInfo {
 
 export class NavigationService {
   static getDashboardPath(role: string): string {
+    // Customer should go to home page, others to their dashboard
+    if (role.toLowerCase() === 'customer') {
+      return '/';
+    }
     return `/${role.toLowerCase()}/dashboard`;
   }
 
@@ -40,16 +44,31 @@ export class NavigationService {
       return currentPath === '/select-role' ? null : '/select-role';
     }
 
-    // Has role - redirect from auth pages to dashboard
+    // Has role - redirect from auth pages
     if (user.role && user.role !== 'guest') {
       if (['/login', '/signup', '/select-role'].includes(currentPath)) {
         return this.getDashboardPath(user.role);
       }
 
-      // If not on their role's pages, redirect to dashboard
-      const rolePrefix = `/${user.role.toLowerCase()}`;
-      if (!currentPath.startsWith(rolePrefix) && currentPath !== '/') {
-        return this.getDashboardPath(user.role);
+      // For customers, allow them to stay on home page and customer pages
+      if (user.role.toLowerCase() === 'customer') {
+        // Don't redirect if already on home page or customer pages
+        if (currentPath === '/' || currentPath.startsWith('/customer')) {
+          return null;
+        }
+        // Redirect to home page if on other role's pages
+        if (
+          currentPath.startsWith('/admin') ||
+          currentPath.startsWith('/seller')
+        ) {
+          return '/';
+        }
+      } else {
+        // For other roles, redirect to their dashboard if not on their pages
+        const rolePrefix = `/${user.role.toLowerCase()}`;
+        if (!currentPath.startsWith(rolePrefix) && currentPath !== '/') {
+          return this.getDashboardPath(user.role);
+        }
       }
     }
 

@@ -1,8 +1,18 @@
+import dynamic from 'next/dynamic';
 import { Button } from 'antd';
 import React from 'react';
-import Chart from 'react-apexcharts';
 
 import { topServices } from '@/utils/dummyServices';
+
+// Dynamic import for Chart component
+const Chart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-[250px] h-[250px] flex items-center justify-center">
+      <div className="animate-pulse bg-gray-200 rounded-full w-48 h-48"></div>
+    </div>
+  ),
+});
 
 const chartOptions = {
   chart: {

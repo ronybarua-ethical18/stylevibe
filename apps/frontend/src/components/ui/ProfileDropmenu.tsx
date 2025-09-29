@@ -8,6 +8,7 @@ import {
   MessageOutlined,
   LogoutOutlined,
   SearchOutlined,
+  DashboardOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 
@@ -23,6 +24,7 @@ interface ProfileDropmenuProps {
   };
   onMenuClick?: (key: string) => void;
   reverseLayout?: boolean;
+  isHomepage?: boolean;
 }
 
 interface MenuItem {
@@ -31,17 +33,27 @@ interface MenuItem {
   label: string;
   shortcut: string;
   group?: number;
+  showOnHomepage?: boolean;
 }
 
 const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
   user,
   onMenuClick,
   reverseLayout = false,
+  isHomepage = false,
 }) => {
   const { token } = theme.useToken();
 
   const menuItems: MenuItem[] = [
     // First group
+    {
+      key: 'go-to-dashboard',
+      icon: <DashboardOutlined />,
+      label: 'Go to Dashboard',
+      shortcut: '⌘ + H',
+      group: 1,
+      showOnHomepage: true,
+    },
     {
       key: 'view-profile',
       icon: <SearchOutlined />,
@@ -92,7 +104,15 @@ const ProfileDropmenu: React.FC<ProfileDropmenuProps> = ({
     const items: MenuProps['items'] = [];
     let currentGroup = 0;
 
-    menuItems.forEach((item) => {
+    // Filter menu items based on homepage condition
+    const filteredMenuItems = menuItems.filter((item) => {
+      if (item.showOnHomepage) {
+        return isHomepage;
+      }
+      return true;
+    });
+
+    filteredMenuItems.forEach((item) => {
       // Add divider between groups
       if (item.group && item.group > currentGroup && currentGroup > 0) {
         items.push({
