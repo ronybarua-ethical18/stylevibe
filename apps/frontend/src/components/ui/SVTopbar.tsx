@@ -1,58 +1,13 @@
-import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
 import React from 'react';
-import { clearLocalStorage } from '@/utils/handleLocalStorage';
 import { useUserInfo } from '@/hooks/useUserInfo';
 import ProfileDropmenu from './ProfileDropmenu';
 import { NotificationBell } from '../NotificationBell';
+import { useMenuHandler } from '@/utils/menuHandler';
 
 export default function SVTopbar() {
-  const router = useRouter();
   const { userInfo } = useUserInfo();
 
-  const logOut = async () => {
-    clearLocalStorage();
-    // Sign out from NextAuth (this clears the session)
-    await signOut({
-      redirect: false, // Prevent automatic redirect so we can handle it manually
-    });
-    // Redirect to login page
-    router.push('/login');
-  };
-
-  const handleMenuClick = (key: string) => {
-    switch (key) {
-      case 'sign-out':
-        logOut();
-        break;
-      case 'view-profile':
-        // Navigate to profile page
-        break;
-      case 'settings':
-        // Open settings modal/page
-        break;
-      case 'subscription':
-        // Navigate to subscription page
-        break;
-      case 'changelog':
-        // Open changelog modal
-        break;
-      case 'team':
-        // Navigate to team page
-        break;
-      case 'invite-member':
-        // Open invite member modal
-        break;
-      case 'support':
-        // Open support chat/modal
-        break;
-      case 'community':
-        // Navigate to community page
-        break;
-      default:
-        break;
-    }
-  };
+  const handleMenuClick = useMenuHandler();
 
   return (
     <div
@@ -70,7 +25,6 @@ export default function SVTopbar() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        {/* <BellOutlined style={{ fontSize: '25px', marginRight: '10px' }} /> */}
         <NotificationBell />
         <ProfileDropmenu
           user={{

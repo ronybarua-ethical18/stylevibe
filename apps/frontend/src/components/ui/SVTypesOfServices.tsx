@@ -12,8 +12,12 @@ import { dummyServices, serviceCategories } from '@/utils/dummyServices';
 export default function SVTypesOfServices() {
   const [active, setActive] = useState(2);
   return (
-    <div className="mt-20">
-      <SVSectionTitle title1="CATEGORIES OF" title2="SERVICES" />
+    <div className="my-20">
+      <SVSectionTitle
+        title1="Categories of"
+        title2="Services"
+        subtitle="Explore our signature beauty and wellness treatments"
+      />
       <div className="w-2/4 m-auto flex justify-center">
         {serviceCategories.map(
           (category: {
@@ -24,7 +28,7 @@ export default function SVTypesOfServices() {
             return (
               <div
                 onClick={() => setActive(category.id)}
-                className={`flex items-center cursor-pointer py-8 px-4 shadow-simple-shadow w-2/4  ${
+                className={`flex items-center cursor-pointer p-4 shadow-simple-shadow w-2/4  ${
                   category.id === active ? 'bg-customPrimary-800' : ''
                 } mb-16 ${
                   category.id !== active
@@ -55,7 +59,7 @@ export default function SVTypesOfServices() {
                 </div>
                 <div>
                   <h3
-                    className={`text-lg font-normal ${
+                    className={`text-base font-normal ${
                       category.id === active
                         ? 'text-gray-200'
                         : ' text-gray-700'

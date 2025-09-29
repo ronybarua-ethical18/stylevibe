@@ -37,12 +37,12 @@ function SVSettings() {
       <SVBreadCrumb
         items={[
           {
-            label: `seller`,
-            link: `/seller`,
+            label: `${userProfile?.data?.role}`,
+            link: `/${userProfile?.data?.role}`,
           },
           {
             label: `settings`,
-            link: `/seller/settings`,
+            link: `/${userProfile?.data?.role}/settings`,
           },
         ]}
       />

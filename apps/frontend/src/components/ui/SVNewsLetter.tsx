@@ -8,7 +8,7 @@ export default function SVNewsLetter() {
     console.log('the newsletter');
   };
   return (
-    <div className="mt-20 py-16 bg-gray-200">
+    <div className="mt-20 py-16 bg-gray-100">
       <div className="w-3/4 m-auto flex justify-between items-center">
         <div className="w-full mr-20">
           <h1 className="text-3xl font-medium text-customPrimary-800">
@@ -26,7 +26,7 @@ export default function SVNewsLetter() {
               name="newsletter"
               placeholder="Your Email Address"
               variant="filled"
-              style={{ height: '60px' }}
+              style={{ height: '60px', backgroundColor: '#fff' }}
             />
           </Form>
         </div>

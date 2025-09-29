@@ -8,7 +8,11 @@ export default function SVServiceCard({ services, loading }: any) {
   const topServices = loading ? dummyServices : services;
   return (
     <div className="w-3/4 m-auto">
-      <SVSectionTitle title1="TOP RATED" title2="SERVICES" />
+      <SVSectionTitle
+        title1="Featured"
+        title2="Services"
+        subtitle="Explore our signature beauty and wellness treatments"
+      />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         {topServices?.map((service: any, index: any) => (
           <Col
