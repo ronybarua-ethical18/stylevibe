@@ -10,7 +10,7 @@ import handlebarOptions from './viewEngine';
 const transporter = createTransport(
   ResendTransport.makeTransport({
     apiKey: config.resend_api_key || '',
-  }),
+  })
 );
 
 // Use compile instead of use for setting up handlebars
