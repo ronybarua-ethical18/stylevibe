@@ -45,6 +45,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@documenso/nodemailer-resend": "^4.0.0",
     "@sentry/node": "^8.34.0",
     "@sentry/profiling-node": "^8.34.0",
     "@sentry/tracing": "^7.114.0",

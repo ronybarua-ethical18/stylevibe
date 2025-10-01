@@ -21,6 +21,8 @@ export default {
   smtp_port: process.env.SMTP_PORT,
   smtp_user: process.env.SMTP_USER,
   smtp_password: process.env.SMTP_PASSWORD,
+  resend_api_key: process.env.RESEND_API_KEY,
+  sender_email: process.env.SENDER_EMAIL,
   client_port: process.env.CLIENT_PORT,
   cloudinary: {
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

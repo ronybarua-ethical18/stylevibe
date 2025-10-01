@@ -1,4 +1,5 @@
 import transporter from './mailConfig';
+import config from '../../config';
 
 interface IMailContext {
   subject: string;
@@ -12,7 +13,7 @@ const sendEmail = async (
 ): Promise<void> => {
   try {
     const reports = await transporter.sendMail({
-      from: '"Style Vibe Portal"',
+      from: `Style Vibe Portal <${config.sender_email}>`,
       to: receiverEmail,
       subject: context.subject,
       template: template,

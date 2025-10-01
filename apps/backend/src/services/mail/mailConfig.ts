@@ -1,26 +1,17 @@
-import nodemailer from 'nodemailer';
+import { ResendTransport } from '@documenso/nodemailer-resend';
+import { createTransport } from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
 
 import config from '../../config';
 
 import handlebarOptions from './viewEngine';
 
-// mail sender
-const transporterOptions = {
-  host: config.smtp_host,
-  port: Number(config.smtp_port),
-  auth: {
-    user: config.smtp_user,
-    pass: config.smtp_password,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  connectionTimeout: 20000,
-};
-
-const transporter: nodemailer.Transporter =
-  nodemailer.createTransport(transporterOptions);
+// Create Resend transport
+const transporter = createTransport(
+  ResendTransport.makeTransport({
+    apiKey: config.resend_api_key || '',
+  }),
+);
 
 // Use compile instead of use for setting up handlebars
 transporter.use('compile', hbs(handlebarOptions));
