@@ -1,21 +1,19 @@
 // worker.ts
 import { Job, Worker } from 'bullmq';
 
-import redis from '../../config/redis';
+import { redisClient } from '../../config/redis';
 import { paymentDisbursed } from '../utils/payment.utils';
 
 export function paymentDispatchQueueWorker(): void {
   const worker = new Worker(
     'paymentDispatchQueue',
     async (job: Job) => {
+      console.log('paymentDispatchQueueWorker', job?.data);
       await new Promise((resolve) => setTimeout(resolve, 5000));
       await paymentDisbursed(job?.data?.booking);
     },
     {
-      connection: {
-        host: redis.REDIS_URI,
-        port: redis.REDIS_PORT,
-      },
+      connection: redisClient, // Use the configured Redis client directly
       concurrency: 1,
       autorun: true,
     }

@@ -1,7 +1,7 @@
 // worker.ts
 import { Job, Worker } from 'bullmq';
 
-import redis from '../../config/redis';
+import { redisClient } from '../../config/redis';
 import { emailDispatch } from '../utils/email.utils';
 
 export function emailDispatchQueueWorker(): void {
@@ -28,14 +28,9 @@ export function emailDispatchQueueWorker(): void {
       );
 
       console.log('email payload', job?.data?.emailPayload);
-      // await paymentDisbursed(job?.data?.booking)
-      // await emailDispatch()
     },
     {
-      connection: {
-        host: redis.REDIS_URI,
-        port: redis.REDIS_PORT,
-      },
+      connection: redisClient,
       concurrency: 1,
       autorun: true,
     }

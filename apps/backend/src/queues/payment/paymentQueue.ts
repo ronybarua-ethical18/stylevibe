@@ -1,8 +1,6 @@
 // queue.ts
 import { Job, Queue } from 'bullmq';
-
 import { redisClient } from '../../config/redis';
-
 import { paymentDispatchQueueWorker } from './paymentQueueWorker';
 
 export const paymentDispatchQueue = new Queue('paymentDispatchQueue', {
