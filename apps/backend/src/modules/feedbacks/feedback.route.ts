@@ -7,7 +7,6 @@ import { createRouter } from '../../utils/typedRouter';
 
 const router = createRouter();
 
-// Create feedback - only customers can create feedback
 router.post(
   '/',
   auth(ENUM_USER_ROLE.CUSTOMER),
@@ -15,17 +14,14 @@ router.post(
   FeedbackController.createFeedback
 );
 
-// Get all feedbacks - admin access
 router.get(
   '/',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   FeedbackController.getAllFeedbacks
 );
 
-// Get feedbacks by service - public access for viewing service reviews
 router.get('/service/:serviceId', FeedbackController.getFeedbacksByService);
 
-// Get single feedback by ID - authenticated users
 router.get(
   '/:feedbackId',
   auth(

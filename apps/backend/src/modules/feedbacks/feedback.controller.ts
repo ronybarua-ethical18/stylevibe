@@ -21,7 +21,7 @@ const createFeedback = tryCatchAsync(async (req: Request, res: Response) => {
     success: true,
     message: result.isUpdate
       ? 'Feedback updated successfully'
-      : 'Feedback created successfully',
+      : 'Thanks for your feedback',
     data: result.feedback,
   });
 });

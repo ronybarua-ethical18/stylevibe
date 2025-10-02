@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// Define the Zod schema for IBookingPayload
 const createBookingZodSchema = z.object({
   body: z.object({
     serviceDate: z.string({ required_error: 'Service date is required' }),
