@@ -33,7 +33,7 @@ const SVProfilePhotoUpload: React.FC<ProfilePhotoUploadProps> = ({
 
     try {
       const response = await fetch(
-        'https://stylevibe-backend.onrender.com/api/v1/uploads',
+        'https://stylevibe-backend-production.up.railway.app/api/v1/uploads',
         {
           method: 'POST',
           body: formData,

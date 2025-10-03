@@ -80,6 +80,16 @@ const createPaymentIntentForHold = async ({
       );
     }
 
+    // Check if the destination account has the required capabilities
+    const account = await stripe.accounts.retrieve(sellerAccount.stripeAccountId);
+
+    if (!account.capabilities?.transfers || account.capabilities.transfers !== 'active') {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'Seller account does not have transfers capability enabled. Please complete the Stripe onboarding process to enable payments.'
+      );
+    }
+
     // Ensure amount and application fee are integers
     const amountInCents = Math.round(amount * 100); // Convert amount to smallest currency unit (e.g., cents)
     const applicationFeeAmount = Math.round(amountInCents * 0.1); // 10% fee for the platform owner

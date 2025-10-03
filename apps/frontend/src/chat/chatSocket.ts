@@ -5,7 +5,7 @@ import { io, Socket } from 'socket.io-client';
 const getSocketUrl = () => {
   const baseUrl =
     process.env.NEXT_PUBLIC_SOCKET_URL ||
-    'https://stylevibe-backend.onrender.com';
+    'https://stylevibe-backend-production.up.railway.app';
   return baseUrl.replace('/api/v1', '');
 };
 
