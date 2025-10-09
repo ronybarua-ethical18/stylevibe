@@ -22,12 +22,12 @@ const redisConfig: any = {
   commandTimeout: 15000, // Increased from 5000 to 15000 for cloud Redis
 
   // Retry configuration
-  retryDelayOnFailover: 100,
+  retryDelayOnFailover: 1000, // Increase retry delay
   retryDelayOnClusterDown: 300,
   maxRetriesPerRequest: null, // BullMQ requires this to be null
 
   // Connection pooling and keep-alive
-  keepAlive: 30000,
+  keepAlive: 60000, // Increase from 30s to 60s
   family: 4, // Force IPv4
 
   // Lazy connection for better startup
@@ -41,6 +41,9 @@ const redisConfig: any = {
 
   // Additional stability settings
   maxmemoryPolicy: 'allkeys-lru',
+
+  // Add connection pooling
+  maxLoadingTimeout: 5000,
 };
 
 // Add password if provided
@@ -69,7 +72,8 @@ redisClient.on('connect', () => {
 });
 
 redisClient.on('ready', () => {
-  console.log('Redis client is ready to use');
+  console.log('Redis client is ready to use')
+
 });
 
 redisClient.on('error', (err) => {
@@ -112,43 +116,43 @@ export default {
 };
 
 // Enhanced Redis health check with retry logic
-export const testRedisConnection = async (retries = 3): Promise<boolean> => {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const result = await Promise.race([
-        redisClient.ping(),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Ping timeout')), 5000)
-        ),
-      ]);
+// export const testRedisConnection = async (retries = 3): Promise<boolean> => {
+//   for (let i = 0; i < retries; i++) {
+//     try {
+//       const result = await Promise.race([
+//         redisClient.ping(),
+//         new Promise((_, reject) =>
+//           setTimeout(() => reject(new Error('Ping timeout')), 5000)
+//         ),
+//       ]);
 
-      if (result === 'PONG') {
-        return true;
-      }
-    } catch (error) {
-      console.error(
-        `Redis health check attempt ${i + 1} failed:`,
-        error.message
-      );
+//       if (result === 'PONG') {
+//         return true;
+//       }
+//     } catch (error) {
+//       console.error(
+//         `Redis health check attempt ${i + 1} failed:`,
+//         error.message
+//       );
 
-      if (i === retries - 1) {
-        console.error('All Redis health check attempts failed');
-        return false;
-      }
+//       if (i === retries - 1) {
+//         console.error('All Redis health check attempts failed');
+//         return false;
+//       }
 
-      // Wait before retry
-      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
-    }
-  }
-  return false;
-};
+//       // Wait before retry
+//       await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
+//     }
+//   }
+//   return false;
+// };
 
-// Connection monitoring function
-export const monitorRedisConnection = () => {
-  setInterval(async () => {
-    const isHealthy = await testRedisConnection(1);
-    if (!isHealthy) {
-      console.warn('Redis connection health check failed');
-    }
-  }, 30000); // Check every 30 seconds
-};
+// // Connection monitoring function
+// export const monitorRedisConnection = () => {
+//   setInterval(async () => {
+//     const isHealthy = await testRedisConnection(1);
+//     if (!isHealthy) {
+//       console.warn('Redis connection health check failed');
+//     }
+//   }, 30000); // Check every 30 seconds
+// };

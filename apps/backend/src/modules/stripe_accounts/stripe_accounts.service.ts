@@ -42,7 +42,7 @@ const createAndConnectStripeAccount = async (
     // Create an account link for onboarding
     const accountLink = await stripe.accountLinks.create({
       account: account.id,
-      refresh_url: 'http://localhost:3000/reauth',
+      refresh_url: `${config.client_port}/reauth`,
       return_url: `${config.client_port}/seller/settings?success=true`,
       type: 'account_onboarding',
     });
@@ -148,7 +148,7 @@ const captureHeldPayment = async (paymentIntentId: string) => {
       // For any other status, throw an error with the current status
       throw new ApiError(
         httpStatus.BAD_REQUEST,
-        `Cannot capture payment. Current status: ${paymentIntent.status}`
+        `Cannot capture payment.Current status: ${paymentIntent.status}`
       );
     }
   } catch (error) {
@@ -191,7 +191,7 @@ const getStripeAccountDetails = async (accountId: string) => {
     return result;
   } catch (error) {
     console.error(
-      `Failed to retrieve account details and balance for ID ${accountId}:`,
+      `Failed to retrieve account details and balance for ID ${accountId}: `,
       error
     );
     throw error;
@@ -238,7 +238,7 @@ const transferAmountToConnectedStripeAccount = async (
     };
   } catch (error) {
     console.error(
-      `Failed to create or retrieve transfer to account ${destinationAccountId}:`,
+      `Failed to create or retrieve transfer to account ${destinationAccountId}: `,
       error
     );
     throw error;

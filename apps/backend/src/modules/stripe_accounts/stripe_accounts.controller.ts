@@ -23,7 +23,7 @@ const createAndConnectStripeAccount = tryCatchAsync(
     sendResponse<{ url: string }>(res, {
       statusCode: 200,
       success: true,
-      message: 'Feedback is created successfully',
+      message: 'Stripe account url is generated successfully',
       data: result,
     });
   }
