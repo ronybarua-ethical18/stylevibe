@@ -72,8 +72,7 @@ redisClient.on('connect', () => {
 });
 
 redisClient.on('ready', () => {
-  console.log('Redis client is ready to use')
-
+  console.log('Redis client is ready to use');
 });
 
 redisClient.on('error', (err) => {

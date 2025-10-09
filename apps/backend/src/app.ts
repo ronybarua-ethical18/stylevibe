@@ -28,6 +28,7 @@ app.use(
       'Origin',
       'Accept',
       'X-Requested-With', // Add this for file uploads
+      'stripe-signature', // Required for Stripe webhooks
     ],
   })
 );
@@ -39,12 +40,6 @@ declare module 'http' {
 }
 // Initialize Sentry FIRST (before other middleware)
 initSentry(app);
-
-// Remove the old test route as it has syntax error
-// app.get('/api/v1/test-sentry', (req, res) => {
-//   SentryCaptureMessage('Testing Sentry connection');
-//   res.send('Test Sentry triggered');
-// });
 
 //parser
 app.use(

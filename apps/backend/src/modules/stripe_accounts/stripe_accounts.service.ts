@@ -81,9 +81,14 @@ const createPaymentIntentForHold = async ({
     }
 
     // Check if the destination account has the required capabilities
-    const account = await stripe.accounts.retrieve(sellerAccount.stripeAccountId);
+    const account = await stripe.accounts.retrieve(
+      sellerAccount.stripeAccountId
+    );
 
-    if (!account.capabilities?.transfers || account.capabilities.transfers !== 'active') {
+    if (
+      !account.capabilities?.transfers ||
+      account.capabilities.transfers !== 'active'
+    ) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         'Seller account does not have transfers capability enabled. Please complete the Stripe onboarding process to enable payments.'

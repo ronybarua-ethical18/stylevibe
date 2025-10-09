@@ -56,58 +56,74 @@ const captureHeldPayment = tryCatchAsync(
   }
 );
 
-const stripeConnectWebhook = tryCatchAsync(
-  async (req: Request, res: Response) => {
-    try {
-      // Check if webhook signing is configured.
-      const webhookSecret = config.stripe.stripe_webhook_secret_key as string;
+const stripeConnectWebhook = async (req: Request, res: Response) => {
+  console.log('🔔 Webhook received at:', new Date().toISOString());
+  console.log('Headers:', req.headers);
+  console.log('Body type:', typeof req.body);
+  console.log('Body length:', req.body?.length || 0);
 
-      if (webhookSecret) {
-        // Retrieve the event by verifying the signature using the raw body and secret.
-        let event: Stripe.Event;
+  try {
+    const webhookSecret = config.stripe.stripe_webhook_secret_key as string;
 
-        const secret = webhookSecret;
-
-        const header = stripe.webhooks.generateTestHeaderString({
-          payload: req.rawBody as string,
-          secret,
-        });
-
-        try {
-          event = stripe?.webhooks.constructEvent(
-            req.rawBody as string,
-            header,
-            webhookSecret
-          );
-          console.log(`⚠️  Webhook verified`);
-        } catch (err) {
-          console.log(`⚠️  Webhook signature verification failed:  ${err}`);
-          return res.sendStatus(400);
-        }
-
-        const data = event.data.object as Stripe.Account;
-        const eventType = event.type as string;
-
-        if (eventType === 'account.updated') {
-          console.log('Stripe Connect account updated:', data);
-          try {
-            await StripeAccountService.saveOrUpdateStripeAccount(data);
-          } catch (error) {
-            console.error('Error saving/updating Stripe account:', error);
-            // You might want to handle this error, perhaps by creating a task to reconcile this account later
-          }
-        }
-
-        res.status(200).end();
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.log('webhook error', error);
-      res.status(400).end();
+    if (!webhookSecret) {
+      console.log('❌ Webhook secret not configured');
+      return res.status(400).send('Webhook secret not configured');
     }
+
+    const signature = req.headers['stripe-signature'] as string;
+
+    if (!signature) {
+      console.log('❌ No stripe-signature header found');
+      console.log('Available headers:', Object.keys(req.headers));
+      return res.status(400).send('No stripe-signature header found');
+    }
+
+    let event: Stripe.Event;
+
+    try {
+      // Use req.rawBody since we're storing it in the verify function
+      event = stripe.webhooks.constructEvent(
+        req.rawBody as string,
+        signature,
+        webhookSecret
+      );
+      console.log(`✅ Webhook verified: ${event.type} (ID: ${event.id})`);
+    } catch (err) {
+      console.log(`❌ Webhook signature verification failed:`, err);
+      console.log('Signature received:', signature);
+      console.log('Webhook secret configured:', !!webhookSecret);
+      console.log('Body content:', req.body);
+      return res.status(400).send('Webhook signature verification failed');
+    }
+
+    // Process the event
+    const eventType = event.type;
+    console.log(`🔄 Processing webhook event: ${eventType}`);
+
+    if (eventType === 'account.updated') {
+      const accountData = event.data.object as Stripe.Account;
+      console.log('📊 Account data:', {
+        id: accountData.id,
+        payouts_enabled: accountData.payouts_enabled,
+        charges_enabled: accountData.charges_enabled,
+        details_submitted: accountData.details_submitted,
+      });
+
+      try {
+        await StripeAccountService.saveOrUpdateStripeAccount(accountData);
+        console.log('✅ Account updated successfully in database');
+      } catch (error) {
+        console.error('❌ Error saving/updating Stripe account:', error);
+        return res.status(500).send('Database update failed');
+      }
+    }
+
+    res.status(200).json({ received: true, eventType });
+  } catch (error) {
+    console.error('💥 Webhook error:', error);
+    res.status(500).send('Webhook processing failed');
   }
-);
+};
 
 const getStripeAccountDetails = tryCatchAsync(
   async (req: Request, res: Response) => {

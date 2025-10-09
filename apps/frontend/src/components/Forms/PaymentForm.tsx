@@ -20,7 +20,7 @@ import { useCreateBookingMutation } from '@/redux/api/bookings';
 import { useCreatePaymentIntentMutation } from '@/redux/api/stripe';
 
 const stripePromise = loadStripe(
-  'pk_test_51PnMRKBfR7AXQAHn19WtEzjkCGuPKG8BmMHFqZap098kURuMhn8wuXiEEL1tg8m0QU0bryWuH3iy8ztpR3Du6hrK00BmbdnBcg'
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 
 interface Service {
