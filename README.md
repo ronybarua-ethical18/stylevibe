@@ -2,6 +2,8 @@
 
 StyleVibe is a comprehensive full-stack salon and beauty service booking platform that connects customers with beauty professionals. Built with modern technologies, it provides a seamless experience for booking appointments, managing services, and facilitating communication between customers and service providers.
 
+🌐 **Live Demo**: https://stylevibe-app.vercel.app
+
 ## 🌟 Features
 
 ### For Customers
