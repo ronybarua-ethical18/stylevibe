@@ -13,6 +13,11 @@ import {
   IPaginationOptions,
 } from '../../shared/interfaces/common.interface';
 import ShopModel from '../shop/shop.model';
+import StripeAccountModel from '../stripe_accounts/stripe_accounts.model';
+import {
+  StripeAccountStatus,
+  UserType,
+} from '../stripe_accounts/stripe_accounts.interface';
 
 import { IService, ServiceStatusList } from './service.interface';
 import { ServiceModel } from './service.model';
@@ -176,13 +181,21 @@ const getTopServices = async (
   queryOptions: IPaginationOptions
 ): Promise<IGenericResponse<IService[]>> => {
   const { page, limit } = paginationHelpers.calculatePagination(queryOptions);
-  const services = await ServiceModel.find({
+  const connectedSellerIds = await StripeAccountModel.distinct('user', {
+    userType: UserType.SELLER,
+    status: StripeAccountStatus.ACTIVE,
+  });
+
+  const topServicesQuery = {
     status: ServiceStatusList.APPROVED,
-  })
+    seller: { $in: connectedSellerIds },
+  };
+
+  const services = await ServiceModel.find(topServicesQuery)
     .sort({ updatedAt: -1 })
     .populate('shop', 'shopName serviceTime')
     .limit(limit);
-  const totals = await getTotals(ServiceModel as any, {}, [
+  const totals = await getTotals(ServiceModel as any, topServicesQuery, [
     'PENDING',
     'APPROVED',
     'REJECTED',

@@ -38,9 +38,6 @@ COPY --from=builder --chown=backend:nodejs /app/apps/backend/package.json ./pack
 # Copy email templates
 COPY --from=builder --chown=backend:nodejs /app/apps/backend/src/services/mail/templates ./dist/services/mail/templates
 
-# Copy .env file for local testing
-COPY --from=builder --chown=backend:nodejs /app/apps/backend/.env ./.env
-
 # Debug: Check what's in the runner stage
 RUN echo "=== Checking runner stage contents ==="
 RUN ls -la /app/
