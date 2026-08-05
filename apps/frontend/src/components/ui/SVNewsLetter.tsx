@@ -1,34 +1,50 @@
-import React from 'react';
+import { Button, Input } from 'antd';
+import Image from 'next/image';
+import React, { useState } from 'react';
 
-import Form from '../Forms/Form';
-import FormInput from '../Forms/FormInput';
+import HelloSticker from '../../../public/hello.png';
+import SVSectionHeading from '../SVSectionHeading';
 
 export default function SVNewsLetter() {
-  const onSubmit = () => {
-    console.log('the newsletter');
-  };
+  const [email, setEmail] = useState('');
+
+  const onSubmit = () => {};
+
   return (
-    <div className="mt-20 py-16 bg-gray-100">
-      <div className="w-3/4 m-auto flex justify-between items-center">
-        <div className="w-full mr-20">
-          <h1 className="text-3xl font-medium text-customPrimary-800">
-            SUBSCRIBE OUR NEWSLETTER
-          </h1>
-          <h6 className="font-thin text-base">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet
-          </h6>
-        </div>
-        <div className="w-full">
-          <Form submitHandler={onSubmit}>
-            <FormInput
-              type="text"
-              name="newsletter"
-              placeholder="Your Email Address"
-              variant="filled"
-              style={{ height: '60px', backgroundColor: '#fff' }}
-            />
-          </Form>
+    <div className="w-3/4 m-auto my-24">
+      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-3xl shadow-simple-shadow text-center px-8 py-14 md:px-16">
+        <Image
+          src={HelloSticker}
+          alt=""
+          width={60}
+          height={60}
+          className="mx-auto mb-4 -rotate-6"
+        />
+        <SVSectionHeading
+          center
+          eyebrow="Stay in the loop"
+          title1="First chair"
+          title2="to know"
+          subtitle="New providers in your area, seasonal looks and booking-fee promos — about one email a month."
+        />
+        <div className="flex gap-2.5 max-w-md mx-auto mt-8">
+          <Input
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-label="Email address"
+            style={{ height: '48px', borderRadius: '999px', paddingLeft: 20 }}
+          />
+          <Button
+            type="primary"
+            size="large"
+            onClick={onSubmit}
+            className="px-7"
+            style={{ height: '48px', borderRadius: '999px' }}
+          >
+            Subscribe
+          </Button>
         </div>
       </div>
     </div>

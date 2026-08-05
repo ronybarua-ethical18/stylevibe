@@ -24,7 +24,7 @@ export default function CustomerSchedule() {
         <span className="font-semibold text-lg text-gray-800">
           Customer Schedule
         </span>
-        <button className="flex items-center bg-[#f1f5ff] text-[#4d8dff] text-xs font-medium px-3 py-1 rounded-lg">
+        <button className="flex items-center bg-customPrimary-50 text-customPrimary-500 text-xs font-medium px-3 py-1 rounded-lg">
           Today <DownOutlined className="ml-1 text-xs" />
         </button>
       </div>
@@ -48,15 +48,15 @@ export default function CustomerSchedule() {
           </div>
           {/* Links below time */}
           <div className="flex items-center gap-4 mt-1 text-xs">
-            <span className="cursor-pointer text-[#4d8dff] hover:underline">
+            <span className="cursor-pointer text-customPrimary-500 hover:underline">
               Medical History
             </span>
-            <span className="cursor-pointer text-[#4d8dff] hover:underline">
+            <span className="cursor-pointer text-customPrimary-500 hover:underline">
               Reports
             </span>
           </div>
           <div className="flex gap-2 mt-3">
-            <button className="bg-[#e6f4ff] text-[#4d8dff] text-xs font-medium px-3 py-1 rounded-md">
+            <button className="bg-customPrimary-100 text-customPrimary-500 text-xs font-medium px-3 py-1 rounded-md">
               Message
             </button>
             <button className="bg-[#fff0f0] text-[#ff6b6b] text-xs font-medium px-3 py-1 rounded-md">

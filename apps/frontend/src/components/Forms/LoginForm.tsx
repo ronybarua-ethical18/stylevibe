@@ -61,7 +61,7 @@ const LoginForm = ({
                   fontSize: '35px',
                 }}
               >
-                Welcome to <span style={{ color: '#407aff' }}>Style Vibe </span>
+                Welcome to <span style={{ color: '#4d3ca3' }}>Style Vibe </span>
               </h1>
               <Image
                 src={helloImage.src}

@@ -43,14 +43,14 @@ export default function Sidebar(): React.ReactNode {
           fontSize: '30px',
           textAlign: 'center',
           margin: '2rem auto',
-          color: '#6a9cff',
+          color: '#6a5ac2',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
         <MdOutlineAdminPanelSettings
-          style={{ marginRight: '10px', color: '#6a9cff' }}
+          style={{ marginRight: '10px', color: '#6a5ac2' }}
         />
         {role}
       </div>

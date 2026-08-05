@@ -4,22 +4,14 @@ import { ThemeConfig } from 'antd';
 
 const customTheme: ThemeConfig = {
   token: {
-    colorPrimary: '#1890ff',
+    colorPrimary: '#4d3ca3',
     borderRadius: 4,
     // Add more global token overrides here
   },
   components: {
     Button: {
-      colorPrimary: '#1890ff',
+      colorPrimary: '#4d3ca3',
       algorithm: true, // Enable algorithm
-    },
-    Checkbox: {
-      colorPrimary: '#4d3ca3',
-      colorPrimaryHover: '#4d3ca3',
-    },
-    Radio: {
-      colorPrimary: '#4d3ca3',
-      colorPrimaryHover: '#4d3ca3',
     },
     Select: {
       colorBgContainer: '#f5f5f5',

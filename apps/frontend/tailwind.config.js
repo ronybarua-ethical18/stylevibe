@@ -10,7 +10,13 @@ module.exports = {
     extend: {
       colors: {
         customPrimary: {
+          50: '#f3f1fb',
+          100: '#e5e0f6',
+          300: '#a99bea',
+          500: '#6a5ac2',
+          700: '#5847b0',
           800: '#4d3ca3',
+          900: '#3a2d80',
         },
         paragraph: {
           400: '#eee',

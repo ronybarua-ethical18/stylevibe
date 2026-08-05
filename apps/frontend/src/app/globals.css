@@ -30,7 +30,7 @@ h1,h2,h3,h4,h5,h6{
   margin:30px !important;
 }
 .slick-dots li button:before {
-  background-color: #407AFF;
+  background-color: #4d3ca3;
   height: 8px !important;
   width: 70px !important;
   border-radius: 10px;
@@ -71,18 +71,18 @@ h1,h2,h3,h4,h5,h6{
 
 /* Highlight full row on hover (body only) */
 .ant-table-row:hover > .ant-table-cell {
-  background: #e6f7ff !important;
+  background: #f3f1fb !important;
 }
   /* antd design overrides  */
   .ant-menu-item-selected {
-    background-color: #eef4ff !important;
+    background-color: #e5e0f6 !important;
     color:black;
     font-weight: 500 !important;
   }
 
   .ant-menu-item:hover {
-    background-color: #e6f7ff !important;
-    color:#407AFF !important; /* Change the color as per your requirement */
+    background-color: #f3f1fb !important;
+    color:#4d3ca3 !important; /* Change the color as per your requirement */
   }
 
   .ant-menu-light.ant-menu-root.ant-menu-inline,
@@ -108,16 +108,16 @@ h1,h2,h3,h4,h5,h6{
 
 /* Profile Dropmenu Styles */
 .menu-item-hover:hover {
-  background: linear-gradient(135deg, #f0f4ff 0%, #e6f7ff 100%) !important;
+  background: linear-gradient(135deg, #f3f1fb 0%, #e5e0f6 100%) !important;
   transform: translateX(2px);
 }
 
 .menu-item-hover:hover .ant-typography {
-  color: #407AFF !important;
+  color: #4d3ca3 !important;
 }
 
 .menu-item-hover:hover .anticon {
-  color: #407AFF !important;
+  color: #4d3ca3 !important;
 }
 
 /* Custom scrollbar for dropdown */
@@ -161,6 +161,23 @@ h1,h2,h3,h4,h5,h6{
 .ant-dropdown-menu-item-divider {
   margin: 8px 0 !important;
   border-color: #f0f0f0 !important;
+}
+
+/* Landing page FAQ accordion */
+.faq-collapse .ant-collapse-item {
+  border-bottom: 1px solid #e5e7eb !important;
+  border-radius: 0 !important;
+}
+.faq-collapse .ant-collapse-header {
+  padding: 20px 4px !important;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f2937 !important;
+  align-items: center !important;
+}
+.faq-collapse .ant-collapse-content-box {
+  padding: 0 4px 20px !important;
+  max-width: 62ch;
 }
 
 /* Remove bottom border when table is empty */

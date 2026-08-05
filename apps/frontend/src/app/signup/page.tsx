@@ -113,7 +113,7 @@ const SignupPage = () => {
                   }}
                 >
                   Welcome to{' '}
-                  <span style={{ color: '#407aff' }}>Style Vibe </span>
+                  <span style={{ color: '#4d3ca3' }}>Style Vibe </span>
                 </h1>
                 <Image
                   src={helloImage}
