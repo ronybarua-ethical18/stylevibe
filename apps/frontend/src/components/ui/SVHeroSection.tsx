@@ -3,6 +3,21 @@ import Image from 'next/image';
 import { Button, Input } from 'antd';
 import { SearchOutlined, EnvironmentOutlined } from '@ant-design/icons';
 
+import HeroIllustration from '../../../public/1.png';
+
+const POPULAR_SEARCHES = [
+  'Balayage',
+  'Bridal trial',
+  'Signature facial',
+  'Blowout',
+];
+
+const HERO_STATS = [
+  { value: '500+', label: 'Local pros' },
+  { value: '4.9', label: 'Avg. rating' },
+  { value: '12,400', label: 'Bookings made' },
+];
+
 export default function SVHeroSection() {
   const [serviceName, setServiceName] = useState('');
   const [address, setAddress] = useState('');
@@ -10,114 +25,146 @@ export default function SVHeroSection() {
   const handleSearch = () => {};
 
   return (
-    <div className="h-screen relative mb-20">
-      {/* Full-width background purple */}
-      <div
-        className="absolute inset-0"
-        style={{ backgroundColor: '#4d3ca3' }}
-      ></div>
+    <div className="bg-white">
+      <div className="w-3/4 m-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center py-16 lg:py-20">
+        {/* Copy + search */}
+        <div>
+          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-customPrimary-500 mb-6">
+            <span className="w-8 h-px bg-customPrimary-300" aria-hidden="true" />
+            Hair · Makeup · Skincare · Bridal
+          </p>
 
-      {/* Full-width background image */}
-      <div className="absolute inset-0 overflow-hidden">
-        <Image
-          src="/hero.png"
-          alt="Beauty salon service"
-          fill
-          className="object-contain"
-          style={{ transform: 'translateX(18%)' }}
-          priority
-        />
+          <h1 className="text-5xl xl:text-6xl font-bold tracking-tight text-gray-800 leading-[1.08] m-0 mb-6">
+            The right hands,
+            <br />
+            <span className="italic font-light text-customPrimary-800">
+              near you.
+            </span>
+          </h1>
 
-        {/* Main gradient overlay - Purple fading to transparent from left to right */}
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            background: `linear-gradient(to right, #4d3ca3 0%, rgba(77, 60, 163, 0.8) 25%, rgba(77, 60, 163, 0.5) 50%, rgba(77, 60, 163, 0.2) 75%, transparent 90%)`,
-          }}
-        ></div>
+          <p className="text-lg text-gray-500 font-light leading-relaxed max-w-lg mb-9">
+            StyleVibe connects you with local salons and independent artists.
+            Confirmed slots, secure payment, and a direct line to your stylist
+            — from first search to final mirror check.
+          </p>
 
-        {/* Additional left overlay to hide shifted portion - extended coverage */}
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            background: `linear-gradient(to right, #4d3ca3 0%, #4d3ca3 30%, rgba(77, 60, 163, 0.9) 38%, rgba(77, 60, 163, 0.5) 42%, transparent 47%)`,
-          }}
-        ></div>
-      </div>
-
-      {/* Content Container with w-3/4 m-auto positioning */}
-      <div className="relative z-10 h-full flex items-center">
-        <div className="w-3/4 m-auto">
-          <div className="max-w-4xl">
-            {/* Tag */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full border border-white/40 text-xs font-medium text-white mb-8">
-              <span className="w-2 h-2 bg-white rounded-full mr-3"></span>
-              HAIR SALON, MASSEUSE, BEAUTY SALON
+          {/* Search card */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-2.5 flex flex-col sm:flex-row items-stretch shadow-custom-shadow max-w-2xl">
+            <div className="flex-1 px-4 py-1.5">
+              <div className="text-2xs font-semibold uppercase tracking-widest text-gray-500">
+                Service
+              </div>
+              <Input
+                placeholder='Try "balayage" or "bridal trial"'
+                value={serviceName}
+                onChange={(e) => setServiceName(e.target.value)}
+                prefix={<SearchOutlined className="text-gray-400" />}
+                bordered={false}
+                className="text-sm"
+                style={{ padding: 0 }}
+              />
             </div>
-
-            {/* Main Heading */}
-            <h1 className="text-6xl font-bold text-white leading-tight mb-6">
-              Find a service
-              <br />
-              close to you
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-lg text-white/90 mb-10 leading-relaxed max-w-md">
-              There are many variation of passages are lorem available, majority
-              have suffered alteration in some form.
-            </p>
-
-            {/* Search Form with Ant Design */}
-            <div className="bg-white rounded-full py-2 px-4 flex items-center shadow-lg max-w-2xl">
-              {/* Service Name Input */}
-              <div className="flex-1 px-5">
-                <div className="text-xs text-gray-500 mb-1">Service Name</div>
-                <Input
-                  placeholder="Book your services..."
-                  value={serviceName}
-                  onChange={(e) => setServiceName(e.target.value)}
-                  prefix={<SearchOutlined className="text-gray-400" />}
-                  bordered={false}
-                  className="text-sm"
-                  style={{ padding: 0 }}
-                />
+            <div className="hidden sm:block w-px bg-gray-200 my-2" />
+            <div className="flex-1 px-4 py-1.5 border-t sm:border-t-0 border-gray-100">
+              <div className="text-2xs font-semibold uppercase tracking-widest text-gray-500">
+                Where
               </div>
+              <Input
+                placeholder="Neighbourhood or city"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                prefix={<EnvironmentOutlined className="text-gray-400" />}
+                bordered={false}
+                className="text-sm"
+                style={{ padding: 0 }}
+              />
+            </div>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleSearch}
+              className="px-8 m-1"
+              style={{ height: '52px', borderRadius: '12px' }}
+            >
+              Search
+            </Button>
+          </div>
 
-              {/* Divider */}
-              <div className="w-px bg-gray-200 h-12 mx-4"></div>
-
-              {/* Address Input */}
-              <div className="flex-1 px-5">
-                <div className="text-xs text-gray-500 mb-1">Address</div>
-                <Input
-                  placeholder="Where"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  prefix={<EnvironmentOutlined className="text-gray-400" />}
-                  bordered={false}
-                  className="text-sm"
-                  style={{ padding: 0 }}
-                />
-              </div>
-
-              {/* Search Button */}
-              <Button
-                type="primary"
-                shape="round"
-                size="large"
-                icon={<SearchOutlined />}
-                onClick={handleSearch}
-                className="ml-4 px-8"
-                style={{
-                  backgroundColor: '#4d3ca3',
-                  borderColor: '#4d3ca3',
-                  height: '48px',
-                  fontWeight: 'medium',
-                }}
+          {/* Popular searches */}
+          <div className="flex flex-wrap items-center gap-2.5 mt-4 text-sm text-gray-500">
+            <span>Popular:</span>
+            {POPULAR_SEARCHES.map((term) => (
+              <button
+                key={term}
+                type="button"
+                onClick={() => setServiceName(term)}
+                className="rounded-full border border-customPrimary-100 bg-customPrimary-50 text-customPrimary-700 text-xs px-3.5 py-1 cursor-pointer transition hover:border-customPrimary-300"
               >
-                Search
-              </Button>
+                {term}
+              </button>
+            ))}
+          </div>
+
+          {/* Stats */}
+          <div className="flex flex-wrap gap-10 lg:gap-14 mt-11 pt-7 border-t border-gray-100">
+            {HERO_STATS.map((stat) => (
+              <div key={stat.label}>
+                <div className="text-3xl font-semibold tracking-tight text-customPrimary-800 tabular-nums">
+                  {stat.value}
+                </div>
+                <div className="text-xs uppercase tracking-wider text-gray-500">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Illustration panel — same visual world as the login page */}
+        <div className="relative justify-self-center w-full max-w-[470px]">
+          <div className="bg-[#e9effb] rounded-[28px] px-7 pt-9 pb-5">
+            <Image
+              src={HeroIllustration}
+              alt="Stylist blow-drying a client's hair in front of a salon mirror"
+              priority
+            />
+            <p className="text-center text-sm font-medium text-[#3b4664] mt-3 mb-2">
+              Unleash Your Radiance
+            </p>
+            <div
+              className="flex justify-center gap-2 pb-1"
+              aria-hidden="true"
+            >
+              <span className="w-8 h-1.5 rounded-full bg-customPrimary-500" />
+              <span className="w-8 h-1.5 rounded-full bg-customPrimary-100" />
+              <span className="w-8 h-1.5 rounded-full bg-customPrimary-100" />
+            </div>
+          </div>
+
+          {/* Floating booking card */}
+          <div className="absolute -right-3 bottom-24 z-10 bg-white border border-gray-100 rounded-xl shadow-lg px-4 py-3 text-[13px] leading-snug max-w-[230px]">
+            <div className="flex items-center gap-2 font-semibold text-gray-800">
+              Booking
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#e6fff9] text-[#00b359] text-[11px] font-medium px-2.5 py-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00b359]" />
+                Confirmed
+              </span>
+            </div>
+            <div className="text-gray-500 text-xs mt-1">
+              Today · 2:30 PM
+              <br />
+              Luxe Loft Hair Studio
+            </div>
+          </div>
+
+          {/* Floating chat card */}
+          <div className="absolute -left-4 -bottom-6 z-10 bg-white border border-gray-100 rounded-xl shadow-lg px-4 py-3 text-[13px] leading-snug max-w-[250px]">
+            <div className="flex items-center gap-2 font-semibold text-gray-800">
+              <span className="w-2 h-2 rounded-full bg-customPrimary-500" />
+              Maya (your stylist)
+            </div>
+            <div className="text-gray-500 text-xs mt-1">
+              &ldquo;Running 5 min early — see you soon!&rdquo;
             </div>
           </div>
         </div>

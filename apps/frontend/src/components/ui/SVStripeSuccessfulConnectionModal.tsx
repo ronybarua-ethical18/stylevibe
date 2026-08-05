@@ -55,7 +55,7 @@ const SVStripeSuccessfulConnectionModal = ({
               renderItem={(item) => (
                 <List.Item>
                   <RightCircleOutlined
-                    style={{ color: '#1890ff', marginRight: 8 }}
+                    style={{ color: '#4d3ca3', marginRight: 8 }}
                   />
                   {item}
                 </List.Item>

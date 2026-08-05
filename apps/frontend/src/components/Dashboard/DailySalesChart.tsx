@@ -52,12 +52,12 @@ const options: ApexOptions = {
   stroke: {
     curve: 'smooth',
     width: 3,
-    colors: ['#4f8cff'],
+    colors: ['#6a5ac2'],
   },
   markers: {
     size: [0, 0, 0, 0, 0, 6, 0], // Only show marker on max value (Thu)
     colors: ['#fff'],
-    strokeColors: '#4f8cff',
+    strokeColors: '#6a5ac2',
     strokeWidth: 3,
     hover: { size: 8 },
     discrete: [
@@ -65,7 +65,7 @@ const options: ApexOptions = {
         seriesIndex: 0,
         dataPointIndex: maxIndex,
         fillColor: '#fff',
-        strokeColor: '#4f8cff',
+        strokeColor: '#6a5ac2',
         size: 8,
       },
     ],
@@ -162,7 +162,7 @@ export default function DailySalesChart() {
             borderRadius: 8,
             padding: '6px 16px',
             fontWeight: 500,
-            color: '#4f8cff',
+            color: '#6a5ac2',
             cursor: 'pointer',
           }}
         >

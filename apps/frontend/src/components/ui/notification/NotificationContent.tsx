@@ -60,7 +60,7 @@ export const NotificationContent: React.FC<NotificationContentProps> = ({
       {/* Header */}
       <div style={STYLES.header}>
         <div style={STYLES.headerTitle}>
-          <BiBell style={{ fontSize: '18px', color: '#1890ff' }} />
+          <BiBell style={{ fontSize: '18px', color: '#4d3ca3' }} />
           <Text strong style={{ fontSize: '16px', color: '#262626' }}>
             Notifications
           </Text>
@@ -71,7 +71,7 @@ export const NotificationContent: React.FC<NotificationContentProps> = ({
             size="small"
             onClick={onMarkAllAsRead}
             style={{
-              color: '#1890ff',
+              color: '#4d3ca3',
               fontSize: '12px',
               padding: '4px 8px',
               height: 'auto',
@@ -119,7 +119,7 @@ export const NotificationContent: React.FC<NotificationContentProps> = ({
               type="link"
               size="small"
               style={{
-                color: '#1890ff',
+                color: '#4d3ca3',
                 fontSize: '13px',
                 padding: 0,
                 height: 'auto',

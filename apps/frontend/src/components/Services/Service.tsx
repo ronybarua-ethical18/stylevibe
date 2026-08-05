@@ -57,7 +57,7 @@ export default function Service({ service, role }: any) {
                     <div className="mt-8">
                       <div className="flex items-center">
                         <SVRating value={3.5} />
-                        <h4 className="ml-5 text-[#6a9cff]">
+                        <h4 className="ml-5 text-customPrimary-500">
                           4.5{' '}
                           <span className="text-gray-500 font-thin ml-2">
                             (153 reviews)
@@ -65,7 +65,7 @@ export default function Service({ service, role }: any) {
                         </h4>
                       </div>
                       <div>
-                        <h1 className="text-3xl font-medium mb-1 text-[#6a9cff]">
+                        <h1 className="text-3xl font-medium mb-1 text-customPrimary-500">
                           ${service?.price + '.00'}
                         </h1>
                         <p className="font-thin">

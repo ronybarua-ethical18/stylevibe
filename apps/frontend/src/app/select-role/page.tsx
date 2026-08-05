@@ -72,7 +72,7 @@ const RoleSelectionPage = () => {
         <Card style={{ width: 600, textAlign: 'center' }}>
           <div style={{ marginBottom: '30px' }}>
             <h1 style={{ fontSize: '24px', marginBottom: '10px' }}>
-              Welcome to <span style={{ color: '#407aff' }}>Style Vibe!</span>
+              Welcome to <span style={{ color: '#4d3ca3' }}>Style Vibe!</span>
             </h1>
             <p style={{ color: '#666', fontSize: '16px' }}>
               Please select your role to continue
@@ -87,7 +87,7 @@ const RoleSelectionPage = () => {
                 style={{
                   border:
                     selectedRole === 'customer'
-                      ? '2px solid #407aff'
+                      ? '2px solid #4d3ca3'
                       : '1px solid #d9d9d9',
                   cursor: 'pointer',
                 }}
@@ -111,7 +111,7 @@ const RoleSelectionPage = () => {
                 style={{
                   border:
                     selectedRole === 'seller'
-                      ? '2px solid #407aff'
+                      ? '2px solid #4d3ca3'
                       : '1px solid #d9d9d9',
                   cursor: 'pointer',
                 }}

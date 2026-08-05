@@ -43,7 +43,7 @@ const STYLES = {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    backgroundColor: '#1890ff',
+    backgroundColor: '#4d3ca3',
     flexShrink: 0,
   },
   timeContainer: {
@@ -83,7 +83,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
-        e.currentTarget.style.backgroundColor = '#eef4ff';
+        e.currentTarget.style.backgroundColor = '#e5e0f6';
       },
       []
     );
@@ -92,7 +92,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
       (e: React.MouseEvent<HTMLDivElement>) => {
         e.currentTarget.style.backgroundColor = notification.isRead
           ? 'transparent'
-          : '#eef4ff';
+          : '#e5e0f6';
       },
       [notification.isRead]
     );
@@ -125,7 +125,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = React.memo(
       <List.Item
         style={{
           ...STYLES.notificationItem,
-          backgroundColor: notification.isRead ? 'transparent' : '#eef4ff',
+          backgroundColor: notification.isRead ? 'transparent' : '#e5e0f6',
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
